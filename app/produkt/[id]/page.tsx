@@ -8,6 +8,7 @@ export default function ProduktSide() {
   const [valgtVariant, setValgtVariant] = useState<any>(null);
   const [laster, setLaster] = useState(true);
   const [beskrivelse, setBeskrivelse] = useState('');
+  const [variantNavn, setVariantNavn] = useState<Record<string, string>>({});
 
   useEffect(() => {
   fetch(`/api/products?pid=${id}`)
@@ -19,12 +20,12 @@ export default function ProduktSide() {
 
       // Generer norsk beskrivelse med Claude
       const res = await fetch('/api/beskriv', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ produktnavn: data.data?.productNameEn }),
-      });
-      const aiData = await res.json();
-      setBeskrivelse(aiData.beskrivelse || '');
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ produktnavn: data.data?.productNameEn }),
+});
+const aiData = await res.json();
+setBeskrivelse(aiData.beskrivelse || '');
     });
 }, [id]);
 
@@ -176,12 +177,26 @@ export default function ProduktSide() {
   setValgtVariant(v);
 }}
                   >
-                    {v.variantKey === 'Set1' ? 'Sett (Rosa & Oransje)' :
- v.variantKey === 'Set' ? 'Sett (Oransje & Grønn)' :
- v.variantKey === 'Green' ? 'Grønn' :
- v.variantKey === 'Pink' ? 'Rosa' :
- v.variantKey === 'Orange' ? 'Oransje' :
- v.variantKey}
+                    {(variantNavn[v.variantKey] && variantNavn[v.variantKey].length > 0 ? variantNavn[v.variantKey] : v.variantKey)
+  .replace(/Set1/g, '§§§')
+  .replace(/Set/g, 'Oransje & Grønn')
+  .replace(/§§§/g, 'Rosa & Oransje')
+  .replace(/Green/gi, 'Grønn')
+  .replace(/Pink/gi, 'Rosa')
+  .replace(/Orange/gi, 'Oransje')
+  .replace(/Blue/gi, 'Blå')
+  .replace(/Red/gi, 'Rød')
+  .replace(/Black/gi, 'Svart')
+  .replace(/White/gi, 'Hvit')
+  .replace(/Yellow/gi, 'Gul')
+  .replace(/Purple/gi, 'Lilla')
+  .replace(/Gray/gi, 'Grå')
+  .replace(/Grey/gi, 'Grå')
+  .replace(/Brown/gi, 'Brun')
+  .replace(/Small/gi, 'Liten')
+  .replace(/Medium/gi, 'Medium')
+  .replace(/Large/gi, 'Stor')
+  .replace(/XL/gi, 'XL')}
                   </button>
                 ))}
               </div>
