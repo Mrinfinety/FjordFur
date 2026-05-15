@@ -7,16 +7,26 @@ export default function ProduktSide() {
   const [produkt, setProdukt] = useState<any>(null);
   const [valgtVariant, setValgtVariant] = useState<any>(null);
   const [laster, setLaster] = useState(true);
+  const [beskrivelse, setBeskrivelse] = useState('');
 
   useEffect(() => {
-    fetch(`/api/products?pid=${id}`)
-      .then(res => res.json())
-      .then(data => {
-        setProdukt(data.data);
-        setValgtVariant(data.data?.variants?.[0]);
-        setLaster(false);
+  fetch(`/api/products?pid=${id}`)
+    .then(res => res.json())
+    .then(async data => {
+      setProdukt(data.data);
+      setValgtVariant(data.data?.variants?.[0]);
+      setLaster(false);
+
+      // Generer norsk beskrivelse med Claude
+      const res = await fetch('/api/beskriv', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ produktnavn: data.data?.productNameEn }),
       });
-  }, [id]);
+      const aiData = await res.json();
+      setBeskrivelse(aiData.beskrivelse || '');
+    });
+}, [id]);
 
   if (laster) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', fontFamily: 'DM Sans, sans-serif' }}>
@@ -142,7 +152,12 @@ export default function ProduktSide() {
 
         <div className="pinfo">
           <p className="ptag">NordicPaws</p>
-          <h1 className="ptitle">{produkt.productNameEn}</h1>
+          <h1 className="ptitle">
+  {produkt.productNameEn
+    .replace(/Anti Choking Slow Feeder Dish Bowl Home Dog Eating Plate Anti Gulping Bowl Supplies/g, '')
+    .replace(/Pet Dog Cat/g, 'Hund & Katt')
+    .trim()}
+</h1>
           <p className="pprice">
             kr {Math.max(Math.round(valgtVariant?.variantSellPrice * 10 * 3 / 10) * 10, 149)},–
           </p>
@@ -158,7 +173,9 @@ export default function ProduktSide() {
                     className={`pvariant ${valgtVariant?.vid === v.vid ? 'active' : ''}`}
                     onClick={() => setValgtVariant(v)}
                   >
-                    {v.variantKey}
+                    {v.variantKey
+  .replace('Set1', 'Dobbelt sett')
+  .replace('Set', 'Enkelt sett')}
                   </button>
                 ))}
               </div>
@@ -173,9 +190,28 @@ export default function ProduktSide() {
           </button>
 
           <div className="pdivider" />
-          <p className="pdesc">
-            {produkt.description?.replace(/<[^>]*>/g, '').slice(0, 400)}...
-          </p>
+          {beskrivelse && (
+  <p className="pdesc" style={{ lineHeight: '1.8', color: '#555' }}>{beskrivelse}</p>
+)}
+<div className="pdivider" />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+  <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+    <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
+    <p className="pdesc">Gratis frakt over kr 499</p>
+  </div>
+  <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+    <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
+    <p className="pdesc">Levering 1–3 virkedager</p>
+  </div>
+  <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+    <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
+    <p className="pdesc">30 dagers returrett</p>
+  </div>
+  <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+    <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
+    <p className="pdesc">Testet og godkjent av veterinærer</p>
+  </div>
+</div>
         </div>
       </div>
     </div>
