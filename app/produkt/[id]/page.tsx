@@ -18,14 +18,15 @@ export default function ProduktSide() {
       setValgtVariant(data.data?.variants?.[0]);
       setLaster(false);
 
-      // Generer norsk beskrivelse med Claude
+      console.log('Kaller beskriv API...');
       const res = await fetch('/api/beskriv', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ produktnavn: data.data?.productNameEn }),
-});
-const aiData = await res.json();
-setBeskrivelse(aiData.beskrivelse || '');
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ produktnavn: data.data?.productNameEn }),
+      });
+      const aiData = await res.json();
+      console.log('AI svar:', aiData);
+      setBeskrivelse(aiData.beskrivelse || '');
     });
 }, [id]);
 
