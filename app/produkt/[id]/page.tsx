@@ -159,7 +159,7 @@ export default function ProduktSide() {
     .trim()}
 </h1>
           <p className="pprice">
-            kr {Math.max(Math.round(valgtVariant?.variantSellPrice * 10 * 3 / 10) * 10, 149)},–
+            kr {Math.max(Math.round(valgtVariant?.variantSellPrice * 10 * 3 / 10) * 10, valgtVariant?.variantKey?.includes('Set') ? 249 : 149)},–
           </p>
           <div className="pdivider" />
 
@@ -171,11 +171,17 @@ export default function ProduktSide() {
                   <button
                     key={v.vid}
                     className={`pvariant ${valgtVariant?.vid === v.vid ? 'active' : ''}`}
-                    onClick={() => setValgtVariant(v)}
+                    onClick={() => {
+  console.log('Valgt variant:', v.variantKey, v.variantSellPrice);
+  setValgtVariant(v);
+}}
                   >
-                    {v.variantKey
-  .replace('Set1', 'Dobbelt sett')
-  .replace('Set', 'Enkelt sett')}
+                    {v.variantKey === 'Set1' ? 'Sett (Rosa & Oransje)' :
+ v.variantKey === 'Set' ? 'Sett (Oransje & Grønn)' :
+ v.variantKey === 'Green' ? 'Grønn' :
+ v.variantKey === 'Pink' ? 'Rosa' :
+ v.variantKey === 'Orange' ? 'Oransje' :
+ v.variantKey}
                   </button>
                 ))}
               </div>
