@@ -10,6 +10,7 @@ export default function ProduktSide() {
   const [beskrivelse, setBeskrivelse] = useState('');
   const [variantNavn, setVariantNavn] = useState<Record<string, string>>({});
   const [produktNavn, setProduktNavn] = useState('');
+  const [aktivBilde, setAktivBilde] = useState(0);
 
   useEffect(() => {
   fetch(`/api/products?pid=${id}`)
@@ -137,22 +138,37 @@ export default function ProduktSide() {
 
       <div className="pcontainer">
         <div className="pimages">
-          <img
-            className="pmain-img"
-            src={valgtVariant?.variantImage || produkt.bigImage}
-            alt={produkt.productNameEn}
-          />
-          <div className="pthumbs">
-            {produkt.productImageSet?.slice(0, 6).map((img: string, i: number) => (
-              <img
-                key={i}
-                src={img}
-                className={`pthumb`}
-                alt={`Bilde ${i + 1}`}
-              />
-            ))}
-          </div>
-        </div>
+  <div style={{ position: 'relative' }}>
+    <img
+      className="pmain-img"
+      src={produkt.productImageSet?.[aktivBilde] || valgtVariant?.variantImage || produkt.bigImage}
+      alt={produkt.productNameEn}
+    />
+    <button onClick={() => setAktivBilde(prev => Math.max(0, prev - 1))} style={{
+      position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)',
+      background: 'rgba(255,255,255,0.9)', border: 'none', borderRadius: '50%',
+      width: '36px', height: '36px', cursor: 'pointer', fontSize: '16px',
+      display: aktivBilde === 0 ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center'
+    }}>←</button>
+    <button onClick={() => setAktivBilde(prev => Math.min((produkt.productImageSet?.length || 1) - 1, prev + 1))} style={{
+      position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
+      background: 'rgba(255,255,255,0.9)', border: 'none', borderRadius: '50%',
+      width: '36px', height: '36px', cursor: 'pointer', fontSize: '16px',
+      display: aktivBilde === (produkt.productImageSet?.length || 1) - 1 ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center'
+    }}>→</button>
+  </div>
+  <div className="pthumbs">
+    {produkt.productImageSet?.slice(0, 6).map((img: string, i: number) => (
+      <img
+        key={i}
+        src={img}
+        className={`pthumb ${aktivBilde === i ? 'active' : ''}`}
+        alt={`Bilde ${i + 1}`}
+        onClick={() => setAktivBilde(i)}
+      />
+    ))}
+  </div>
+</div>
 
         <div className="pinfo">
           <p className="ptag">NordicPaws</p>
