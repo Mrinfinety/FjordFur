@@ -238,7 +238,7 @@ export default function ProduktSide() {
   </div>
   <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
     <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
-    <p className="pdesc">Levering 1–3 virkedager</p>
+    <p className="pdesc">Levering 2–3 uker</p>
   </div>
   <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
     <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>

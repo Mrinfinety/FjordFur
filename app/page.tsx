@@ -349,8 +349,8 @@ useEffect(() => {
             <div className="stat-label">Produkter i sortimentet</div>
           </div>
           <div className="stat-row">
-            <div className="stat-num">1–3</div>
-            <div className="stat-label">Dagers levering</div>
+            <div className="stat-num">2–3</div>
+<div className="stat-label">Ukers levering</div>
           </div>
           <div className="stat-row">
             <div className="stat-num">Gratis</div>
@@ -410,7 +410,7 @@ useEffect(() => {
           <div className="trust-item">
             <div className="trust-icon">🚚</div>
             <div className="trust-title">Rask levering</div>
-            <div className="trust-text">Leverer i hele Norge på 1–3 virkedager. Gratis frakt over kr 499.</div>
+            <div className="trust-text">Leverer i hele Norge på 2–3 uker. Gratis frakt over kr 499.</div>
           </div>
           <div className="trust-item">
             <div className="trust-icon">♻️</div>
