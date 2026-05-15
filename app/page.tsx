@@ -1,28 +1,51 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const products = [
-  { id: 1, name: 'Fleecesele', sub: 'Til hund, str. S–XL', price: 299, emoji: '🦺', cat: 'hund', badge: 'new' },
-  { id: 2, name: 'Interaktivt puslespill', sub: 'Mentalstimulering for hund', price: 189, emoji: '🧩', cat: 'hund' },
-  { id: 3, name: 'Naturlig hundegodteri', sub: 'Laks, 100 % naturlig', price: 99, emoji: '🦴', cat: 'hund', badge: 'sale' },
-  { id: 4, name: 'Klorestolpe', sub: 'Sisal, 65 cm høy', price: 349, emoji: '🪵', cat: 'katt' },
-  { id: 5, name: 'Automatisk lekepinne', sub: 'Beveger seg selv', price: 249, emoji: '🪁', cat: 'katt', badge: 'new' },
-  { id: 6, name: 'Selvvannende fontene', sub: '1,5 liter kapasitet', price: 399, emoji: '💧', cat: 'katt' },
-  { id: 7, name: 'Fuglbur deluxe', sub: 'Stor variant, rustfritt', price: 1290, emoji: '🏠', cat: 'fugl' },
-  { id: 8, name: 'Frøblanding premium', sub: '1 kg, 12 kornsorter', price: 79, emoji: '🌾', cat: 'fugl' },
-  { id: 9, name: 'Akvarium startpakke', sub: '60 liter med utstyr', price: 890, emoji: '🐠', cat: 'fisk', badge: 'new' },
-  { id: 10, name: 'Vannrenser', sub: 'Stille pumpe, 600 l/t', price: 349, emoji: '🔵', cat: 'fisk' },
-  { id: 11, name: 'Gnagerbur', sub: 'Etasjebur, hamster/mus', price: 499, emoji: '🏡', cat: 'gnager' },
-  { id: 12, name: 'Tredemølle', sub: 'Stille kjøring', price: 129, emoji: '⚙️', cat: 'gnager', badge: 'sale' },
+  { id: 1, name: 'Slow Feeder Bolle', sub: 'Forhindrer kvelning, hund/katt', price: 199, emoji: '🥣', cat: 'hund', badge: 'new', cjId: '1653041912300969984' },
+  { id: 2, name: 'Bærbar vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
+  { id: 3, name: 'Kjølmatte', sub: 'Issilke, ikke-giftig, inne/ute', price: 299, emoji: '❄️', cat: 'hund', badge: 'sale', cjId: '3F8F4862-6CFA-4947-9CE7-EA1936C96840' },
+  { id: 4, name: 'Fleecesele', sub: 'Til hund, str. S–XL', price: 299, emoji: '🦺', cat: 'hund' },
+  { id: 5, name: 'Interaktivt puslespill', sub: 'Mentalstimulering for hund', price: 189, emoji: '🧩', cat: 'hund' },
+  { id: 6, name: 'Klorestolpe', sub: 'Sisal, 65 cm høy', price: 349, emoji: '🪵', cat: 'katt' },
+  { id: 7, name: 'Automatisk lekepinne', sub: 'Beveger seg selv', price: 249, emoji: '🪁', cat: 'katt', badge: 'new' },
+  { id: 8, name: 'Selvvannende fontene', sub: '1,5 liter kapasitet', price: 399, emoji: '💧', cat: 'katt' },
+  { id: 9, name: 'Fuglbur deluxe', sub: 'Stor variant, rustfritt', price: 1290, emoji: '🏠', cat: 'fugl' },
+  { id: 10, name: 'Frøblanding premium', sub: '1 kg, 12 kornsorter', price: 79, emoji: '🌾', cat: 'fugl' },
+  { id: 11, name: 'Akvarium startpakke', sub: '60 liter med utstyr', price: 890, emoji: '🐠', cat: 'fisk', badge: 'new' },
+  { id: 12, name: 'Vannrenser', sub: 'Stille pumpe, 600 l/t', price: 349, emoji: '🔵', cat: 'fisk' },
 ];
 
 const kategorier = ['alle', 'hund', 'katt', 'fugl', 'fisk', 'gnager'];
+
+async function fetchCJProduct(pid: string) {
+  const res = await fetch(`/api/products?pid=${pid}`);
+  const data = await res.json();
+  return data.data;
+}
 
 export default function Home() {
   const [aktivKat, setAktivKat] = useState('alle');
   const [handlekurv, setHandlekurv] = useState<{ id: number; name: string }[]>([]);
   const [toast, setToast] = useState('');
   const [kurvaapen, setKurvAapen] = useState(false);
+  const [cjProducts, setCjProducts] = useState<Record<string, any>>({});
+
+useEffect(() => {
+  const cjIds = products.filter(p => p.cjId).map(p => p.cjId!);
+  Promise.all(
+    cjIds.map(async (pid) => {
+      const data = await fetchCJProduct(pid);
+      return { pid, data };
+    })
+  ).then(results => {
+    const newProducts: Record<string, any> = {};
+    results.forEach(({ pid, data }) => {
+      if (data) newProducts[pid] = data;
+    });
+    setCjProducts(newProducts);
+  });
+}, []);
 
   const filtrerte = aktivKat === 'alle' ? products : products.filter(p => p.cat === aktivKat);
 
@@ -354,17 +377,25 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="grid">
+<div className="grid">
           {filtrerte.map(p => (
-            <div key={p.id} className="card">
-              <div className="card-img">{p.emoji}</div>
+            <div key={p.id} className="card" onClick={() => p.cjId && window.location.assign(`/produkt/${p.cjId}`)}>
+              <div className="card-img">
+  {p.cjId && cjProducts[p.cjId]
+    ? <img src={cjProducts[p.cjId].bigImage} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+    : <span>{p.emoji}</span>}
+</div>
               <div className="card-body">
                 {p.badge === 'new' && <span className="badge badge-new">Nyhet</span>}
                 {p.badge === 'sale' && <span className="badge badge-sale">Tilbud</span>}
                 <div className="card-name">{p.name}</div>
                 <div className="card-sub">{p.sub}</div>
                 <div className="card-footer">
-                  <span className="price">kr {p.price},–</span>
+                  <span className="price">
+                    {p.cjId && cjProducts[p.cjId]
+                      ? `kr ${Math.max(Math.round(cjProducts[p.cjId].variants[0].variantSellPrice * 10 * 3 / 10) * 10, 149)},–`
+                      : `kr ${p.price},–`}
+                  </span>
                   <button className="add" onClick={() => leggTil(p.id, p.name)}>
                     + Legg til
                   </button>
