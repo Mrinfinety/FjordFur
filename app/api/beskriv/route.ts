@@ -1,7 +1,7 @@
 export async function POST(req: Request) {
-  const { produktnavn, varianter } = await req.json();
+  const { produktnavn } = await req.json();
 
-  const beskrivelseRes = await fetch('https://api.anthropic.com/v1/messages', {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -13,29 +13,22 @@ export async function POST(req: Request) {
       max_tokens: 1000,
       messages: [{
         role: 'user',
-        content: `Du er en nettbutikk-assistent for NordicPaws, en norsk kjæledyrbutikk.
+        content: `Du er assistent for NordicPaws, en norsk kjæledyrbutikk. Svar KUN med JSON uten kodeblokker eller annen tekst:
 
-Gjør to ting og svar KUN med JSON, ingen annen tekst:
+{"navn": "kort norsk produktnavn (maks 4 ord)", "beskrivelse": "3-4 setninger norsk produktbeskrivelse"}
 
-1. Skriv en kort norsk produktbeskrivelse (3-4 setninger) for: "${produktnavn}"
-2. Oversett disse variantnavnene til norsk: ${JSON.stringify(varianter)}
-
-Svar slik:
-{
-  "beskrivelse": "...",
-  "varianter": {"Green": "Grønn", "Pink": "Rosa", "Set": "Sett (2 stk)", ...}
-}`
+Produktet heter: "${produktnavn}"`
       }]
     })
   });
 
-  const data = await beskrivelseRes.json();
+  const data = await res.json();
   const tekst = data.content?.[0]?.text || '{}';
-  
+
   try {
     const parsed = JSON.parse(tekst);
-    return Response.json(parsed);
+    return Response.json({ navn: parsed.navn || produktnavn, beskrivelse: parsed.beskrivelse || '' });
   } catch {
-    return Response.json({ beskrivelse: tekst, varianter: {} });
+    return Response.json({ navn: produktnavn, beskrivelse: tekst });
   }
 }

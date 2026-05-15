@@ -9,6 +9,7 @@ export default function ProduktSide() {
   const [laster, setLaster] = useState(true);
   const [beskrivelse, setBeskrivelse] = useState('');
   const [variantNavn, setVariantNavn] = useState<Record<string, string>>({});
+  const [produktNavn, setProduktNavn] = useState('');
 
   useEffect(() => {
   fetch(`/api/products?pid=${id}`)
@@ -27,6 +28,7 @@ export default function ProduktSide() {
       const aiData = await res.json();
       console.log('AI svar:', aiData);
       setBeskrivelse(aiData.beskrivelse || '');
+      setProduktNavn(aiData.navn || '');
     });
 }, [id]);
 
@@ -155,10 +157,7 @@ export default function ProduktSide() {
         <div className="pinfo">
           <p className="ptag">NordicPaws</p>
           <h1 className="ptitle">
-  {produkt.productNameEn
-    .replace(/Anti Choking Slow Feeder Dish Bowl Home Dog Eating Plate Anti Gulping Bowl Supplies/g, '')
-    .replace(/Pet Dog Cat/g, 'Hund & Katt')
-    .trim()}
+  {produktNavn || produkt.productNameEn}
 </h1>
           <p className="pprice">
             kr {Math.max(Math.round(valgtVariant?.variantSellPrice * 10 * 3 / 10) * 10, valgtVariant?.variantKey?.includes('Set') ? 249 : 149)},–
