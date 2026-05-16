@@ -2,18 +2,9 @@
 import { useState, useEffect } from 'react';
 
 const products = [
-  { id: 1, name: 'Slow Feeder Bolle', sub: 'Forhindrer kvelning, hund/katt', price: 199, emoji: '🥣', cat: 'hund', badge: 'new', cjId: '1653041912300969984' },
-  { id: 2, name: 'Bærbar vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
+  { id: 1, name: 'Sakte-forer Skål', sub: 'Forhindrer kvelning, hund/katt', price: 199, emoji: '🥣', cat: 'hund', badge: 'new', cjId: '1653041912300969984' },
+  { id: 2, name: 'Vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
   { id: 3, name: 'Kjølmatte', sub: 'Issilke, ikke-giftig, inne/ute', price: 299, emoji: '❄️', cat: 'hund', badge: 'sale', cjId: '3F8F4862-6CFA-4947-9CE7-EA1936C96840' },
-  { id: 4, name: 'Fleecesele', sub: 'Til hund, str. S–XL', price: 299, emoji: '🦺', cat: 'hund' },
-  { id: 5, name: 'Interaktivt puslespill', sub: 'Mentalstimulering for hund', price: 189, emoji: '🧩', cat: 'hund' },
-  { id: 6, name: 'Klorestolpe', sub: 'Sisal, 65 cm høy', price: 349, emoji: '🪵', cat: 'katt' },
-  { id: 7, name: 'Automatisk lekepinne', sub: 'Beveger seg selv', price: 249, emoji: '🪁', cat: 'katt', badge: 'new' },
-  { id: 8, name: 'Selvvannende fontene', sub: '1,5 liter kapasitet', price: 399, emoji: '💧', cat: 'katt' },
-  { id: 9, name: 'Fuglbur deluxe', sub: 'Stor variant, rustfritt', price: 1290, emoji: '🏠', cat: 'fugl' },
-  { id: 10, name: 'Frøblanding premium', sub: '1 kg, 12 kornsorter', price: 79, emoji: '🌾', cat: 'fugl' },
-  { id: 11, name: 'Akvarium startpakke', sub: '60 liter med utstyr', price: 890, emoji: '🐠', cat: 'fisk', badge: 'new' },
-  { id: 12, name: 'Vannrenser', sub: 'Stille pumpe, 600 l/t', price: 349, emoji: '🔵', cat: 'fisk' },
 ];
 
 const kategorier = ['alle', 'hund', 'katt', 'fugl', 'fisk', 'gnager'];
