@@ -24,13 +24,27 @@ export default function Home() {
 
 useEffect(() => {
   const cjIds = products.filter(p => p.cjId).map(p => p.cjId!);
+  
+  // Last fra cache først
+  const cached: Record<string, any> = {};
+  cjIds.forEach(pid => {
+    const c = sessionStorage.getItem(`cj_${pid}`);
+    if (c) cached[pid] = JSON.parse(c);
+  });
+  if (Object.keys(cached).length > 0) setCjProducts(cached);
+
+  // Hent fra API for de som mangler
+  const mangler = cjIds.filter(pid => !cached[pid]);
+  if (mangler.length === 0) return;
+
   Promise.all(
-    cjIds.map(async (pid) => {
+    mangler.map(async (pid) => {
       const data = await fetchCJProduct(pid);
+      if (data) sessionStorage.setItem(`cj_${pid}`, JSON.stringify(data));
       return { pid, data };
     })
   ).then(results => {
-    const newProducts: Record<string, any> = {};
+    const newProducts: Record<string, any> = { ...cached };
     results.forEach(({ pid, data }) => {
       if (data) newProducts[pid] = data;
     });
@@ -373,8 +387,19 @@ useEffect(() => {
             <div key={p.id} className="card" onClick={() => p.cjId && window.location.assign(`/produkt/${p.cjId}`)}>
               <div className="card-img">
   {p.cjId && cjProducts[p.cjId]
-    ? <img src={cjProducts[p.cjId].bigImage} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-    : <span>{p.emoji}</span>}
+    ? <img 
+        src={cjProducts[p.cjId].bigImage} 
+        alt={p.name} 
+        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+      />
+    : <div style={{ 
+        width: '100%', height: '100%', 
+        background: '#f4f4f0',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: '36px'
+      }}>
+        {p.emoji}
+      </div>}
 </div>
               <div className="card-body">
                 {p.badge === 'new' && <span className="badge badge-new">Nyhet</span>}
