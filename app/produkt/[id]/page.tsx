@@ -176,7 +176,7 @@ export default function ProduktSide() {
   {produktNavn || produkt.productNameEn}
 </h1>
           <p className="pprice">
-            kr {Math.max(Math.round(valgtVariant?.variantSellPrice * 10 * 3 / 10) * 10, valgtVariant?.variantKey?.includes('Set') ? 249 : 149)},–
+            kr {Math.max(Math.round(valgtVariant?.variantSellPrice * 10) * 10, 149)},–
           </p>
           <div className="pdivider" />
 
@@ -212,6 +212,11 @@ export default function ProduktSide() {
   .replace(/Small/gi, 'Liten')
   .replace(/Medium/gi, 'Medium')
   .replace(/Large/gi, 'Stor')
+  .replace(/Water Grain Cup/gi, 'Med matbeholder')
+  .replace(/White/gi, 'Hvit')
+  .replace(/Yellow/gi, 'Gul')
+  .replace(/Purple/gi, 'Lilla')
+  .replace(/ML/g, 'ml')
   .replace(/XL/gi, 'XL')}
                   </button>
                 ))}
