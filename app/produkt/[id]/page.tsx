@@ -4,6 +4,10 @@ import { useParams } from 'next/navigation';
 
 export default function ProduktSide() {
   const { id } = useParams();
+  const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+  const fastPris = parseInt(searchParams.get('pris') || '0');
+  const margin = parseInt(searchParams.get('margin') || '15');
+  console.log('fastPris:', fastPris, 'margin:', margin);
   const [produkt, setProdukt] = useState<any>(null);
   const [valgtVariant, setValgtVariant] = useState<any>(null);
   const [laster, setLaster] = useState(true);
@@ -176,8 +180,7 @@ export default function ProduktSide() {
   {produktNavn || produkt.productNameEn}
 </h1>
           <p className="pprice">
-            kr {Math.max(Math.round(valgtVariant?.variantSellPrice * 10) * 10, 149)},–
-          </p>
+kr {Math.max(Math.round(valgtVariant?.variantSellPrice * margin / 10) * 10, fastPris)},–          </p>
           <div className="pdivider" />
 
           {produkt.variants?.length > 1 && (

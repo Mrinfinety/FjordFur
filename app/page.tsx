@@ -2,9 +2,9 @@
 import { useState, useEffect } from 'react';
 
 const products = [
-  { id: 1, name: 'Sakte-forer Skål', sub: 'Forhindrer kvelning, hund/katt', price: 199, emoji: '🥣', cat: 'hund', badge: 'new', cjId: '1653041912300969984' },
-  { id: 2, name: 'Vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
-  { id: 3, name: 'Kjølmatte', sub: 'Issilke, ikke-giftig, inne/ute', price: 299, emoji: '❄️', cat: 'hund', badge: 'sale', cjId: '3F8F4862-6CFA-4947-9CE7-EA1936C96840' },
+  { id: 1, name: 'Sakte-forer Skål', sub: 'Forhindrer kvelning, hund/katt', price: 149, margin: 132, emoji: '🥣', cat: 'hund', badge: 'new', cjId: '1653041912300969984' },
+  { id: 2, name: 'Vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, margin: 120, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
+  { id: 3, name: 'Kjølmatte', sub: 'Issilke, ikke-giftig, inne/ute', price: 299, margin: 35, emoji: '❄️', cat: 'hund', badge: 'sale', cjId: '3F8F4862-6CFA-4947-9CE7-EA1936C96840' },
 ];
 
 const kategorier = ['alle', 'hund', 'katt', 'fugl', 'fisk', 'gnager'];
@@ -383,43 +383,28 @@ useEffect(() => {
         </div>
 
 <div className="grid">
-          {filtrerte.map(p => (
-            <div key={p.id} className="card" onClick={() => p.cjId && window.location.assign(`/produkt/${p.cjId}`)}>
-              <div className="card-img">
-  {p.cjId && cjProducts[p.cjId]
-    ? <img 
-        src={cjProducts[p.cjId].bigImage} 
-        alt={p.name} 
-        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-      />
-    : <div style={{ 
-        width: '100%', height: '100%', 
-        background: '#f4f4f0',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: '36px'
-      }}>
-        {p.emoji}
-      </div>}
-</div>
-              <div className="card-body">
-                {p.badge === 'new' && <span className="badge badge-new">Nyhet</span>}
-                {p.badge === 'sale' && <span className="badge badge-sale">Tilbud</span>}
-                <div className="card-name">{p.name}</div>
-                <div className="card-sub">{p.sub}</div>
-                <div className="card-footer">
-                  <span className="price">
-                    {p.cjId && cjProducts[p.cjId]
-                      ? `kr ${Math.max(Math.round(cjProducts[p.cjId].variants[0].variantSellPrice * 10 * 3 / 10) * 10, 149)},–`
-                      : `kr ${p.price},–`}
-                  </span>
-                  <button className="add" onClick={() => leggTil(p.id, p.name)}>
-                    + Legg til
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+  {filtrerte.map(p => (
+    <div key={p.id} className="card" onClick={() => p.cjId && window.location.assign(`/produkt/${p.cjId}?pris=${p.price}&margin=${p.margin}`)}>
+      <div className="card-img">
+        {p.cjId && cjProducts[p.cjId]
+          ? <img src={cjProducts[p.cjId].bigImage} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          : <div style={{ width: '100%', height: '100%', background: '#f4f4f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px' }}>{p.emoji}</div>}
+      </div>
+      <div className="card-body">
+        {p.badge === 'new' && <span className="badge badge-new">Nyhet</span>}
+        {p.badge === 'sale' && <span className="badge badge-sale">Tilbud</span>}
+        <div className="card-name">{p.name}</div>
+        <div className="card-sub">{p.sub}</div>
+        <div className="card-footer">
+          <span className="price">kr {p.price},–</span>
+          <button className="add" onClick={(e) => { e.stopPropagation(); leggTil(p.id, p.name); }}>
+            + Legg til
+          </button>
         </div>
+      </div>
+    </div>
+  ))}
+</div>
 
         {/* Tillitsstripe */}
         <div className="trust-strip">
