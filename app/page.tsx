@@ -345,7 +345,7 @@ useEffect(() => {
             <button className="btn-primary" onClick={() => document.getElementById('produkter')?.scrollIntoView({ behavior: 'smooth' })}>
               Se alle produkter
             </button>
-            <button className="btn-secondary">Om oss</button>
+            <button className="btn-secondary" onClick={() => window.location.href = '/om-oss'}>Om oss</button>
           </div>
         </div>
         <div className="hero-right">
