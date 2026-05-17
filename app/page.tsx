@@ -350,8 +350,8 @@ useEffect(() => {
         </div>
         <div className="hero-right">
           <div className="stat-row">
-            <div className="stat-num">500+</div>
-            <div className="stat-label">Produkter i sortimentet</div>
+            <div className="stat-num">14</div>
+<div className="stat-label">Dagers angrerett</div>
           </div>
           <div className="stat-row">
             <div className="stat-num">2–3</div>
