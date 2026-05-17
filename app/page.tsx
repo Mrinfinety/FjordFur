@@ -415,8 +415,8 @@ useEffect(() => {
           </div>
           <div className="trust-item">
             <div className="trust-icon">♻️</div>
-            <div className="trust-title">Enkel retur</div>
-            <div className="trust-text">30 dagers returrett. Vi henter pakken gratis hjemme hos deg.</div>
+            <div className="trust-title">Enkel refusjon</div>
+<div className="trust-text">14 dagers angrerett. Vi refunderer uten at du trenger å sende varen tilbake.</div>
           </div>
           <div className="trust-item">
             <div className="trust-icon">🐾</div>
@@ -428,9 +428,13 @@ useEffect(() => {
 
       {/* Footer */}
       <footer style={{ borderTop: '1px solid #e8e8e4', padding: '40px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div className="footer-logo">Nordic<span>Paws</span></div>
-        <div className="footer-text">© 2026 NordicPaws. Alle rettigheter forbeholdt.</div>
-      </footer>
+  <div className="footer-logo">Nordic<span>Paws</span></div>
+  <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+    <a href="/retur" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Retur & Refusjon</a>
+    <a href="/personvern" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Personvern</a>
+    <div className="footer-text">© 2026 NordicPaws. Alle rettigheter forbeholdt.</div>
+  </div>
+</footer>
 
       {/* Toast */}
       {toast && <div className="toast-bar">{toast}</div>}
