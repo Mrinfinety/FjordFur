@@ -1,4 +1,4 @@
-export default function Retur() {
+export default function Personvern() {
   return (
     <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#fafaf8', minHeight: '100vh' }}>
       <style>{`
@@ -51,11 +51,6 @@ export default function Retur() {
           font-size: 14px; color: #666; line-height: 1.8; font-weight: 300;
           margin-bottom: 12px;
         }
-        .highlight {
-          background: #EAF5EE; border-radius: 8px;
-          padding: 16px 20px; margin-top: 16px;
-          font-size: 14px; color: #085041; line-height: 1.7;
-        }
       `}</style>
 
       <nav className="rnav">
@@ -64,30 +59,40 @@ export default function Retur() {
       </nav>
 
       <div className="rcontainer">
-        <h1 className="rtitle">Retur & Refusjon</h1>
+        <h1 className="rtitle">Personvernerklæring</h1>
         <p className="rsub">Oppdatert mai 2026</p>
 
         <div className="rsection">
-          <h2 className="rsection-title">14 dagers angrerett</h2>
-          <p>Du har 14 dagers angrerett fra du mottar varen, i henhold til norsk forbrukerkjøpslov. Du trenger ikke oppgi noen grunn for å benytte angreretten.</p>
-          <p>For å benytte angreretten, kontakt oss på <strong>kontakt.nordicpaws@gmail.com</strong> innen 14 dager etter mottak av varen.</p>
-          <p>Vi refunderer hele kjøpesummen uten at du trenger å sende varen tilbake.</p>
+          <h2 className="rsection-title">Hvem er vi</h2>
+          <p>NordicPaws er en norsk nettbutikk som selger kjæledyrutstyr. Kontakt oss på kontakt.nordicpaws@gmail.com ved spørsmål om personvern.</p>
         </div>
 
         <div className="rsection">
-          <h2 className="rsection-title">Defekte eller feil produkter</h2>
-          <p>Mottar du et defekt eller feil produkt, kontakter du oss på <strong>kontakt.nordicpaws@gmail.com</strong> med bilde av produktet.</p>
-          <p>Vi sender deg et nytt produkt eller refunderer kjøpesummen — helt uten kostnad for deg.</p>
+          <h2 className="rsection-title">Hvilke data samler vi inn</h2>
+          <p>Når du handler hos oss samler vi inn følgende opplysninger:</p>
+          <p>— Navn og adresse for levering av varer</p>
+          <p>— E-postadresse for ordrebekreftelse</p>
+          <p>— Betalingsinformasjon behandles av Stripe og lagres ikke hos oss</p>
         </div>
 
         <div className="rsection">
-          <h2 className="rsection-title">Refusjon</h2>
-          <p>Refusjon behandles innen 5-10 virkedager og tilbakeføres til betalingsmetoden du brukte ved kjøp.</p>
+          <h2 className="rsection-title">Hvordan bruker vi dataene</h2>
+          <p>Vi bruker opplysningene kun til å behandle og levere din bestilling. Vi selger aldri dine personopplysninger til tredjeparter.</p>
+          <p>Ordredata deles med CJdropshipping utelukkende for å gjennomføre leveringen.</p>
         </div>
 
         <div className="rsection">
-          <h2 className="rsection-title">Kontakt oss</h2>
-          <p>Har du spørsmål om retur eller refusjon? Ta kontakt med oss på:</p>
+          <h2 className="rsection-title">Informasjonskapsler (cookies)</h2>
+          <p>Vi bruker kun nødvendige informasjonskapsler for at butikken skal fungere. Vi bruker ingen sporings- eller reklamecookies.</p>
+        </div>
+
+        <div className="rsection">
+          <h2 className="rsection-title">Dine rettigheter</h2>
+          <p>Du har rett til innsyn i, retting av og sletting av dine personopplysninger. Ta kontakt på kontakt.nordicpaws@gmail.com for å benytte disse rettighetene.</p>
+        </div>
+
+        <div className="rsection">
+          <h2 className="rsection-title">Kontakt</h2>
           <p><strong>E-post:</strong> kontakt.nordicpaws@gmail.com</p>
           <p><strong>Svartid:</strong> Vi svarer innen 1-2 virkedager</p>
         </div>
