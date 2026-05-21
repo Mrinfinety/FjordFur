@@ -19,8 +19,10 @@ async function opprettCJOrdre(sessionId: string) {
   const shipping = fullSession.shipping_details as any;
   const customer = fullSession.customer_details as any;
 
+  console.log('DEBUG:', JSON.stringify({ shipping: !!shipping, items, token: !!token }));
+
   if (!shipping || items.length === 0) {
-    throw new Error(`Mangler data – shipping: ${JSON.stringify(shipping)}, items: ${JSON.stringify(items)}`);
+    throw new Error('Mangler leveringsadresse eller produkter');
   }
 
   const body = {
