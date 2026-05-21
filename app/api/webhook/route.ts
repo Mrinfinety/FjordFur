@@ -18,11 +18,9 @@ async function opprettCJOrdre(sessionId: string) {
   const items = JSON.parse(fullSession.metadata?.cj_items || '[]');
   const shipping = fullSession.shipping_details as any;
   const customer = fullSession.customer_details as any;
-  console.log('Full session shipping_details:', JSON.stringify(shipping));
-  console.log('Full session cj_items:', fullSession.metadata?.cj_items);
 
   if (!shipping || items.length === 0) {
-    throw new Error('Mangler leveringsadresse eller produkter');
+    throw new Error(`Mangler data – shipping: ${JSON.stringify(shipping)}, items: ${JSON.stringify(items)}`);
   }
 
   const body = {
@@ -44,6 +42,7 @@ async function opprettCJOrdre(sessionId: string) {
     })),
   };
 
+  console.log('CJ request:', JSON.stringify(body));
   const res = await fetch('https://developers.cjdropshipping.com/api2.0/v1/shopping/order/createOrderV2', {
     method: 'POST',
     headers: {
@@ -53,7 +52,9 @@ async function opprettCJOrdre(sessionId: string) {
     body: JSON.stringify(body),
   });
 
-  return res.json();
+  const cjSvar = await res.json();
+  console.log('CJ svar:', JSON.stringify(cjSvar));
+  return cjSvar;
 }
 
 export async function POST(req: Request) {
