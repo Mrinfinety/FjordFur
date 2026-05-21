@@ -2,6 +2,25 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 
+const STØRRELSE_REKKEFØLGE = ['xs', 's', 'm', 'l', 'xl'];
+
+function sorterVarianter(varianter: any[]) {
+  return [...varianter].sort((a, b) => {
+    const nøkkelA = a.variantKey?.toLowerCase() ?? '';
+    const nøkkelB = b.variantKey?.toLowerCase() ?? '';
+    const iA = STØRRELSE_REKKEFØLGE.findIndex(s => nøkkelA === s || nøkkelA.endsWith(`-${s}`) || nøkkelA.includes(` ${s}`));
+    const iB = STØRRELSE_REKKEFØLGE.findIndex(s => nøkkelB === s || nøkkelB.endsWith(`-${s}`) || nøkkelB.includes(` ${s}`));
+    if (iA === -1 && iB === -1) return 0;
+    if (iA === -1) return 1;
+    if (iB === -1) return -1;
+    return iA - iB;
+  });
+}
+
+const SKJUL_VARIANTER: Record<string, string[]> = {
+  '3F8F4862-6CFA-4947-9CE7-EA1936C96840': ['gray', 'grey', 'pink'],
+};
+
 export default function ProduktSide() {
   const { id } = useParams();
   const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
@@ -15,13 +34,18 @@ export default function ProduktSide() {
   const [variantNavn, setVariantNavn] = useState<Record<string, string>>({});
   const [produktNavn, setProduktNavn] = useState('');
   const [aktivBilde, setAktivBilde] = useState(0);
+  const [lagtTil, setLagtTil] = useState(false);
 
   useEffect(() => {
   fetch(`/api/products?pid=${id}`)
     .then(res => res.json())
     .then(async data => {
       setProdukt(data.data);
-      setValgtVariant(data.data?.variants?.[0]);
+      const skjul = SKJUL_VARIANTER[id as string] ?? [];
+      const synligeVarianter = data.data?.variants?.filter((v: any) =>
+        !skjul.some(s => v.variantKey?.toLowerCase().includes(s))
+      );
+      setValgtVariant(synligeVarianter?.[0] ?? data.data?.variants?.[0]);
       setLaster(false);
 
       console.log('Kaller beskriv API...');
@@ -42,6 +66,15 @@ export default function ProduktSide() {
       Laster produkt...
     </div>
   );
+
+  const visPris = (() => {
+    const alleFormulaPriser = produkt?.variants?.map((v: any) =>
+      Math.round(v.variantSellPrice * margin / 10) * 10) ?? [];
+    const minFormulaPrice = alleFormulaPriser.length > 0 ? Math.min(...alleFormulaPriser) : fastPris;
+    const currentFormulaPrice = Math.round(valgtVariant?.variantSellPrice * margin / 10) * 10;
+    if (currentFormulaPrice === minFormulaPrice) return fastPris;
+    return Math.round(currentFormulaPrice * fastPris / minFormulaPrice / 10) * 10 - 1;
+  })();
 
   if (!produkt) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', fontFamily: 'DM Sans, sans-serif' }}>
@@ -179,15 +212,16 @@ export default function ProduktSide() {
           <h1 className="ptitle">
   {produktNavn || produkt.productNameEn}
 </h1>
-          <p className="pprice">
-kr {Math.max(Math.round(valgtVariant?.variantSellPrice * margin / 10) * 10, fastPris)},–          </p>
+          <p className="pprice">kr {visPris},–</p>
           <div className="pdivider" />
 
           {produkt.variants?.length > 1 && (
             <div>
               <p className="pvariant-label">Variant</p>
               <div className="pvariants">
-                {produkt.variants.map((v: any) => (
+                {sorterVarianter(produkt.variants.filter((v: any) =>
+                  !(SKJUL_VARIANTER[id as string] ?? []).some(s => v.variantKey?.toLowerCase().includes(s))
+                )).map((v: any) => (
                   <button
                     key={v.vid}
                     className={`pvariant ${valgtVariant?.vid === v.vid ? 'active' : ''}`}
@@ -228,10 +262,19 @@ kr {Math.max(Math.round(valgtVariant?.variantSellPrice * margin / 10) * 10, fast
           )}
 
           <button className="padd" onClick={() => {
-            alert(produkt.productNameEn + ' lagt i handlekurven!');
-            window.location.href = '/';
+            const cart = JSON.parse(localStorage.getItem('nordicpaws-cart') || '[]');
+            cart.push({
+              id: Date.now(),
+              name: produktNavn || produkt.productNameEn,
+              price: visPris,
+              cjId: id,
+              variantId: valgtVariant?.vid || '',
+            });
+            localStorage.setItem('nordicpaws-cart', JSON.stringify(cart));
+            setLagtTil(true);
+            setTimeout(() => setLagtTil(false), 2500);
           }}>
-            Legg i handlekurv
+            {lagtTil ? '✓ Lagt i handlekurven' : 'Legg i handlekurv'}
           </button>
 
           <div className="pdivider" />
@@ -250,7 +293,7 @@ kr {Math.max(Math.round(valgtVariant?.variantSellPrice * margin / 10) * 10, fast
   </div>
   <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
     <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
-    <p className="pdesc">30 dagers returrett</p>
+    <p className="pdesc">14 Dagers angrerett</p>
   </div>
   <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
     <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>

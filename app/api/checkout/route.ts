@@ -4,9 +4,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
   const { items } = await req.json();
+  const origin = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
+    phone_number_collection: { enabled: true },
     line_items: items.map((item: { name: string; price: number; quantity: number }) => ({
       price_data: {
         currency: 'nok',
@@ -15,9 +17,17 @@ export async function POST(req: Request) {
       },
       quantity: item.quantity,
     })),
+    metadata: {
+      cj_items: JSON.stringify(items.map((item: any) => ({
+        vid: item.variantId,
+        qty: item.quantity,
+        name: item.name,
+      }))),
+    },
     mode: 'payment',
-    success_url: 'http://localhost:3000/takk',
-    cancel_url: 'http://localhost:3000',
+    shipping_address_collection: { allowed_countries: ['NO'] },
+    success_url: `${origin}/takk`,
+    cancel_url: origin,
   });
 
   return Response.json({ url: session.url });

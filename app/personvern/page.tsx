@@ -82,13 +82,21 @@ export default function Personvern() {
         </div>
 
         <div className="rsection">
+          <h2 className="rsection-title">Hvor lenge lagrer vi dataene</h2>
+          <p>Ordredata (navn, adresse, e-post) lagres i 5 år i henhold til bokføringsloven.</p>
+          <p>Øvrige henvendelser via e-post slettes etter 3 år.</p>
+          <p>Du kan når som helst be om at dine opplysninger slettes ved å kontakte oss, med mindre lagringen er påkrevd av lov.</p>
+        </div>
+
+        <div className="rsection">
           <h2 className="rsection-title">Informasjonskapsler (cookies)</h2>
           <p>Vi bruker kun nødvendige informasjonskapsler for at butikken skal fungere. Vi bruker ingen sporings- eller reklamecookies.</p>
         </div>
 
         <div className="rsection">
-          <h2 className="rsection-title">Dine rettigheter</h2>
-          <p>Du har rett til innsyn i, retting av og sletting av dine personopplysninger. Ta kontakt på kontakt.nordicpaws@gmail.com for å benytte disse rettighetene.</p>
+          <h2 className="rsection-title">Dine rettigheter (GDPR)</h2>
+          <p>Du har rett til innsyn i, retting av, sletting av og utlevering av dine personopplysninger. Du kan også protestere mot eller kreve begrenset behandling.</p>
+          <p>Ta kontakt på kontakt.nordicpaws@gmail.com for å benytte disse rettighetene. Du har også rett til å klage til Datatilsynet (datatilsynet.no).</p>
         </div>
 
         <div className="rsection">

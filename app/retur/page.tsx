@@ -69,20 +69,22 @@ export default function Retur() {
 
         <div className="rsection">
           <h2 className="rsection-title">14 dagers angrerett</h2>
-          <p>Du har 14 dagers angrerett fra du mottar varen, i henhold til norsk forbrukerkjøpslov. Du trenger ikke oppgi noen grunn for å benytte angreretten.</p>
-          <p>For å benytte angreretten, kontakt oss på <strong>kontakt.nordicpaws@gmail.com</strong> innen 14 dager etter mottak av varen.</p>
+          <p>Du har 14 dagers angrerett fra du mottar varen, i henhold til angrerettloven. Du trenger ikke oppgi noen grunn.</p>
+          <p>Slik benytter du angreretten:</p>
+          <p>1. Fyll ut <a href="/angreskjema" style={{ color: '#1D9E75' }}>standardskjema for angrerett</a>.</p>
+          <p>2. Send skjemaet til <strong>kontakt.nordicpaws@gmail.com</strong> innen 14 dager etter at du mottok varen.</p>
           <p>Vi refunderer hele kjøpesummen uten at du trenger å sende varen tilbake.</p>
         </div>
 
         <div className="rsection">
-          <h2 className="rsection-title">Defekte eller feil produkter</h2>
-          <p>Mottar du et defekt eller feil produkt, kontakter du oss på <strong>kontakt.nordicpaws@gmail.com</strong> med bilde av produktet.</p>
+          <h2 className="rsection-title">Reklamasjon (2 år)</h2>
+          <p>Du har 2 års reklamasjonsrett i henhold til forbrukerkjøpsloven. Mottar du et defekt eller feil produkt, kontakt oss på <strong>kontakt.nordicpaws@gmail.com</strong> med bilde av produktet.</p>
           <p>Vi sender deg et nytt produkt eller refunderer kjøpesummen — helt uten kostnad for deg.</p>
         </div>
 
         <div className="rsection">
           <h2 className="rsection-title">Refusjon</h2>
-          <p>Refusjon behandles innen 5-10 virkedager og tilbakeføres til betalingsmetoden du brukte ved kjøp.</p>
+          <p>Refusjon utbetales innen 14 dager etter at vi har mottatt angreskjemaet, og tilbakeføres til betalingsmetoden du brukte ved kjøp.</p>
         </div>
 
         <div className="rsection">

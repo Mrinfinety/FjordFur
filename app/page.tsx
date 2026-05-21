@@ -2,9 +2,9 @@
 import { useState, useEffect } from 'react';
 
 const products = [
-  { id: 1, name: 'Sakte-forer Skål', sub: 'Forhindrer kvelning, hund/katt', price: 149, margin: 132, emoji: '🥣', cat: 'hund', badge: 'new', cjId: '1653041912300969984' },
+  { id: 1, name: 'Sakte-forer Skål', sub: 'Forhindrer kvelning, hund/katt', price: 149, margin: 132, bildIndex: 1, emoji: '🥣', cat: 'hund', badge: 'new', cjId: '1653041912300969984' },
   { id: 2, name: 'Vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, margin: 120, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
-  { id: 3, name: 'Kjølmatte', sub: 'Issilke, ikke-giftig, inne/ute', price: 299, margin: 35, emoji: '❄️', cat: 'hund', badge: 'sale', cjId: '3F8F4862-6CFA-4947-9CE7-EA1936C96840' },
+  { id: 3, name: 'Kjølmatte', sub: 'Issilke, ikke-giftig, inne/ute', price: 299, margin: 35, emoji: '❄️', cat: 'hund', badge: 'sale', cjId: '3F8F4862-6CFA-4947-9CE7-EA1936C96840', overrideImage: 'https://cf.cjdropshipping.com/17552160/1956274049407782912.jpg?x-oss-process=image/format,webp,image/resize,m_fill,m_pad,w_800,h_800' },
 ];
 
 const kategorier = ['alle', 'hund', 'katt', 'fugl', 'fisk', 'gnager'];
@@ -17,7 +17,14 @@ async function fetchCJProduct(pid: string) {
 
 export default function Home() {
   const [aktivKat, setAktivKat] = useState('alle');
-  const [handlekurv, setHandlekurv] = useState<{ id: number; name: string }[]>([]);
+  const [handlekurv, setHandlekurv] = useState<{ id: number; name: string; price: number; cjId: string; variantId: string }[]>([]);
+
+  useEffect(() => {
+    try {
+      const lagret = localStorage.getItem('nordicpaws-cart');
+      if (lagret) setHandlekurv(JSON.parse(lagret));
+    } catch {}
+  }, []);
   const [toast, setToast] = useState('');
   const [kurvaapen, setKurvAapen] = useState(false);
   const [cjProducts, setCjProducts] = useState<Record<string, any>>({});
@@ -54,9 +61,15 @@ useEffect(() => {
 
   const filtrerte = aktivKat === 'alle' ? products : products.filter(p => p.cat === aktivKat);
 
-  function leggTil(id: number, name: string) {
-    setHandlekurv(prev => [...prev, { id, name }]);
-    setToast(name + ' lagt i handlekurven');
+  function leggTil(p: typeof products[0]) {
+    const variant = cjProducts[p.cjId]?.variants?.[0];
+    const item = { id: p.id, name: p.name, price: p.price, cjId: p.cjId, variantId: variant?.vid || '' };
+    setHandlekurv(prev => {
+      const neste = [...prev, item];
+      localStorage.setItem('nordicpaws-cart', JSON.stringify(neste));
+      return neste;
+    });
+    setToast(p.name + ' lagt i handlekurven');
     setTimeout(() => setToast(''), 2500);
   }
 
@@ -386,8 +399,8 @@ useEffect(() => {
   {filtrerte.map(p => (
     <div key={p.id} className="card" onClick={() => p.cjId && window.location.assign(`/produkt/${p.cjId}?pris=${p.price}&margin=${p.margin}`)}>
       <div className="card-img">
-        {p.cjId && cjProducts[p.cjId]
-          ? <img src={cjProducts[p.cjId].bigImage} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        {p.cjId && (p.overrideImage || cjProducts[p.cjId])
+          ? <img src={p.overrideImage || cjProducts[p.cjId].productImageSet?.[p.bildIndex ?? 0] || cjProducts[p.cjId].bigImage} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           : <div style={{ width: '100%', height: '100%', background: '#f4f4f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px' }}>{p.emoji}</div>}
       </div>
       <div className="card-body">
@@ -397,7 +410,7 @@ useEffect(() => {
         <div className="card-sub">{p.sub}</div>
         <div className="card-footer">
           <span className="price">kr {p.price},–</span>
-          <button className="add" onClick={(e) => { e.stopPropagation(); leggTil(p.id, p.name); }}>
+          <button className="add" onClick={(e) => { e.stopPropagation(); leggTil(p); }}>
             + Legg til
           </button>
         </div>
@@ -431,8 +444,9 @@ useEffect(() => {
   <div className="footer-logo">Nordic<span>Paws</span></div>
   <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
     <a href="/retur" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Retur & Refusjon</a>
-<a href="/vilkår" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Vilkår</a>
-<a href="/personvern" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Personvern</a>
+    <a href="/angreskjema" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Angreskjema</a>
+    <a href="/vilkår" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Vilkår</a>
+    <a href="/personvern" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Personvern</a>
     <div className="footer-text">© 2026 NordicPaws. Alle rettigheter forbeholdt.</div>
   </div>
 </footer>
@@ -452,23 +466,17 @@ useEffect(() => {
             {handlekurv.length === 0 ? (
               <p className="drawer-empty">Handlekurven er tom.</p>
             ) : (
-              handlekurv.map((item, i) => {
-                const p = products.find(x => x.id === item.id)!;
-                return (
-                  <div key={i} className="drawer-item">
-                    <span className="drawer-item-name">{item.name}</span>
-                    <span style={{ color: '#888', fontSize: '14px' }}>kr {p.price},–</span>
-                  </div>
-                );
-              })
+              handlekurv.map((item, i) => (
+                <div key={i} className="drawer-item">
+                  <span className="drawer-item-name">{item.name}</span>
+                  <span style={{ color: '#888', fontSize: '14px' }}>kr {item.price},–</span>
+                </div>
+              ))
             )}
             <div className="drawer-total">
               <div className="drawer-total-row">
                 <span>Totalt</span>
-                <span>kr {handlekurv.reduce((sum, item) => {
-                  const p = products.find(x => x.id === item.id)!;
-                  return sum + p.price;
-                }, 0)},–</span>
+                <span>kr {handlekurv.reduce((sum, item) => sum + item.price, 0)},–</span>
               </div>
 <button className="btn-checkout" onClick={async () => {
   if (handlekurv.length === 0) {
@@ -480,10 +488,13 @@ useEffect(() => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        items: handlekurv.map(item => {
-          const p = products.find(x => x.id === item.id)!;
-          return { name: item.name, price: p.price, quantity: 1 };
-        }),
+        items: handlekurv.map(item => ({
+          name: item.name,
+          price: item.price,
+          quantity: 1,
+          cjId: item.cjId,
+          variantId: item.variantId,
+        })),
       }),
     });
     const data = await res.json();
