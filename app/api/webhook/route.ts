@@ -12,18 +12,21 @@ async function getCJToken() {
   return data.data?.accessToken;
 }
 
-async function opprettCJOrdre(session: any) {
+async function opprettCJOrdre(sessionId: string) {
+  const fullSession = await stripe.checkout.sessions.retrieve(sessionId);
   const token = await getCJToken();
-  const items = JSON.parse(session.metadata?.cj_items || '[]');
-  const shipping = session.shipping_details;
-  const customer = session.customer_details;
+  const items = JSON.parse(fullSession.metadata?.cj_items || '[]');
+  const shipping = fullSession.shipping_details as any;
+  const customer = fullSession.customer_details as any;
+  console.log('Full session shipping_details:', JSON.stringify(shipping));
+  console.log('Full session cj_items:', fullSession.metadata?.cj_items);
 
   if (!shipping || items.length === 0) {
     throw new Error('Mangler leveringsadresse eller produkter');
   }
 
   const body = {
-    orderNumber: `NP-${session.id.slice(-12)}`,
+    orderNumber: `NP-${sessionId.slice(-12)}`,
     shippingInfo: {
       consigneeName: shipping.name,
       consigneePhone: customer?.phone || '',
@@ -70,11 +73,8 @@ export async function POST(req: Request) {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as any;
-    console.log('shipping_details:', JSON.stringify(session.shipping_details));
-    console.log('customer_details:', JSON.stringify(session.customer_details));
-    console.log('cj_items metadata:', session.metadata?.cj_items);
     try {
-      const resultat = await opprettCJOrdre(session);
+      const resultat = await opprettCJOrdre(session.id);
       console.log('CJ-ordre opprettet:', JSON.stringify(resultat));
     } catch (err) {
       console.error('Feil ved CJ-ordre:', err);
