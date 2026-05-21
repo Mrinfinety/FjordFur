@@ -69,7 +69,7 @@ export async function POST(req: Request) {
   }
 
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object as Stripe.Checkout.Session;
+    const session = event.data.object as any;
     try {
       const resultat = await opprettCJOrdre(session);
       console.log('CJ-ordre opprettet:', JSON.stringify(resultat));
