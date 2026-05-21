@@ -1,3 +1,5 @@
+'use client';
+
 export default function Angreskjema() {
   return (
     <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#fafaf8', minHeight: '100vh' }}>
