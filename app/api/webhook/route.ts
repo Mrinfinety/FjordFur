@@ -13,7 +13,7 @@ async function getCJToken() {
 }
 
 async function opprettCJOrdre(sessionId: string) {
-  const fullSession = await stripe.checkout.sessions.retrieve(sessionId);
+  const fullSession = await stripe.checkout.sessions.retrieve(sessionId) as any;
   const token = await getCJToken();
   const items = JSON.parse(fullSession.metadata?.cj_items || '[]');
   const shipping = fullSession.shipping_details as any;
