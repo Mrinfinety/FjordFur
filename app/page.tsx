@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 const products = [
   { id: 1, name: 'Sakte-forer Skål', sub: 'Forhindrer kvelning, hund/katt', price: 149, margin: 132, bildIndex: 1, emoji: '🥣', cat: 'hund', badge: 'new', cjId: '1653041912300969984' },
   { id: 2, name: 'Vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, margin: 120, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
-  { id: 3, name: 'Kjølmatte', sub: 'Issilke, ikke-giftig, inne/ute', price: 299, margin: 35, emoji: '❄️', cat: 'hund', badge: 'sale', cjId: '3F8F4862-6CFA-4947-9CE7-EA1936C96840', overrideImage: 'https://cf.cjdropshipping.com/17552160/1956274049407782912.jpg?x-oss-process=image/format,webp,image/resize,m_fill,m_pad,w_800,h_800' },
 ];
 
 const kategorier = ['alle', 'hund', 'katt', 'fugl', 'fisk', 'gnager'];

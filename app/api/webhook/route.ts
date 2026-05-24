@@ -12,6 +12,26 @@ async function getCJToken() {
   return data.data?.accessToken;
 }
 
+async function hentLogistikkNavn(token: string, vid: string, toCountryCode: string): Promise<string> {
+  try {
+    const res = await fetch('https://developers.cjdropshipping.com/api2.0/v1/logistic/freightCalculate', {
+      method: 'POST',
+      headers: { 'CJ-Access-Token': token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        startCountryCode: 'CN',
+        endCountryCode: toCountryCode,
+        products: [{ quantity: 1, vid }],
+      }),
+    });
+    const data = await res.json();
+    if (data.result && data.data?.length > 0) {
+      const cjPacket = data.data.find((l: any) => l.logisticName === 'CJPacket Ordinary');
+      return cjPacket?.logisticName || data.data[0].logisticName;
+    }
+  } catch {}
+  return 'CJPacket Ordinary';
+}
+
 async function opprettCJOrdre(sessionId: string) {
   const fullSession = await stripe.checkout.sessions.retrieve(sessionId) as any;
   const token = await getCJToken();
@@ -53,7 +73,7 @@ async function opprettCJOrdre(sessionId: string) {
     shippingCustomerName: navn || '',
     shippingPhone: customer?.phone || '',
     email: customer?.email || '',
-    logisticName: 'PostNL',
+    logisticName: await hentLogistikkNavn(token, gyldigeItems[0].vid, adresse.country || 'NO'),
     products: gyldigeItems.map((item: { vid: string; qty: number }) => ({
       vid: item.vid,
       quantity: item.qty,
