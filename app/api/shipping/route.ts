@@ -15,14 +15,13 @@ export async function GET(req: Request) {
 
   const token = await getCJToken();
 
-  const res = await fetch('https://developers.cjdropshipping.com/api2.0/v1/logistic/freightCalculation', {
+  const res = await fetch('https://developers.cjdropshipping.com/api2.0/v1/logistic/freightCalculate', {
     method: 'POST',
     headers: { 'CJ-Access-Token': token, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      fromCountryCode: 'CN',
-      toCountryCode: country,
-      quantity: 1,
-      vid,
+      startCountryCode: 'CN',
+      endCountryCode: country,
+      products: [{ quantity: 1, vid }],
     }),
   });
 
