@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 
 const products = [
-  { id: 1, name: 'Sakte-forer Skål', sub: 'Forhindrer kvelning, hund/katt', price: 149, margin: 132, bildIndex: 1, emoji: '🥣', cat: 'hund', badge: 'new', cjId: '1653041912300969984' },
+  { id: 1, name: 'Sakte-forer Skål', sub: 'Forhindrer kvelning, hund/katt', price: 149, margin: 132, bildIndex: 1, emoji: '🥣', cat: 'hund', cjId: '1653041912300969984' },
   { id: 2, name: 'Vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, margin: 120, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
 ];
 
