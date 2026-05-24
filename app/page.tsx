@@ -449,9 +449,7 @@ useEffect(() => {
           : <div style={{ width: '100%', height: '100%', background: '#f4f4f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px' }}>{p.emoji}</div>}
       </div>
       <div className="card-body">
-        {p.badge === 'new' && <span className="badge badge-new">Nyhet</span>}
-        {p.badge === 'sale' && <span className="badge badge-sale">Tilbud</span>}
-        <div className="card-name">{p.name}</div>
+<div className="card-name">{p.name}</div>
         <div className="card-sub">{p.sub}</div>
         <div className="card-footer">
           <span className="price">kr {p.price},–</span>
