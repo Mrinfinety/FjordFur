@@ -19,24 +19,34 @@ async function opprettCJOrdre(sessionId: string) {
   const shipping = fullSession.shipping_details as any;
   const customer = fullSession.customer_details as any;
 
-  console.log('DEBUG:', JSON.stringify({ shipping: !!shipping, items, token: !!token }));
+  // Fallback to customer_details if shipping_details is null
+  const adresse = shipping?.address || customer?.address;
+  const navn = shipping?.name || customer?.name;
 
-  if (!shipping || items.length === 0) {
+  console.log('DEBUG:', JSON.stringify({
+    shipping: !!shipping,
+    customer: !!customer,
+    adresse: !!adresse,
+    items,
+    token: !!token,
+  }));
+
+  if (!adresse || items.length === 0) {
     throw new Error('Mangler leveringsadresse eller produkter');
   }
 
   const body = {
     orderNumber: `NP-${sessionId.slice(-12)}`,
     shippingInfo: {
-      consigneeName: shipping.name,
+      consigneeName: navn || '',
       consigneePhone: customer?.phone || '',
       consigneeEmail: customer?.email || '',
-      consigneeCountryCode: shipping.address?.country || 'NO',
-      consigneePostCode: shipping.address?.postal_code || '',
-      consigneeCity: shipping.address?.city || '',
-      consigneeProvince: shipping.address?.state || shipping.address?.city || '',
-      consigneeAddress: shipping.address?.line1 || '',
-      consigneeAddressTwo: shipping.address?.line2 || '',
+      consigneeCountryCode: adresse.country || 'NO',
+      consigneePostCode: adresse.postal_code || '',
+      consigneeCity: adresse.city || '',
+      consigneeProvince: adresse.state || adresse.city || '',
+      consigneeAddress: adresse.line1 || '',
+      consigneeAddressTwo: adresse.line2 || '',
     },
     products: items.map((item: { vid: string; qty: number }) => ({
       vid: item.vid,
