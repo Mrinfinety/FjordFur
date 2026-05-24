@@ -346,6 +346,35 @@ useEffect(() => {
           padding: 14px; font-size: 14px; font-weight: 500;
           cursor: pointer; font-family: 'DM Sans', sans-serif;
         }
+
+        @media (max-width: 768px) {
+          .nav { padding: 0 20px; }
+          .nav-links { display: none; }
+
+          .hero { grid-template-columns: 1fr; min-height: auto; }
+          .hero-left { padding: 48px 20px; border-right: none; border-bottom: 1px solid #e8e8e4; }
+          .hero-h1 { font-size: 38px; }
+          .hero-right { padding: 32px 20px; flex-direction: row; flex-wrap: wrap; gap: 0; }
+          .stat-row { padding: 16px 0; width: 50%; border-bottom: 1px solid #e0e0da; }
+          .stat-row:nth-child(2) { border-bottom: none; }
+          .stat-num { font-size: 32px; }
+
+          .main { padding: 36px 20px; }
+
+          .grid { grid-template-columns: repeat(2, 1fr); }
+          .card-img { height: 120px; }
+
+          .trust-strip { grid-template-columns: 1fr; }
+
+          .drawer { width: 100vw; border-left: none; padding: 24px 20px; }
+
+          footer { padding: 32px 20px !important; flex-direction: column !important; gap: 16px !important; align-items: flex-start !important; }
+        }
+
+        @media (max-width: 400px) {
+          .grid { grid-template-columns: 1fr; }
+          .hero-h1 { font-size: 32px; }
+        }
       `}</style>
 
       {/* Navbar */}

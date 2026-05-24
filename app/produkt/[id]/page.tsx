@@ -161,6 +161,17 @@ export default function ProduktSide() {
         .pdesc {
           font-size: 14px; color: #888; line-height: 1.8; font-weight: 300;
         }
+
+        @media (max-width: 768px) {
+          .pnav { padding: 0 20px; }
+          .pcontainer {
+            grid-template-columns: 1fr;
+            padding: 24px 20px;
+            gap: 32px;
+          }
+          .ptitle { font-size: 28px; }
+          .pprice { font-size: 26px; }
+        }
       `}</style>
 
       <nav className="pnav">
