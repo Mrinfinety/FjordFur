@@ -4,7 +4,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06
 
 export async function POST(req: Request) {
   const { items } = await req.json();
-  const origin = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
+  const reqUrl = new URL(req.url);
+  const origin = `${reqUrl.protocol}//${reqUrl.host}`;
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
