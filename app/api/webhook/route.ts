@@ -2,6 +2,52 @@ import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' as any });
 
+async function sendOrdreBekreftelse(session: any) {
+  const customer = session.customer_details;
+  if (!customer?.email) return;
+
+  const items: { name: string; qty: number }[] = JSON.parse(session.metadata?.cj_items || '[]');
+  const totalNok = (session.amount_total / 100).toFixed(0);
+  const ordreNr = `NP-${session.id.slice(-12)}`;
+
+  const raderHtml = items.map(item =>
+    `<tr><td style="padding:6px 0;color:#333">${item.name}</td><td style="padding:6px 0;color:#333;text-align:right">×${item.qty}</td></tr>`
+  ).join('');
+
+  const html = `
+    <div style="font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;background:#fafaf8;padding:40px 32px;border-radius:12px">
+      <h1 style="font-family:Georgia,serif;font-size:28px;color:#1a1a18;margin:0 0 8px">Takk for bestillingen! 🐾</h1>
+      <p style="color:#666;font-size:14px;margin:0 0 32px">Ordrenummer: <strong>${ordreNr}</strong></p>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:24px">
+        ${raderHtml}
+        <tr style="border-top:1px solid #e8e8e4">
+          <td style="padding:12px 0;font-weight:600;color:#1a1a18">Totalt betalt</td>
+          <td style="padding:12px 0;font-weight:600;color:#1a1a18;text-align:right">kr ${totalNok},–</td>
+        </tr>
+      </table>
+      <p style="color:#666;font-size:14px;line-height:1.7">
+        Pakken sendes direkte fra vårt lager og leveres innen <strong>2–3 uker</strong>.
+        Du mottar sporingsinfo så snart pakken er sendt.
+      </p>
+      <p style="color:#888;font-size:12px;margin-top:32px">NordicPaws — Premium kjæledyrutstyr</p>
+    </div>
+  `;
+
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'NordicPaws <ordre@nordicpaws.no>',
+      to: customer.email,
+      subject: `Ordrebekreftelse ${ordreNr} — NordicPaws`,
+      html,
+    }),
+  });
+}
+
 async function getCJToken() {
   const res = await fetch('https://developers.cjdropshipping.com/api2.0/v1/authentication/getAccessToken', {
     method: 'POST',
@@ -101,6 +147,11 @@ export async function POST(req: Request) {
       await opprettCJOrdre(session.id);
     } catch (err) {
       console.error('Feil ved CJ-ordre:', err);
+    }
+    try {
+      await sendOrdreBekreftelse(session);
+    } catch (err) {
+      console.error('Feil ved e-post:', err);
     }
   }
 
