@@ -17,7 +17,7 @@ async function fetchCJProduct(pid: string) {
 
 export default function Home() {
   const [aktivKat, setAktivKat] = useState('alle');
-  const [handlekurv, setHandlekurv] = useState<{ id: number; name: string; price: number; cjId: string; variantId: string }[]>([]);
+  const [handlekurv, setHandlekurv] = useState<{ id: number; name: string; price: number; cjId: string; variantId: string; quantity: number }[]>([]);
 
   useEffect(() => {
     try {
@@ -63,8 +63,21 @@ useEffect(() => {
 
   function leggTil(p: typeof products[0]) {
     const variant = cjProducts[p.cjId]?.variants?.[0];
-    const item = { id: p.id, name: p.name, price: p.price, cjId: p.cjId, variantId: variant?.vid || '' };
+    if (!variant?.vid) {
+      setToast('Laster produktinfo, prøv igjen om et sekund...');
+      setTimeout(() => setToast(''), 2500);
+      return;
+    }
     setHandlekurv(prev => {
+      const eksisterende = prev.findIndex(i => i.variantId === variant.vid);
+      if (eksisterende !== -1) {
+        const neste = prev.map((i, idx) =>
+          idx === eksisterende ? { ...i, quantity: (i.quantity || 1) + 1 } : i
+        );
+        localStorage.setItem('nordicpaws-cart', JSON.stringify(neste));
+        return neste;
+      }
+      const item = { id: p.id, name: p.name, price: p.price, cjId: p.cjId, variantId: variant.vid, quantity: 1 };
       const neste = [...prev, item];
       localStorage.setItem('nordicpaws-cart', JSON.stringify(neste));
       return neste;
@@ -343,7 +356,7 @@ useEffect(() => {
         </div>
         <div className="nav-right">
           <button className="cart-btn" onClick={() => setKurvAapen(true)}>
-            🛒 Handlekurv ({handlekurv.length})
+            🛒 Handlekurv ({handlekurv.reduce((sum, i) => sum + i.quantity, 0)})
           </button>
         </div>
       </nav>
@@ -468,15 +481,15 @@ useEffect(() => {
             ) : (
               handlekurv.map((item, i) => (
                 <div key={i} className="drawer-item">
-                  <span className="drawer-item-name">{item.name}</span>
-                  <span style={{ color: '#888', fontSize: '14px' }}>kr {item.price},–</span>
+                  <span className="drawer-item-name">{item.name}{item.quantity > 1 ? ` ×${item.quantity}` : ''}</span>
+                  <span style={{ color: '#888', fontSize: '14px' }}>kr {item.price * item.quantity},–</span>
                 </div>
               ))
             )}
             <div className="drawer-total">
               <div className="drawer-total-row">
                 <span>Totalt</span>
-                <span>kr {handlekurv.reduce((sum, item) => sum + item.price, 0)},–</span>
+                <span>kr {handlekurv.reduce((sum, item) => sum + item.price * item.quantity, 0)},–</span>
               </div>
 <button className="btn-checkout" onClick={async () => {
   if (handlekurv.length === 0) {
@@ -491,7 +504,7 @@ useEffect(() => {
         items: handlekurv.map(item => ({
           name: item.name,
           price: item.price,
-          quantity: 1,
+          quantity: item.quantity,
           cjId: item.cjId,
           variantId: item.variantId,
         })),

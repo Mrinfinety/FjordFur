@@ -31,8 +31,13 @@ async function opprettCJOrdre(sessionId: string) {
     token: !!token,
   }));
 
-  if (!adresse || items.length === 0) {
-    throw new Error('Mangler leveringsadresse eller produkter');
+  const gyldigeItems = items.filter((item: { vid: string; qty: number }) => item.vid);
+  if (gyldigeItems.length < items.length) {
+    console.warn(`Filtrerte bort ${items.length - gyldigeItems.length} produkter med manglende vid`);
+  }
+
+  if (!adresse || gyldigeItems.length === 0) {
+    throw new Error('Mangler leveringsadresse eller produkter med gyldig variant-ID');
   }
 
   const body = {
@@ -48,7 +53,7 @@ async function opprettCJOrdre(sessionId: string) {
       consigneeAddress: adresse.line1 || '',
       consigneeAddressTwo: adresse.line2 || '',
     },
-    products: items.map((item: { vid: string; qty: number }) => ({
+    products: gyldigeItems.map((item: { vid: string; qty: number }) => ({
       vid: item.vid,
       quantity: item.qty,
     })),
