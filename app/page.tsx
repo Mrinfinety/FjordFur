@@ -22,7 +22,11 @@ export default function Home() {
   useEffect(() => {
     try {
       const lagret = localStorage.getItem('nordicpaws-cart');
-      if (lagret) setHandlekurv(JSON.parse(lagret));
+      if (lagret) {
+        const parsed = JSON.parse(lagret);
+        // Migrer gamle cart-items som mangler quantity-felt
+        setHandlekurv(parsed.map((i: any) => ({ ...i, quantity: i.quantity || 1 })));
+      }
     } catch {}
   }, []);
   const [toast, setToast] = useState('');
@@ -482,7 +486,14 @@ useEffect(() => {
               handlekurv.map((item, i) => (
                 <div key={i} className="drawer-item">
                   <span className="drawer-item-name">{item.name}{item.quantity > 1 ? ` ×${item.quantity}` : ''}</span>
-                  <span style={{ color: '#888', fontSize: '14px' }}>kr {item.price * item.quantity},–</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span style={{ color: '#888', fontSize: '14px' }}>kr {item.price * item.quantity},–</span>
+                    <button onClick={() => setHandlekurv(prev => {
+                      const neste = prev.filter((_, idx) => idx !== i);
+                      localStorage.setItem('nordicpaws-cart', JSON.stringify(neste));
+                      return neste;
+                    })} style={{ background: 'none', border: 'none', color: '#bbb', cursor: 'pointer', fontSize: '16px', lineHeight: 1, padding: 0 }}>×</button>
+                  </span>
                 </div>
               ))
             )}
@@ -512,6 +523,8 @@ useEffect(() => {
     });
     const data = await res.json();
     if (data.url) {
+      localStorage.removeItem('nordicpaws-cart');
+      setHandlekurv([]);
       window.location.href = data.url;
     } else {
       alert('Feil: ' + JSON.stringify(data));
