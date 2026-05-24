@@ -42,6 +42,7 @@ async function opprettCJOrdre(sessionId: string) {
 
   const body = {
     orderNumber: `NP-${sessionId.slice(-12)}`,
+    fromCountryCode: 'CN',
     shippingInfo: {
       consigneeName: navn || '',
       consigneePhone: customer?.phone || '',
