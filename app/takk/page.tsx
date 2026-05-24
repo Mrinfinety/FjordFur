@@ -20,7 +20,7 @@ export default function Takk() {
         Takk for bestillingen!
       </h1>
       <p style={{ fontSize: '15px', color: '#888', maxWidth: '400px', textAlign: 'center', lineHeight: 1.7 }}>
-        Vi har mottatt bestillingen din og sender deg en bekreftelse på e-post. Leveringstid er 1–3 virkedager.
+        Vi har mottatt bestillingen din. Leveringstid er 2–3 uker fra Kina. Du vil motta sporingsinfo på e-post når pakken er sendt.
       </p>
       <a href="/" style={{
         marginTop: '16px',

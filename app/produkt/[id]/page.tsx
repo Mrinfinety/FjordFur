@@ -17,16 +17,13 @@ function sorterVarianter(varianter: any[]) {
   });
 }
 
-const SKJUL_VARIANTER: Record<string, string[]> = {
-  '3F8F4862-6CFA-4947-9CE7-EA1936C96840': ['gray', 'grey', 'pink'],
-};
+const SKJUL_VARIANTER: Record<string, string[]> = {};
 
 export default function ProduktSide() {
   const { id } = useParams();
   const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
   const fastPris = parseInt(searchParams.get('pris') || '0');
   const margin = parseInt(searchParams.get('margin') || '15');
-  console.log('fastPris:', fastPris, 'margin:', margin);
   const [produkt, setProdukt] = useState<any>(null);
   const [valgtVariant, setValgtVariant] = useState<any>(null);
   const [laster, setLaster] = useState(true);
@@ -48,14 +45,12 @@ export default function ProduktSide() {
       setValgtVariant(synligeVarianter?.[0] ?? data.data?.variants?.[0]);
       setLaster(false);
 
-      console.log('Kaller beskriv API...');
       const res = await fetch('/api/beskriv', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ produktnavn: data.data?.productNameEn }),
       });
       const aiData = await res.json();
-      console.log('AI svar:', aiData);
       setBeskrivelse(aiData.beskrivelse || '');
       setProduktNavn(aiData.navn || '');
     });
@@ -225,10 +220,7 @@ export default function ProduktSide() {
                   <button
                     key={v.vid}
                     className={`pvariant ${valgtVariant?.vid === v.vid ? 'active' : ''}`}
-                    onClick={() => {
-  console.log('Valgt variant:', v.variantKey, v.variantSellPrice);
-  setValgtVariant(v);
-}}
+                    onClick={() => setValgtVariant(v)}
                   >
                     {(variantNavn[v.variantKey] && variantNavn[v.variantKey].length > 0 ? variantNavn[v.variantKey] : v.variantKey)
   .replace(/Set1/g, '§§§')
@@ -262,14 +254,21 @@ export default function ProduktSide() {
           )}
 
           <button className="padd" onClick={() => {
+            if (!valgtVariant?.vid) return;
             const cart = JSON.parse(localStorage.getItem('nordicpaws-cart') || '[]');
-            cart.push({
-              id: Date.now(),
-              name: produktNavn || produkt.productNameEn,
-              price: visPris,
-              cjId: id,
-              variantId: valgtVariant?.vid || '',
-            });
+            const eksisterende = cart.findIndex((i: any) => i.variantId === valgtVariant.vid);
+            if (eksisterende !== -1) {
+              cart[eksisterende].quantity = (cart[eksisterende].quantity || 1) + 1;
+            } else {
+              cart.push({
+                id: Date.now(),
+                name: produktNavn || produkt.productNameEn,
+                price: visPris,
+                cjId: id,
+                variantId: valgtVariant.vid,
+                quantity: 1,
+              });
+            }
             localStorage.setItem('nordicpaws-cart', JSON.stringify(cart));
             setLagtTil(true);
             setTimeout(() => setLagtTil(false), 2500);

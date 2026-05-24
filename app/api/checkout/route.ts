@@ -7,10 +7,11 @@ export async function POST(req: Request) {
   const reqUrl = new URL(req.url);
   const origin = `${reqUrl.protocol}//${reqUrl.host}`;
 
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    phone_number_collection: { enabled: true },
-    line_items: items.map((item: { name: string; price: number; quantity: number }) => ({
+  const totalNok = items.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
+  const fraktNok = totalNok >= 499 ? 0 : 99;
+
+  const lineItems = [
+    ...items.map((item: { name: string; price: number; quantity: number }) => ({
       price_data: {
         currency: 'nok',
         product_data: { name: item.name },
@@ -18,6 +19,20 @@ export async function POST(req: Request) {
       },
       quantity: item.quantity,
     })),
+    ...(fraktNok > 0 ? [{
+      price_data: {
+        currency: 'nok',
+        product_data: { name: 'Frakt' },
+        unit_amount: fraktNok * 100,
+      },
+      quantity: 1,
+    }] : []),
+  ];
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    phone_number_collection: { enabled: true },
+    line_items: lineItems,
     metadata: {
       cj_items: JSON.stringify(items.map((item: any) => ({
         vid: item.variantId,
