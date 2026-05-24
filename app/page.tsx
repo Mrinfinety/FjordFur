@@ -415,8 +415,8 @@ useEffect(() => {
   {filtrerte.map(p => (
     <div key={p.id} className="card" onClick={() => p.cjId && window.location.assign(`/produkt/${p.cjId}?pris=${p.price}&margin=${p.margin}`)}>
       <div className="card-img">
-        {p.cjId && (p.overrideImage || cjProducts[p.cjId])
-          ? <img src={p.overrideImage || cjProducts[p.cjId].productImageSet?.[p.bildIndex ?? 0] || cjProducts[p.cjId].bigImage} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        {p.cjId && cjProducts[p.cjId]
+          ? <img src={cjProducts[p.cjId].productImageSet?.[(p as any).bildIndex ?? 0] || cjProducts[p.cjId].bigImage} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           : <div style={{ width: '100%', height: '100%', background: '#f4f4f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px' }}>{p.emoji}</div>}
       </div>
       <div className="card-body">
