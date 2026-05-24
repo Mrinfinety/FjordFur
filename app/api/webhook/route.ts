@@ -25,8 +25,8 @@ async function hentLogistikkNavn(token: string, vid: string, toCountryCode: stri
     });
     const data = await res.json();
     if (data.result && data.data?.length > 0) {
-      const cjPacket = data.data.find((l: any) => l.logisticName === 'CJPacket Ordinary');
-      return cjPacket?.logisticName || data.data[0].logisticName;
+      const sorted = [...data.data].sort((a: any, b: any) => (a.freight ?? 999) - (b.freight ?? 999));
+      return sorted[0].logisticName;
     }
   } catch {}
   return 'CJPacket Ordinary';
