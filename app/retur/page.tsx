@@ -72,13 +72,13 @@ export default function Retur() {
           <p>Du har 14 dagers angrerett fra du mottar varen, i henhold til angrerettloven. Du trenger ikke oppgi noen grunn.</p>
           <p>Slik benytter du angreretten:</p>
           <p>1. Fyll ut <a href="/angreskjema" style={{ color: '#1D9E75' }}>standardskjema for angrerett</a>.</p>
-          <p>2. Send skjemaet til <strong>kontakt.nordicpaws@gmail.com</strong> innen 14 dager etter at du mottok varen.</p>
+          <p>2. Send skjemaet til <strong>kontakt.fjordfur@gmail.com</strong> innen 14 dager etter at du mottok varen.</p>
           <p>Vi refunderer hele kjøpesummen uten at du trenger å sende varen tilbake.</p>
         </div>
 
         <div className="rsection">
           <h2 className="rsection-title">Reklamasjon (2 år)</h2>
-          <p>Du har 2 års reklamasjonsrett i henhold til forbrukerkjøpsloven. Mottar du et defekt eller feil produkt, kontakt oss på <strong>kontakt.nordicpaws@gmail.com</strong> med bilde av produktet.</p>
+          <p>Du har 2 års reklamasjonsrett i henhold til forbrukerkjøpsloven. Mottar du et defekt eller feil produkt, kontakt oss på <strong>kontakt.fjordfur@gmail.com</strong> med bilde av produktet.</p>
           <p>Vi sender deg et nytt produkt eller refunderer kjøpesummen — helt uten kostnad for deg.</p>
         </div>
 
@@ -90,7 +90,7 @@ export default function Retur() {
         <div className="rsection">
           <h2 className="rsection-title">Kontakt oss</h2>
           <p>Har du spørsmål om retur eller refusjon? Ta kontakt med oss på:</p>
-          <p><strong>E-post:</strong> kontakt.nordicpaws@gmail.com</p>
+          <p><strong>E-post:</strong> kontakt.fjordfur@gmail.com</p>
           <p><strong>Svartid:</strong> Vi svarer innen 1-2 virkedager</p>
         </div>
       </div>

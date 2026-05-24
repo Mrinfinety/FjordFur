@@ -94,14 +94,14 @@ export default function OmOss() {
       `}</style>
 
       <nav className="rnav">
-        <a href="/" className="rlogo">Nordic<span>Paws</span></a>
+        <a href="/" className="rlogo">Fjord<span>Fur</span></a>
         <a href="/" className="rback">← Tilbake til butikken</a>
       </nav>
 
       <div className="hero">
         <p className="hero-tag">Om oss</p>
         <h1 className="hero-h1">Vi elsker kjæledyr like mye som deg</h1>
-        <p className="hero-p">NordicPaws ble startet av kjæledyreiere som ville gjøre det enkelt å finne gode produkter til rimelige priser — levert rett hjem til deg i Norge.</p>
+        <p className="hero-p">FjordFur ble startet av kjæledyreiere som ville gjøre det enkelt å finne gode produkter til rimelige priser — levert rett hjem til deg i Norge.</p>
       </div>
 
       <div className="rcontainer">
@@ -114,7 +114,7 @@ export default function OmOss() {
           <div className="grid-item">
             <div className="grid-icon">🇳🇴</div>
             <div className="grid-title">Norsk kundeservice</div>
-            <div className="grid-text">Vi er norske og svarer på norsk. Ta kontakt på kontakt.nordicpaws@gmail.com — vi svarer innen 1-2 virkedager.</div>
+            <div className="grid-text">Vi er norske og svarer på norsk. Ta kontakt på kontakt.fjordfur@gmail.com — vi svarer innen 1-2 virkedager.</div>
           </div>
           <div className="grid-item">
             <div className="grid-icon">♻️</div>
@@ -127,7 +127,7 @@ export default function OmOss() {
           <div>
             <p className="story-tag">Vår historie</p>
             <h2 className="story-title">Startet av kjæledyreiere, for kjæledyreiere</h2>
-            <p className="story-text">Vi startet NordicPaws fordi vi selv opplevde det som vanskelig å finne gode kjæledyrprodukter til fornuftige priser i Norge. Målet vårt er enkelt — gi norske kjæledyreiere tilgang til de beste produktene, levert raskt og trygt.</p>
+            <p className="story-text">Vi startet FjordFur fordi vi selv opplevde det som vanskelig å finne gode kjæledyrprodukter til fornuftige priser i Norge. Målet vårt er enkelt — gi norske kjæledyreiere tilgang til de beste produktene, levert raskt og trygt.</p>
           </div>
           <div className="story-img">🐕</div>
         </div>

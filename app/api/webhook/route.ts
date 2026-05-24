@@ -29,7 +29,7 @@ async function sendOrdreBekreftelse(session: any) {
         Pakken sendes direkte fra vårt lager og leveres innen <strong>2–3 uker</strong>.
         Du mottar sporingsinfo så snart pakken er sendt.
       </p>
-      <p style="color:#888;font-size:12px;margin-top:32px">NordicPaws — Premium kjæledyrutstyr</p>
+      <p style="color:#888;font-size:12px;margin-top:32px">FjordFur — Premium kjæledyrutstyr</p>
     </div>
   `;
 
@@ -40,9 +40,9 @@ async function sendOrdreBekreftelse(session: any) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'NordicPaws <ordre@nordicpaws.no>',
+      from: 'FjordFur <ordre@fjordfur.com>',
       to: customer.email,
-      subject: `Ordrebekreftelse ${ordreNr} — NordicPaws`,
+      subject: `Ordrebekreftelse ${ordreNr} — FjordFur`,
       html,
     }),
   });

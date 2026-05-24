@@ -20,7 +20,7 @@ export default function Home() {
 
   useEffect(() => {
     try {
-      const lagret = localStorage.getItem('nordicpaws-cart');
+      const lagret = localStorage.getItem('fjordfur-cart');
       if (lagret) {
         const parsed = JSON.parse(lagret);
         // Migrer gamle cart-items som mangler quantity-felt
@@ -77,12 +77,12 @@ useEffect(() => {
         const neste = prev.map((i, idx) =>
           idx === eksisterende ? { ...i, quantity: (i.quantity || 1) + 1 } : i
         );
-        localStorage.setItem('nordicpaws-cart', JSON.stringify(neste));
+        localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
         return neste;
       }
       const item = { id: p.id, name: p.name, price: p.price, cjId: p.cjId, variantId: variant.vid, quantity: 1 };
       const neste = [...prev, item];
-      localStorage.setItem('nordicpaws-cart', JSON.stringify(neste));
+      localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
       return neste;
     });
     setToast(p.name + ' lagt i handlekurven');
@@ -379,7 +379,7 @@ useEffect(() => {
 
       {/* Navbar */}
       <nav className="nav">
-        <div className="logo">Nordic<span>Paws</span></div>
+        <div className="logo">Fjord<span>Fur</span></div>
         <div className="nav-links">
           <a onClick={() => setAktivKat('hund')}>Hund</a>
           <a onClick={() => setAktivKat('katt')}>Katt</a>
@@ -484,13 +484,13 @@ useEffect(() => {
 
       {/* Footer */}
       <footer style={{ borderTop: '1px solid #e8e8e4', padding: '40px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-  <div className="footer-logo">Nordic<span>Paws</span></div>
+  <div className="footer-logo">Fjord<span>Fur</span></div>
   <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
     <a href="/retur" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Retur & Refusjon</a>
     <a href="/angreskjema" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Angreskjema</a>
     <a href="/vilkår" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Vilkår</a>
     <a href="/personvern" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Personvern</a>
-    <div className="footer-text">© 2026 NordicPaws. Alle rettigheter forbeholdt.</div>
+    <div className="footer-text">© 2026 FjordFur. Alle rettigheter forbeholdt.</div>
   </div>
 </footer>
 
@@ -516,7 +516,7 @@ useEffect(() => {
                     <span style={{ color: '#888', fontSize: '14px' }}>kr {item.price * item.quantity},–</span>
                     <button onClick={() => setHandlekurv(prev => {
                       const neste = prev.filter((_, idx) => idx !== i);
-                      localStorage.setItem('nordicpaws-cart', JSON.stringify(neste));
+                      localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
                       return neste;
                     })} style={{ background: 'none', border: 'none', color: '#bbb', cursor: 'pointer', fontSize: '16px', lineHeight: 1, padding: 0 }}>×</button>
                   </span>
@@ -549,7 +549,7 @@ useEffect(() => {
     });
     const data = await res.json();
     if (data.url) {
-      localStorage.removeItem('nordicpaws-cart');
+      localStorage.removeItem('fjordfur-cart');
       setHandlekurv([]);
       window.location.href = data.url;
     } else {

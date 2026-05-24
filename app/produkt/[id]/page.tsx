@@ -175,7 +175,7 @@ export default function ProduktSide() {
       `}</style>
 
       <nav className="pnav">
-        <a href="/" className="plogo">Nordic<span>Paws</span></a>
+        <a href="/" className="plogo">Fjord<span>Fur</span></a>
         <a href="/" className="pback">← Tilbake til butikken</a>
       </nav>
 
@@ -214,7 +214,7 @@ export default function ProduktSide() {
 </div>
 
         <div className="pinfo">
-          <p className="ptag">NordicPaws</p>
+          <p className="ptag">FjordFur</p>
           <h1 className="ptitle">
   {produktNavn || produkt.productNameEn}
 </h1>
@@ -266,7 +266,7 @@ export default function ProduktSide() {
 
           <button className="padd" onClick={() => {
             if (!valgtVariant?.vid) return;
-            const cart = JSON.parse(localStorage.getItem('nordicpaws-cart') || '[]');
+            const cart = JSON.parse(localStorage.getItem('fjordfur-cart') || '[]');
             const eksisterende = cart.findIndex((i: any) => i.variantId === valgtVariant.vid);
             if (eksisterende !== -1) {
               cart[eksisterende].quantity = (cart[eksisterende].quantity || 1) + 1;
@@ -280,7 +280,7 @@ export default function ProduktSide() {
                 quantity: 1,
               });
             }
-            localStorage.setItem('nordicpaws-cart', JSON.stringify(cart));
+            localStorage.setItem('fjordfur-cart', JSON.stringify(cart));
             setLagtTil(true);
             setTimeout(() => setLagtTil(false), 2500);
           }}>

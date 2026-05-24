@@ -64,7 +64,7 @@ export default function Personvern() {
 
         <div className="rsection">
           <h2 className="rsection-title">Hvem er vi</h2>
-          <p>NordicPaws er en norsk nettbutikk som selger kjæledyrutstyr. Kontakt oss på kontakt.nordicpaws@gmail.com ved spørsmål om personvern.</p>
+          <p>FjordFur er en norsk nettbutikk som selger kjæledyrutstyr. Kontakt oss på kontakt.fjordfur@gmail.com ved spørsmål om personvern.</p>
         </div>
 
         <div className="rsection">
@@ -96,12 +96,12 @@ export default function Personvern() {
         <div className="rsection">
           <h2 className="rsection-title">Dine rettigheter (GDPR)</h2>
           <p>Du har rett til innsyn i, retting av, sletting av og utlevering av dine personopplysninger. Du kan også protestere mot eller kreve begrenset behandling.</p>
-          <p>Ta kontakt på kontakt.nordicpaws@gmail.com for å benytte disse rettighetene. Du har også rett til å klage til Datatilsynet (datatilsynet.no).</p>
+          <p>Ta kontakt på kontakt.fjordfur@gmail.com for å benytte disse rettighetene. Du har også rett til å klage til Datatilsynet (datatilsynet.no).</p>
         </div>
 
         <div className="rsection">
           <h2 className="rsection-title">Kontakt</h2>
-          <p><strong>E-post:</strong> kontakt.nordicpaws@gmail.com</p>
+          <p><strong>E-post:</strong> kontakt.fjordfur@gmail.com</p>
           <p><strong>Svartid:</strong> Vi svarer innen 1-2 virkedager</p>
         </div>
       </div>

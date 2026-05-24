@@ -3,7 +3,7 @@ import "./globals.css";
 import CookieBanner from "@/app/components/CookieBanner";
 
 export const metadata: Metadata = {
-  title: "NordicPaws — Premium kjæledyrutstyr",
+  title: "FjordFur — Premium kjæledyrutstyr",
   description: "Nøye utvalgte kjæledyrprodukter av høy kvalitet. Rask levering til hele Norge.",
 };
 

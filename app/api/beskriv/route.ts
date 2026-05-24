@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       max_tokens: 1000,
       messages: [{
         role: 'user',
-        content: `Du er assistent for NordicPaws, en norsk kjæledyrbutikk. Svar KUN med JSON uten kodeblokker eller annen tekst:
+        content: `Du er assistent for FjordFur, en norsk kjæledyrbutikk. Svar KUN med JSON uten kodeblokker eller annen tekst:
 
 {"navn": "kort norsk produktnavn (maks 4 ord)", "beskrivelse": "3-4 setninger norsk produktbeskrivelse"}
 
