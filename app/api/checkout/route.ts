@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     }] : []),
   ];
 
-  const session = await stripe.checkout.sessions.create({
+  const session = await (stripe.checkout.sessions.create as any)({
     automatic_payment_methods: { enabled: true },
     phone_number_collection: { enabled: true },
     line_items: lineItems,
