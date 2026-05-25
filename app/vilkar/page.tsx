@@ -37,7 +37,7 @@ export default function Vilkar() {
       `}</style>
 
       <nav className="rnav">
-        <a href="/" className="rlogo">Nordic<span>Paws</span></a>
+        <a href="/" className="rlogo">Fjord<span>Fur</span></a>
         <a href="/" className="rback">← Tilbake til butikken</a>
       </nav>
 
@@ -48,7 +48,7 @@ export default function Vilkar() {
         <div className="rsection">
           <h2 className="rsection-title">Om FjordFur</h2>
           <p>FjordFur er en norsk nettbutikk som selger kjæledyrutstyr. Ved å handle hos oss godtar du disse vilkårene.</p>
-          <p>Kontakt: kontakt.fjordfur@gmail.com</p>
+          <p>Kontakt: contact.fjordfur@gmail.com</p>
         </div>
 
         <div className="rsection">
@@ -67,13 +67,13 @@ export default function Vilkar() {
         <div className="rsection">
           <h2 className="rsection-title">Angrerett og retur</h2>
           <p>Du har 14 dagers angrerett fra mottak av varen, i henhold til angrerettloven.</p>
-          <p>For å benytte angreretten fyller du ut <a href="/angreskjema" style={{ color: '#1D9E75' }}>standardskjema for angrerett</a> og sender det til kontakt.fjordfur@gmail.com innen 14 dager etter mottak av varen.</p>
+          <p>For å benytte angreretten fyller du ut <a href="/angreskjema" style={{ color: '#1D9E75' }}>standardskjema for angrerett</a> og sender det til contact.fjordfur@gmail.com innen 14 dager etter mottak av varen.</p>
           <p>Vi refunderer hele kjøpesummen uten at du trenger å sende varen tilbake. Refusjon utbetales innen 14 dager etter at vi har mottatt angreskjemaet.</p>
         </div>
 
         <div className="rsection">
           <h2 className="rsection-title">Reklamasjon</h2>
-          <p>Du har 2 års reklamasjonsrett i henhold til forbrukerkjøpsloven. Mottar du et defekt eller feil produkt, kontakt oss på kontakt.fjordfur@gmail.com med bilde av produktet.</p>
+          <p>Du har 2 års reklamasjonsrett i henhold til forbrukerkjøpsloven. Mottar du et defekt eller feil produkt, kontakt oss på contact.fjordfur@gmail.com med bilde av produktet.</p>
           <p>Vi sender nytt produkt eller refunderer kjøpesummen uten kostnad for deg.</p>
         </div>
 
@@ -84,7 +84,7 @@ export default function Vilkar() {
 
         <div className="rsection">
           <h2 className="rsection-title">Kontakt</h2>
-          <p><strong>E-post:</strong> kontakt.fjordfur@gmail.com</p>
+          <p><strong>E-post:</strong> contact.fjordfur@gmail.com</p>
           <p><strong>Svartid:</strong> Vi svarer innen 1–2 virkedager</p>
         </div>
       </div>

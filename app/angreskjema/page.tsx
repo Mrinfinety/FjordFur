@@ -64,7 +64,7 @@ export default function Angreskjema() {
       `}</style>
 
       <nav className="rnav">
-        <a href="/" className="rlogo">Nordic<span>Paws</span></a>
+        <a href="/" className="rlogo">Fjord<span>Fur</span></a>
         <a href="/retur" className="rback">← Retur & Refusjon</a>
       </nav>
 
@@ -74,7 +74,7 @@ export default function Angreskjema() {
 
         <div className="rsection">
           <h2 className="rsection-title">Slik bruker du skjemaet</h2>
-          <p>Fyll ut skjemaet nedenfor og send det til <strong>kontakt.fjordfur@gmail.com</strong> innen 14 dager etter at du mottok varen. Du kan også skrive ut skjemaet og sende det per post.</p>
+          <p>Fyll ut skjemaet nedenfor og send det til <strong>contact.fjordfur@gmail.com</strong> innen 14 dager etter at du mottok varen. Du kan også skrive ut skjemaet og sende det per post.</p>
           <p>Du trenger ikke sende varen tilbake. Vi refunderer hele kjøpesummen innen 14 dager etter at vi har mottatt skjemaet.</p>
         </div>
 
@@ -82,7 +82,7 @@ export default function Angreskjema() {
           <div className="skjema">
             <div className="skjema-tittel">Standardskjema for bruk av angrerett</div>
 
-            <p>Til: FjordFur, kontakt.fjordfur@gmail.com</p>
+            <p>Til: FjordFur, contact.fjordfur@gmail.com</p>
 
             <span className="skjema-label">Jeg meddeler herved at jeg ønsker å benytte angreretten for kjøp av:</span>
             <span className="skjema-felt" />

@@ -114,7 +114,7 @@ export default function OmOss() {
           <div className="grid-item">
             <div className="grid-icon">🇳🇴</div>
             <div className="grid-title">Norsk kundeservice</div>
-            <div className="grid-text">Vi er norske og svarer på norsk. Ta kontakt på kontakt.fjordfur@gmail.com — vi svarer innen 1-2 virkedager.</div>
+            <div className="grid-text">Vi er norske og svarer på norsk. Ta kontakt på contact.fjordfur@gmail.com — vi svarer innen 1-2 virkedager.</div>
           </div>
           <div className="grid-item">
             <div className="grid-icon">♻️</div>
