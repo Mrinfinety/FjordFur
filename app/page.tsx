@@ -488,7 +488,7 @@ useEffect(() => {
   <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
     <a href="/retur" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Retur & Refusjon</a>
     <a href="/angreskjema" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Angreskjema</a>
-    <a href="/vilkår" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Vilkår</a>
+    <a href="/vilkar" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Vilkår</a>
     <a href="/personvern" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Personvern</a>
     <div className="footer-text">© 2026 FjordFur. Alle rettigheter forbeholdt.</div>
   </div>
