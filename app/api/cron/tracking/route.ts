@@ -1,5 +1,18 @@
-import { kv } from '@vercel/kv';
 import { NextRequest } from 'next/server';
+
+async function kvGet(key: string): Promise<string | null> {
+  const res = await fetch(`${process.env.UPSTASH_REDIS_REST_URL}/get/${key}`, {
+    headers: { Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}` },
+  });
+  const data = await res.json();
+  return data.result ?? null;
+}
+
+async function kvSet(key: string, value: string, exSeconds: number): Promise<void> {
+  await fetch(`${process.env.UPSTASH_REDIS_REST_URL}/set/${key}/${value}?ex=${exSeconds}`, {
+    headers: { Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}` },
+  });
+}
 
 async function getCJToken() {
   const res = await fetch('https://developers.cjdropshipping.com/api2.0/v1/authentication/getAccessToken', {
@@ -110,12 +123,12 @@ export async function GET(req: NextRequest) {
       if (!orderNum || !trackingNum || !email) continue;
 
       const kvKey = `tracking_sent:${orderNum}`;
-      const alleredeSendt = await kv.get(kvKey);
+      const alleredeSendt = await kvGet(kvKey);
       if (alleredeSendt) continue;
 
       try {
         await sendSporingsEpost(email, kundenavn, orderNum, trackingNum, logisticName);
-        await kv.set(kvKey, '1', { ex: 60 * 60 * 24 * 90 }); // 90 dager TTL
+        await kvSet(kvKey, '1', 60 * 60 * 24 * 90); // 90 dager TTL
         sendt++;
       } catch (err) {
         console.error(`Feil ved sporings-e-post for ${orderNum}:`, err);
