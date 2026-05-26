@@ -18,6 +18,8 @@ function sorterVarianter(varianter: any[]) {
 }
 
 const SKJUL_VARIANTER: Record<string, string[]> = {};
+// Produkter som har varianter som ikke passer 2D-grid (f.eks. enkeltfarger + 2-pakker)
+const ENKEL_PICKER = new Set(['1653041912300969984']);
 
 const PRODUKT_INNHOLD: Record<string, { navn: string; beskrivelse: string }> = {
   '1653041912300969984': {
@@ -38,7 +40,7 @@ const RELATERTE: Record<string, { cjId: string; navn: string; pris: number; marg
 const FARGE_ORD = ['green','blue','red','pink','orange','black','white','yellow','purple','gray','grey','brown'];
 
 const NORSK: Record<string, string> = {
-  'set1':'Rosa & Oransje','set':'Oransje & Grønn',
+  'set1':'2-pk Rosa & Oransje','set':'2-pk Oransje & Grønn',
   'green':'Grønn','pink':'Rosa','orange':'Oransje','blue':'Blå','red':'Rød',
   'black':'Svart','white':'Hvit','yellow':'Gul','purple':'Lilla',
   'gray':'Grå','grey':'Grå','brown':'Brun',
@@ -461,7 +463,7 @@ export default function ProduktSide() {
             ));
             const dim = hentDimensjoner(synlige);
 
-            if (dim.harBegge) {
+            if (dim.harBegge && !ENKEL_PICKER.has(id as string)) {
               return (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div>
