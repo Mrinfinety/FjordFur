@@ -19,6 +19,17 @@ function sorterVarianter(varianter: any[]) {
 
 const SKJUL_VARIANTER: Record<string, string[]> = {};
 
+const PRODUKT_INNHOLD: Record<string, { navn: string; beskrivelse: string }> = {
+  '1653041912300969984': {
+    navn: 'Sakte-forer Skål',
+    beskrivelse: 'En spesiallaget skål som bremser ned spisetempoet til hunden eller katten din. Forhindrer kvelning, oppblåsthet og fordøyelsesproblemer som kan oppstå ved rask spising. Ribbestrukturen i bunnen gjør at kjæledyret ditt må jobbe litt for maten — noe som stimulerer både kropp og hjerne. Laget av slitesterkt, BPA-fritt materiale som er enkelt å rengjøre.',
+  },
+  '2504100230321610200': {
+    navn: 'Vannflaske 2-i-1',
+    beskrivelse: 'Praktisk 2-i-1 løsning med integrert vannflaske og matbeholder i én enhet. Perfekt for turer, hytteturer og utflukter med hunden din. Trykk på knappen for å fylle den innebygde drikkekoppen med akkurat passe vann — raskt og uten søl. Kompakt design som enkelt får plass i en ryggsekk eller hundebag.',
+  },
+};
+
 export default function ProduktSide() {
   const { id } = useParams();
   const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
@@ -45,14 +56,9 @@ export default function ProduktSide() {
       setValgtVariant(synligeVarianter?.[0] ?? data.data?.variants?.[0]);
       setLaster(false);
 
-      const res = await fetch('/api/beskriv', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ produktnavn: data.data?.productNameEn }),
-      });
-      const aiData = await res.json();
-      setBeskrivelse(aiData.beskrivelse || '');
-      setProduktNavn(aiData.navn || '');
+      const fast = PRODUKT_INNHOLD[id as string];
+      setBeskrivelse(fast?.beskrivelse || '');
+      setProduktNavn(fast?.navn || '');
     });
 }, [id]);
 
