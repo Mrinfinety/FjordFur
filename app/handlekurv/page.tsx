@@ -97,17 +97,20 @@ export default function HandlekurvSide() {
         }
         .item-row:last-child { border-bottom: none; }
         .item-name { font-size: 15px; font-weight: 500; color: #1a1a18; flex: 1; }
-        .item-price { font-size: 14px; color: #888; min-width: 80px; text-align: right; }
-        .qty-ctrl { display: flex; align-items: center; gap: 10px; }
+        .item-price { font-size: 16px; font-weight: 600; color: #1a1a18; min-width: 90px; text-align: right; }
+        .qty-ctrl { display: flex; align-items: center; gap: 12px; }
         .qty-btn {
-          width: 28px; height: 28px; border-radius: 6px;
-          border: 1px solid #d4d4ce; background: transparent;
-          cursor: pointer; font-size: 16px; color: #1a1a18;
+          width: 34px; height: 34px; border-radius: 8px;
+          border: 1.5px solid #c4c4be; background: #fff;
+          cursor: pointer; font-size: 18px; color: #1a1a18;
           display: flex; align-items: center; justify-content: center;
-          transition: all 0.15s;
+          transition: all 0.15s; font-weight: 500;
         }
         .qty-btn:hover { background: #1a1a18; color: #fafaf8; border-color: #1a1a18; }
-        .qty-num { font-size: 14px; font-weight: 500; min-width: 20px; text-align: center; }
+        .qty-num {
+          font-size: 18px; font-weight: 700; color: #1a1a18;
+          min-width: 28px; text-align: center;
+        }
         .remove-btn {
           background: none; border: none; color: #ccc; cursor: pointer;
           font-size: 18px; line-height: 1; padding: 0; transition: color 0.15s;
