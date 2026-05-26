@@ -414,7 +414,7 @@ useEffect(() => {
         <div className="hero-left">
           <p className="hero-tag">Premium kjæledyrutstyr</p>
           <h1 className="hero-h1">Det beste for ditt kjæledyr</h1>
-          <p className="hero-p">Nøye utvalgte produkter av høy kvalitet — for hund, katt, fugl og fisk. Rask levering, gratis frakt over 499 kr.</p>
+          <p className="hero-p">Nøye utvalgte produkter av høy kvalitet — for hund og katt. Rask levering, gratis frakt over 499 kr.</p>
           <div className="hero-btns">
             <button className="btn-primary" onClick={() => document.getElementById('produkter')?.scrollIntoView({ behavior: 'smooth' })}>
               Se alle produkter
