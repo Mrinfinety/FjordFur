@@ -35,13 +35,62 @@ const RELATERTE: Record<string, { cjId: string; navn: string; pris: number; marg
   '2504100230321610200': [{ cjId: '1653041912300969984', navn: 'Sakte-forer Skål', pris: 149, margin: 132, bildIndex: 1 }],
 };
 
-function variantTypeLabel(varianter: any[]): string {
-  const keys = varianter.map(v => v.variantKey?.toLowerCase() || '');
-  const fargeOrd = ['green', 'blue', 'red', 'pink', 'orange', 'black', 'white', 'yellow', 'purple', 'gray', 'grey', 'brown', 'set'];
-  const størrOrd = ['xs', 's', 'm', 'l', 'xl', 'small', 'medium', 'large'];
-  if (keys.some(k => fargeOrd.some(f => k.includes(f)))) return 'Farge';
-  if (keys.some(k => størrOrd.some(s => k === s || k.endsWith(`-${s}`)))) return 'Størrelse';
-  return 'Variant';
+const FARGE_ORD = ['green','blue','red','pink','orange','black','white','yellow','purple','gray','grey','brown'];
+
+const NORSK: Record<string, string> = {
+  'set1':'Rosa & Oransje','set':'Oransje & Grønn',
+  'green':'Grønn','pink':'Rosa','orange':'Oransje','blue':'Blå','red':'Rød',
+  'black':'Svart','white':'Hvit','yellow':'Gul','purple':'Lilla',
+  'gray':'Grå','grey':'Grå','brown':'Brun',
+  'small':'Liten','medium':'Medium','large':'Stor',
+  'water grain cup':'Med matbeholder',
+  'xs':'XS','s':'S','m':'M','l':'L','xl':'XL',
+};
+
+function oversett(tekst: string): string {
+  let t = tekst.trim();
+  for (const [en, no] of Object.entries(NORSK)) {
+    t = t.replace(new RegExp(`\\b${en}\\b`, 'gi'), no);
+  }
+  return t.replace(/\bml\b/gi, 'ml');
+}
+
+function hentFarge(key: string): string | null {
+  const k = key.toLowerCase();
+  return FARGE_ORD.find(f => new RegExp(`\\b${f}\\b`).test(k)) || null;
+}
+
+function hentAnnenDim(key: string): string {
+  let k = key.trim();
+  FARGE_ORD.forEach(f => { k = k.replace(new RegExp(`\\b${f}\\b`, 'gi'), ''); });
+  return k.trim();
+}
+
+function hentDimensjoner(varianter: any[]) {
+  const farger = new Set<string>();
+  const andre = new Set<string>();
+  varianter.forEach(v => {
+    const f = hentFarge(v.variantKey || '');
+    const a = hentAnnenDim(v.variantKey || '');
+    if (f) farger.add(f);
+    if (a) andre.add(a);
+  });
+  return { farger: [...farger], andre: [...andre], harBegge: farger.size > 0 && andre.size > 0 };
+}
+
+function finnVariant(varianter: any[], farge: string, annen: string): any {
+  return varianter.find(v => {
+    const k = (v.variantKey || '').toLowerCase();
+    const mf = !farge || k.includes(farge.toLowerCase());
+    const ma = !annen || k.toLowerCase().includes(annen.toLowerCase());
+    return mf && ma;
+  });
+}
+
+function andreDimLabel(verdier: string[]): string {
+  if (verdier.some(v => /ml/i.test(v))) return 'Kapasitet';
+  if (verdier.some(v => /xs|s|m|l|xl|small|medium|large/i.test(v))) return 'Størrelse';
+  return 'Type';
 }
 
 export default function ProduktSide() {
@@ -60,6 +109,8 @@ export default function ProduktSide() {
   const [handlekurv, setHandlekurv] = useState<{ id: number; name: string; price: number; cjId: string; variantId: string; quantity: number }[]>([]);
   const [kurvaapen, setKurvAapen] = useState(false);
   const [relBilder, setRelBilder] = useState<Record<string, string>>({});
+  const [valgtFarge, setValgtFarge] = useState('');
+  const [valgtAnnen, setValgtAnnen] = useState('');
 
   useEffect(() => {
     try {
@@ -77,7 +128,16 @@ export default function ProduktSide() {
       const synligeVarianter = data.data?.variants?.filter((v: any) =>
         !skjul.some(s => v.variantKey?.toLowerCase().includes(s))
       );
-      setValgtVariant(synligeVarianter?.[0] ?? data.data?.variants?.[0]);
+      const førsteVariant = synligeVarianter?.[0] ?? data.data?.variants?.[0];
+      setValgtVariant(førsteVariant);
+
+      const dim = hentDimensjoner(synligeVarianter || []);
+      if (dim.harBegge) {
+        const f = hentFarge(førsteVariant?.variantKey || '');
+        const a = hentAnnenDim(førsteVariant?.variantKey || '');
+        setValgtFarge(f || '');
+        setValgtAnnen(a || '');
+      }
       setLaster(false);
 
       const fast = PRODUKT_INNHOLD[id as string];
@@ -384,48 +444,67 @@ export default function ProduktSide() {
           <p className="pprice">kr {visPris},–</p>
           <div className="pdivider" />
 
-          {produkt.variants?.length > 1 && (
-            <div>
-              <p className="pvariant-label">{variantTypeLabel(produkt.variants)}</p>
-              <div className="pvariants">
-                {sorterVarianter(produkt.variants.filter((v: any) =>
-                  !(SKJUL_VARIANTER[id as string] ?? []).some(s => v.variantKey?.toLowerCase().includes(s))
-                )).map((v: any) => (
-                  <button
-                    key={v.vid}
-                    className={`pvariant ${valgtVariant?.vid === v.vid ? 'active' : ''}`}
-                    onClick={() => setValgtVariant(v)}
-                  >
-                    {(variantNavn[v.variantKey] && variantNavn[v.variantKey].length > 0 ? variantNavn[v.variantKey] : v.variantKey)
-  .replace(/Set1/g, '§§§')
-  .replace(/Set/g, 'Oransje & Grønn')
-  .replace(/§§§/g, 'Rosa & Oransje')
-  .replace(/Green/gi, 'Grønn')
-  .replace(/Pink/gi, 'Rosa')
-  .replace(/Orange/gi, 'Oransje')
-  .replace(/Blue/gi, 'Blå')
-  .replace(/Red/gi, 'Rød')
-  .replace(/Black/gi, 'Svart')
-  .replace(/White/gi, 'Hvit')
-  .replace(/Yellow/gi, 'Gul')
-  .replace(/Purple/gi, 'Lilla')
-  .replace(/Gray/gi, 'Grå')
-  .replace(/Grey/gi, 'Grå')
-  .replace(/Brown/gi, 'Brun')
-  .replace(/Small/gi, 'Liten')
-  .replace(/Medium/gi, 'Medium')
-  .replace(/Large/gi, 'Stor')
-  .replace(/Water Grain Cup/gi, 'Med matbeholder')
-  .replace(/White/gi, 'Hvit')
-  .replace(/Yellow/gi, 'Gul')
-  .replace(/Purple/gi, 'Lilla')
-  .replace(/ML/g, 'ml')
-  .replace(/XL/gi, 'XL')}
-                  </button>
-                ))}
+          {produkt.variants?.length > 1 && (() => {
+            const synlige = sorterVarianter(produkt.variants.filter((v: any) =>
+              !(SKJUL_VARIANTER[id as string] ?? []).some(s => v.variantKey?.toLowerCase().includes(s))
+            ));
+            const dim = hentDimensjoner(synlige);
+
+            if (dim.harBegge) {
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div>
+                    <p className="pvariant-label">{andreDimLabel(dim.andre)}</p>
+                    <div className="pvariants">
+                      {dim.andre.map(a => (
+                        <button key={a}
+                          className={`pvariant ${valgtAnnen === a ? 'active' : ''}`}
+                          onClick={() => {
+                            setValgtAnnen(a);
+                            const v = finnVariant(synlige, valgtFarge, a);
+                            if (v) setValgtVariant(v);
+                          }}>
+                          {oversett(a)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="pvariant-label">Farge</p>
+                    <div className="pvariants">
+                      {dim.farger.map(f => (
+                        <button key={f}
+                          className={`pvariant ${valgtFarge === f ? 'active' : ''}`}
+                          onClick={() => {
+                            setValgtFarge(f);
+                            const v = finnVariant(synlige, f, valgtAnnen);
+                            if (v) setValgtVariant(v);
+                          }}>
+                          {oversett(f)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            const label = dim.farger.length > 0 ? 'Farge' : dim.andre.length > 0 ? andreDimLabel(dim.andre) : 'Variant';
+            return (
+              <div>
+                <p className="pvariant-label">{label}</p>
+                <div className="pvariants">
+                  {synlige.map((v: any) => (
+                    <button key={v.vid}
+                      className={`pvariant ${valgtVariant?.vid === v.vid ? 'active' : ''}`}
+                      onClick={() => setValgtVariant(v)}>
+                      {oversett(v.variantKey || '')}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           <button className="padd" onClick={() => {
             if (!valgtVariant?.vid) return;
