@@ -213,10 +213,20 @@ export default function ProduktSide() {
           cursor: pointer; color: #888; line-height: 1;
         }
         .drawer-item {
-          display: flex; justify-content: space-between;
-          padding: 14px 0; border-bottom: 1px solid #e8e8e4; font-size: 14px;
+          display: flex; flex-direction: column; gap: 8px;
+          padding: 14px 0; border-bottom: 1px solid #e8e8e4;
         }
-        .drawer-item-name { color: #1a1a18; font-weight: 500; }
+        .drawer-item-name { font-size: 14px; color: #1a1a18; font-weight: 500; }
+        .drawer-item-row { display: flex; align-items: center; gap: 10px; }
+        .drawer-qty-btn {
+          width: 26px; height: 26px; border-radius: 6px;
+          border: 1px solid #d4d4ce; background: #fff;
+          cursor: pointer; font-size: 15px; color: #1a1a18;
+          display: flex; align-items: center; justify-content: center;
+          transition: all 0.15s;
+        }
+        .drawer-qty-btn:hover { background: #1a1a18; color: #fafaf8; border-color: #1a1a18; }
+        .drawer-qty-num { font-size: 14px; font-weight: 600; color: #1a1a18; min-width: 18px; text-align: center; }
         .drawer-empty { color: #aaa; font-size: 14px; margin-top: 16px; font-weight: 300; }
         .drawer-frakt {
           background: #f4f4f0; border-radius: 8px;
@@ -427,15 +437,26 @@ export default function ProduktSide() {
             ) : (
               handlekurv.map((item, i) => (
                 <div key={i} className="drawer-item">
-                  <span className="drawer-item-name">{item.name}{item.quantity > 1 ? ` ×${item.quantity}` : ''}</span>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ color: '#888', fontSize: '14px' }}>kr {item.price * item.quantity},–</span>
+                  <span className="drawer-item-name">{item.name}</span>
+                  <div className="drawer-item-row">
+                    <button className="drawer-qty-btn" onClick={() => setHandlekurv(prev => {
+                      const neste = prev.map((x, idx) => idx === i ? { ...x, quantity: Math.max(1, x.quantity - 1) } : x);
+                      localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
+                      return neste;
+                    })}>−</button>
+                    <span className="drawer-qty-num">{item.quantity}</span>
+                    <button className="drawer-qty-btn" onClick={() => setHandlekurv(prev => {
+                      const neste = prev.map((x, idx) => idx === i ? { ...x, quantity: x.quantity + 1 } : x);
+                      localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
+                      return neste;
+                    })}>+</button>
+                    <span style={{ marginLeft: 'auto', fontSize: '14px', fontWeight: 500, color: '#1a1a18' }}>kr {item.price * item.quantity},–</span>
                     <button onClick={() => setHandlekurv(prev => {
                       const neste = prev.filter((_, idx) => idx !== i);
                       localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
                       return neste;
-                    })} style={{ background: 'none', border: 'none', color: '#bbb', cursor: 'pointer', fontSize: '16px', lineHeight: 1, padding: 0 }}>×</button>
-                  </span>
+                    })} style={{ background: 'none', border: 'none', color: '#ccc', cursor: 'pointer', fontSize: '16px', lineHeight: 1, padding: 0 }}>×</button>
+                  </div>
                 </div>
               ))
             )}
