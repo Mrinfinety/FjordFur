@@ -43,6 +43,15 @@ export default function ProduktSide() {
   const [produktNavn, setProduktNavn] = useState('');
   const [aktivBilde, setAktivBilde] = useState(0);
   const [lagtTil, setLagtTil] = useState(false);
+  const [handlekurv, setHandlekurv] = useState<{ id: number; name: string; price: number; cjId: string; variantId: string; quantity: number }[]>([]);
+  const [kurvaapen, setKurvAapen] = useState(false);
+
+  useEffect(() => {
+    try {
+      const lagret = localStorage.getItem('fjordfur-cart');
+      if (lagret) setHandlekurv(JSON.parse(lagret).map((i: any) => ({ ...i, quantity: i.quantity || 1 })));
+    } catch {}
+  }, []);
 
   useEffect(() => {
   fetch(`/api/products?pid=${id}`)
@@ -168,6 +177,65 @@ export default function ProduktSide() {
           font-size: 14px; color: #888; line-height: 1.8; font-weight: 300;
         }
 
+        .pcart-btn {
+          display: flex; align-items: center; gap: 8px;
+          background: #1a1a18; color: #fafaf8;
+          border: none; border-radius: 8px;
+          padding: 9px 18px; font-size: 13px; font-weight: 500;
+          cursor: pointer; font-family: 'DM Sans', sans-serif;
+          transition: background 0.2s;
+        }
+        .pcart-btn:hover { background: #1D9E75; }
+
+        .drawer-overlay {
+          position: fixed; inset: 0;
+          background: rgba(0,0,0,0.35); z-index: 200;
+        }
+        .drawer {
+          position: fixed; top: 0; right: 0;
+          width: 380px; height: 100vh;
+          background: #fafaf8; border-left: 1px solid #e8e8e4;
+          z-index: 201; padding: 32px;
+          display: flex; flex-direction: column;
+          animation: slidein 0.25s ease;
+        }
+        @keyframes slidein {
+          from { transform: translateX(100%); }
+          to   { transform: translateX(0); }
+        }
+        .drawer-title {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 24px; font-weight: 600; margin-bottom: 24px;
+          display: flex; justify-content: space-between; align-items: center;
+        }
+        .drawer-close {
+          background: none; border: none; font-size: 22px;
+          cursor: pointer; color: #888; line-height: 1;
+        }
+        .drawer-item {
+          display: flex; justify-content: space-between;
+          padding: 14px 0; border-bottom: 1px solid #e8e8e4; font-size: 14px;
+        }
+        .drawer-item-name { color: #1a1a18; font-weight: 500; }
+        .drawer-empty { color: #aaa; font-size: 14px; margin-top: 16px; font-weight: 300; }
+        .drawer-total {
+          margin-top: auto; padding-top: 24px; border-top: 1px solid #e8e8e4;
+        }
+        .drawer-total-row {
+          display: flex; justify-content: space-between;
+          font-size: 15px; font-weight: 500; margin-bottom: 16px;
+        }
+        .btn-checkout {
+          width: 100%; background: #1D9E75; color: #fafaf8;
+          border: none; border-radius: 8px; padding: 14px;
+          font-size: 14px; font-weight: 500; cursor: pointer;
+          font-family: 'DM Sans', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+          .drawer { width: 100vw; border-left: none; padding: 24px 20px; }
+        }
+
         @media (max-width: 768px) {
           .pnav { padding: 0 20px; }
           .pcontainer {
@@ -182,7 +250,12 @@ export default function ProduktSide() {
 
       <nav className="pnav">
         <a href="/" className="plogo">Fjord<span>Fur</span></a>
-        <a href="/" className="pback">← Tilbake til butikken</a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <a href="/" className="pback">← Tilbake til butikken</a>
+          <button className="pcart-btn" onClick={() => setKurvAapen(true)}>
+            🛒 Handlekurv ({handlekurv.reduce((sum, i) => sum + i.quantity, 0)})
+          </button>
+        </div>
       </nav>
 
       <div className="pcontainer">
@@ -272,21 +345,17 @@ export default function ProduktSide() {
 
           <button className="padd" onClick={() => {
             if (!valgtVariant?.vid) return;
-            const cart = JSON.parse(localStorage.getItem('fjordfur-cart') || '[]');
-            const eksisterende = cart.findIndex((i: any) => i.variantId === valgtVariant.vid);
-            if (eksisterende !== -1) {
-              cart[eksisterende].quantity = (cart[eksisterende].quantity || 1) + 1;
-            } else {
-              cart.push({
-                id: Date.now(),
-                name: produktNavn || produkt.productNameEn,
-                price: visPris,
-                cjId: id,
-                variantId: valgtVariant.vid,
-                quantity: 1,
-              });
-            }
-            localStorage.setItem('fjordfur-cart', JSON.stringify(cart));
+            setHandlekurv(prev => {
+              const eksisterende = prev.findIndex(i => i.variantId === valgtVariant.vid);
+              let neste;
+              if (eksisterende !== -1) {
+                neste = prev.map((i, idx) => idx === eksisterende ? { ...i, quantity: (i.quantity || 1) + 1 } : i);
+              } else {
+                neste = [...prev, { id: Date.now(), name: produktNavn || produkt.productNameEn, price: visPris, cjId: id as string, variantId: valgtVariant.vid, quantity: 1 }];
+              }
+              localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
+              return neste;
+            });
             setLagtTil(true);
             setTimeout(() => setLagtTil(false), 2500);
           }}>
@@ -318,6 +387,63 @@ export default function ProduktSide() {
 </div>
         </div>
       </div>
+
+      {kurvaapen && (
+        <>
+          <div className="drawer-overlay" onClick={() => setKurvAapen(false)} />
+          <div className="drawer">
+            <div className="drawer-title">
+              Handlekurv
+              <button className="drawer-close" onClick={() => setKurvAapen(false)}>×</button>
+            </div>
+            {handlekurv.length === 0 ? (
+              <p className="drawer-empty">Handlekurven er tom.</p>
+            ) : (
+              handlekurv.map((item, i) => (
+                <div key={i} className="drawer-item">
+                  <span className="drawer-item-name">{item.name}{item.quantity > 1 ? ` ×${item.quantity}` : ''}</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span style={{ color: '#888', fontSize: '14px' }}>kr {item.price * item.quantity},–</span>
+                    <button onClick={() => setHandlekurv(prev => {
+                      const neste = prev.filter((_, idx) => idx !== i);
+                      localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
+                      return neste;
+                    })} style={{ background: 'none', border: 'none', color: '#bbb', cursor: 'pointer', fontSize: '16px', lineHeight: 1, padding: 0 }}>×</button>
+                  </span>
+                </div>
+              ))
+            )}
+            <div className="drawer-total">
+              <div className="drawer-total-row">
+                <span>Totalt</span>
+                <span>kr {handlekurv.reduce((sum, item) => sum + item.price * item.quantity, 0)},–</span>
+              </div>
+              <button className="btn-checkout" onClick={async () => {
+                if (handlekurv.length === 0) { alert('Handlekurven er tom!'); return; }
+                try {
+                  const res = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items: handlekurv.map(item => ({ name: item.name, price: item.price, quantity: item.quantity, cjId: item.cjId, variantId: item.variantId })) }),
+                  });
+                  const data = await res.json();
+                  if (data.url) {
+                    localStorage.removeItem('fjordfur-cart');
+                    setHandlekurv([]);
+                    window.location.href = data.url;
+                  } else {
+                    alert('Feil: ' + JSON.stringify(data));
+                  }
+                } catch (err) {
+                  alert('Noe gikk galt: ' + err);
+                }
+              }}>
+                Gå til betaling
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
