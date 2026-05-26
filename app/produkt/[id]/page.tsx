@@ -467,7 +467,7 @@ export default function ProduktSide() {
           "priceCurrency": "NOK",
           "price": String(visPris),
           "availability": "https://schema.org/InStock",
-          "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://fjordfur.vercel.app"}/produkt/${id}`,
+          "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://fjordfur.com"}/produkt/${id}`,
           "seller": { "@type": "Organization", "name": "FjordFur" },
         },
       })}} />

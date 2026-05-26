@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL || 'https://fjordfur.vercel.app';
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || 'https://fjordfur.com';
 
 const PRODUCTS = [
   '1653041912300969984',

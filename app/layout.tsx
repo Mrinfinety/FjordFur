@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'FjordFur — Premium kjæledyrutstyr',
     description: 'Nøye utvalgte kjæledyrprodukter av høy kvalitet. Gratis frakt over 499 kr. 14 dagers angrerett.',
+    url: 'https://fjordfur.com',
     siteName: 'FjordFur',
     locale: 'nb_NO',
     type: 'website',
