@@ -14,7 +14,7 @@ function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
           cursor: 'pointer', fontFamily: "'DM Sans', sans-serif",
           letterSpacing: '0.06em',
         }}>
-          {l.toUpperCase()}
+          {l === 'no' ? '🇳🇴' : '🇬🇧'} {l.toUpperCase()}
         </button>
       ))}
     </div>
