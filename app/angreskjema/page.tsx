@@ -1,6 +1,9 @@
 'use client';
+import { useLanguage } from '../../lib/useLanguage';
 
 export default function Angreskjema() {
+  const { lang, setLang } = useLanguage();
+  const T = lang === 'en';
   return (
     <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#fafaf8', minHeight: '100vh' }}>
       <style>{`
@@ -65,52 +68,59 @@ export default function Angreskjema() {
 
       <nav className="rnav">
         <a href="/" className="rlogo">Fjord<span>Fur</span></a>
-        <a href="/retur" className="rback">← Retur & Refusjon</a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: 'flex', gap: '3px', background: '#f0f0ec', borderRadius: '6px', padding: '3px' }}>
+            {(['no', 'en'] as const).map(l => (
+              <button key={l} onClick={() => setLang(l)} style={{ background: lang === l ? '#1a1a18' : 'transparent', color: lang === l ? '#fafaf8' : '#888', border: 'none', borderRadius: '4px', padding: '4px 9px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", letterSpacing: '0.06em' }}>{l.toUpperCase()}</button>
+            ))}
+          </div>
+          <a href="/retur" className="rback">← {T ? 'Returns & Refunds' : 'Retur & Refusjon'}</a>
+        </div>
       </nav>
 
       <div className="rcontainer">
-        <h1 className="rtitle">Standardskjema for angrerett</h1>
-        <p className="rsub">I henhold til angrerettloven vedlegg 1</p>
+        <h1 className="rtitle">{T ? 'Cancellation Form' : 'Standardskjema for angrerett'}</h1>
+        <p className="rsub">{T ? 'Standard withdrawal form' : 'I henhold til angrerettloven vedlegg 1'}</p>
 
         <div className="rsection">
-          <h2 className="rsection-title">Slik bruker du skjemaet</h2>
-          <p>Fyll ut skjemaet nedenfor og send det til <strong>contact.fjordfur@gmail.com</strong> innen 14 dager etter at du mottok varen. Du kan også skrive ut skjemaet og sende det per post.</p>
-          <p>Du trenger ikke sende varen tilbake. Vi refunderer hele kjøpesummen innen 14 dager etter at vi har mottatt skjemaet.</p>
+          <h2 className="rsection-title">{T ? 'How to use this form' : 'Slik bruker du skjemaet'}</h2>
+          <p>{T ? <>Fill in the form below and send it to <strong>contact.fjordfur@gmail.com</strong> within 14 days of receiving your item. You can also print the form.</> : <>Fyll ut skjemaet nedenfor og send det til <strong>contact.fjordfur@gmail.com</strong> innen 14 dager etter at du mottok varen. Du kan også skrive ut skjemaet og sende det per post.</>}</p>
+          <p>{T ? 'You do not need to return the item. We will refund the full purchase price within 14 days of receiving this form.' : 'Du trenger ikke sende varen tilbake. Vi refunderer hele kjøpesummen innen 14 dager etter at vi har mottatt skjemaet.'}</p>
         </div>
 
         <div className="rsection">
           <div className="skjema">
-            <div className="skjema-tittel">Standardskjema for bruk av angrerett</div>
+            <div className="skjema-tittel">{T ? 'Standard cancellation / right of withdrawal form' : 'Standardskjema for bruk av angrerett'}</div>
 
-            <p>Til: FjordFur, contact.fjordfur@gmail.com</p>
+            <p>{T ? 'To: FjordFur, contact.fjordfur@gmail.com' : 'Til: FjordFur, contact.fjordfur@gmail.com'}</p>
 
-            <span className="skjema-label">Jeg meddeler herved at jeg ønsker å benytte angreretten for kjøp av:</span>
+            <span className="skjema-label">{T ? 'I hereby give notice that I wish to withdraw from my purchase of:' : 'Jeg meddeler herved at jeg ønsker å benytte angreretten for kjøp av:'}</span>
             <span className="skjema-felt" />
 
-            <span className="skjema-label">Bestilt den:</span>
+            <span className="skjema-label">{T ? 'Ordered on:' : 'Bestilt den:'}</span>
             <span className="skjema-felt" />
 
-            <span className="skjema-label">Mottatt den:</span>
+            <span className="skjema-label">{T ? 'Received on:' : 'Mottatt den:'}</span>
             <span className="skjema-felt" />
 
-            <span className="skjema-label">Navn:</span>
+            <span className="skjema-label">{T ? 'Name:' : 'Navn:'}</span>
             <span className="skjema-felt" />
 
-            <span className="skjema-label">Adresse:</span>
+            <span className="skjema-label">{T ? 'Address:' : 'Adresse:'}</span>
             <span className="skjema-felt" />
             <span className="skjema-felt" />
 
-            <span className="skjema-label">E-postadresse:</span>
+            <span className="skjema-label">{T ? 'Email address:' : 'E-postadresse:'}</span>
             <span className="skjema-felt" />
 
-            <span className="skjema-label">Dato:</span>
+            <span className="skjema-label">{T ? 'Date:' : 'Dato:'}</span>
             <span className="skjema-felt" />
 
-            <p className="merknad">Underskrift er ikke nødvendig ved innsending per e-post.</p>
+            <p className="merknad">{T ? 'Signature is not required when submitting by email.' : 'Underskrift er ikke nødvendig ved innsending per e-post.'}</p>
           </div>
 
           <button className="print-btn" onClick={() => typeof window !== 'undefined' && window.print()}>
-            Skriv ut skjema
+            {T ? 'Print form' : 'Skriv ut skjema'}
           </button>
         </div>
       </div>

@@ -1,12 +1,37 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useLanguage, type Lang } from '../lib/useLanguage';
 
 const products = [
-  { id: 1, name: 'Sakte-forer Skål', sub: 'Forhindrer kvelning, hund/katt', price: 149, margin: 132, bildIndex: 1, emoji: '🥣', cat: 'hund', cjId: '1653041912300969984' },
-  { id: 2, name: 'Vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, margin: 120, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
+  { id: 1, name: 'Sakte-forer Skål', nameEn: 'Slow Feeder Bowl', sub: 'Forhindrer kvelning, hund/katt', subEn: 'Prevents choking, dogs & cats', price: 149, margin: 132, bildIndex: 1, emoji: '🥣', cat: 'hund', cjId: '1653041912300969984' },
+  { id: 2, name: 'Vannflaske 2-i-1', nameEn: 'Water Bottle 2-in-1', sub: 'Med matbeholder, perfekt for turer', subEn: 'With food container, perfect for trips', price: 249, margin: 120, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
 ];
 
 const kategorier = ['alle', 'hund', 'katt'];
+
+function katLabel(kat: string, lang: Lang) {
+  if (lang === 'en') return kat === 'alle' ? 'All' : kat === 'hund' ? 'Dog' : 'Cat';
+  return kat.charAt(0).toUpperCase() + kat.slice(1);
+}
+
+function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
+  return (
+    <div style={{ display: 'flex', gap: '3px', background: '#f0f0ec', borderRadius: '6px', padding: '3px' }}>
+      {(['no', 'en'] as const).map(l => (
+        <button key={l} onClick={() => setLang(l)} style={{
+          background: lang === l ? '#1a1a18' : 'transparent',
+          color: lang === l ? '#fafaf8' : '#888',
+          border: 'none', borderRadius: '4px',
+          padding: '4px 9px', fontSize: '11px', fontWeight: 600,
+          cursor: 'pointer', fontFamily: "'DM Sans', sans-serif",
+          letterSpacing: '0.06em',
+        }}>
+          {l.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 async function fetchCJProduct(pid: string) {
   const res = await fetch(`/api/products?pid=${pid}`);
@@ -15,6 +40,7 @@ async function fetchCJProduct(pid: string) {
 }
 
 export default function Home() {
+  const { lang, setLang } = useLanguage();
   const [aktivKat, setAktivKat] = useState('alle');
   const [handlekurv, setHandlekurv] = useState<{ id: number; name: string; price: number; cjId: string; variantId: string; quantity: number }[]>([]);
 
@@ -93,7 +119,7 @@ useEffect(() => {
       localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
       return neste;
     });
-    setToast(p.name + ' lagt i handlekurven');
+    setToast(lang === 'en' ? (p.nameEn + ' added to cart') : (p.name + ' lagt i handlekurven'));
     setTimeout(() => setToast(''), 2500);
   }
 
@@ -413,12 +439,13 @@ useEffect(() => {
       <nav className="nav">
         <div className="logo">Fjord<span>Fur</span></div>
         <div className="nav-links">
-          <a onClick={() => setAktivKat('hund')}>Hund</a>
-          <a onClick={() => setAktivKat('katt')}>Katt</a>
+          <a onClick={() => setAktivKat('hund')}>{lang === 'en' ? 'Dog' : 'Hund'}</a>
+          <a onClick={() => setAktivKat('katt')}>{lang === 'en' ? 'Cat' : 'Katt'}</a>
         </div>
         <div className="nav-right">
+          <LangToggle lang={lang} setLang={setLang} />
           <button className="cart-btn" onClick={() => setKurvAapen(true)}>
-            🛒 Handlekurv ({handlekurv.reduce((sum, i) => sum + i.quantity, 0)})
+            🛒 {lang === 'en' ? 'Cart' : 'Handlekurv'} ({handlekurv.reduce((sum, i) => sum + i.quantity, 0)})
           </button>
         </div>
       </nav>
@@ -426,28 +453,28 @@ useEffect(() => {
       {/* Hero */}
       <div className="hero">
         <div className="hero-left">
-          <p className="hero-tag">Premium kjæledyrutstyr</p>
-          <h1 className="hero-h1">Skap glede for kjæledyret ditt</h1>
-          <p className="hero-p">Nøye utvalgte produkter som gjør hverdagen bedre — for deg og kjæledyret ditt. Gratis frakt over 499 kr.</p>
+          <p className="hero-tag">{lang === 'en' ? 'Premium pet supplies' : 'Premium kjæledyrutstyr'}</p>
+          <h1 className="hero-h1">{lang === 'en' ? 'Create joy for your pet' : 'Skap glede for kjæledyret ditt'}</h1>
+          <p className="hero-p">{lang === 'en' ? 'Carefully selected products that make everyday life better — for you and your pet. Free shipping over NOK 499.' : 'Nøye utvalgte produkter som gjør hverdagen bedre — for deg og kjæledyret ditt. Gratis frakt over 499 kr.'}</p>
           <div className="hero-btns">
             <button className="btn-primary" onClick={() => document.getElementById('produkter')?.scrollIntoView({ behavior: 'smooth' })}>
-              Se alle produkter
+              {lang === 'en' ? 'See all products' : 'Se alle produkter'}
             </button>
-            <button className="btn-secondary" onClick={() => window.location.href = '/om-oss'}>Om oss</button>
+            <button className="btn-secondary" onClick={() => window.location.href = '/om-oss'}>{lang === 'en' ? 'About us' : 'Om oss'}</button>
           </div>
         </div>
         <div className="hero-right">
           <div className="stat-row">
-            <div className="stat-num">Gratis</div>
-            <div className="stat-label">Frakt over kr 499</div>
+            <div className="stat-num">{lang === 'en' ? 'Free' : 'Gratis'}</div>
+            <div className="stat-label">{lang === 'en' ? 'Shipping over NOK 499' : 'Frakt over kr 499'}</div>
           </div>
           <div className="stat-row">
             <div className="stat-num">14</div>
-            <div className="stat-label">Dagers angrerett</div>
+            <div className="stat-label">{lang === 'en' ? 'Day return policy' : 'Dagers angrerett'}</div>
           </div>
           <div className="stat-row">
             <div className="stat-num">100%</div>
-            <div className="stat-label">Sikker betaling</div>
+            <div className="stat-label">{lang === 'en' ? 'Secure payment' : 'Sikker betaling'}</div>
           </div>
         </div>
       </div>
@@ -455,7 +482,7 @@ useEffect(() => {
       {/* Produkter */}
       <div className="main">
         <div id="produkter" className="section-header">
-          <h2 className="section-title">Produkter</h2>
+          <h2 className="section-title">{lang === 'en' ? 'Products' : 'Produkter'}</h2>
         </div>
 
         <div className="cats-row">
@@ -466,15 +493,15 @@ useEffect(() => {
                 className={`cat ${aktivKat === kat ? 'active' : ''}`}
                 onClick={() => setAktivKat(kat)}
               >
-                {kat.charAt(0).toUpperCase() + kat.slice(1)}
+                {katLabel(kat, lang)}
               </button>
             ))}
           </div>
           <select className="sort-select" value={sortering} onChange={e => setSortering(e.target.value)}>
-            <option value="anbefalt">Anbefalt</option>
-            <option value="populær">Mest populær</option>
-            <option value="pris-lav">Pris: lav til høy</option>
-            <option value="pris-høy">Pris: høy til lav</option>
+            <option value="anbefalt">{lang === 'en' ? 'Recommended' : 'Anbefalt'}</option>
+            <option value="populær">{lang === 'en' ? 'Most popular' : 'Mest populær'}</option>
+            <option value="pris-lav">{lang === 'en' ? 'Price: low to high' : 'Pris: lav til høy'}</option>
+            <option value="pris-høy">{lang === 'en' ? 'Price: high to low' : 'Pris: høy til lav'}</option>
           </select>
         </div>
 
@@ -487,12 +514,12 @@ useEffect(() => {
           : <div style={{ width: '100%', height: '100%', background: '#f4f4f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px' }}>{p.emoji}</div>}
       </div>
       <div className="card-body">
-        <div className="card-name">{p.name}</div>
-        <div className="card-sub">{p.sub}</div>
+        <div className="card-name">{lang === 'en' ? (p as any).nameEn : p.name}</div>
+        <div className="card-sub">{lang === 'en' ? (p as any).subEn : p.sub}</div>
         <div className="card-footer">
           <span className="price">kr {p.price},–</span>
           <button className="add" onClick={(e) => { e.stopPropagation(); leggTil(p); }}>
-            Legg til
+            {lang === 'en' ? 'Add' : 'Legg til'}
           </button>
         </div>
       </div>
@@ -504,18 +531,18 @@ useEffect(() => {
         <div className="trust-strip">
           <div className="trust-item">
             <div className="trust-icon">🚚</div>
-            <div className="trust-title">Gratis frakt over 499 kr</div>
-            <div className="trust-text">Leverer til hele verden. Sporbar frakt rett hjem til deg.</div>
+            <div className="trust-title">{lang === 'en' ? 'Free shipping over NOK 499' : 'Gratis frakt over 499 kr'}</div>
+            <div className="trust-text">{lang === 'en' ? 'Worldwide delivery. Tracked shipping straight to your door.' : 'Leverer til hele verden. Sporbar frakt rett hjem til deg.'}</div>
           </div>
           <div className="trust-item">
             <div className="trust-icon">🔄</div>
-            <div className="trust-title">14 dagers angrerett</div>
-            <div className="trust-text">Ikke fornøyd? Vi refunderer uten spørsmål og uten at du trenger sende varen tilbake.</div>
+            <div className="trust-title">{lang === 'en' ? '14-day return policy' : '14 dagers angrerett'}</div>
+            <div className="trust-text">{lang === 'en' ? 'Not happy? We refund without questions — no need to return the item.' : 'Ikke fornøyd? Vi refunderer uten spørsmål og uten at du trenger sende varen tilbake.'}</div>
           </div>
           <div className="trust-item">
             <div className="trust-icon">🐾</div>
-            <div className="trust-title">Elsket av kjæledyr</div>
-            <div className="trust-text">Nøye utvalgte produkter testet og godkjent av dyreelskere over hele verden.</div>
+            <div className="trust-title">{lang === 'en' ? 'Loved by pets' : 'Elsket av kjæledyr'}</div>
+            <div className="trust-text">{lang === 'en' ? 'Carefully selected products tested and approved by pet lovers worldwide.' : 'Nøye utvalgte produkter testet og godkjent av dyreelskere over hele verden.'}</div>
           </div>
         </div>
       </div>
@@ -527,11 +554,11 @@ useEffect(() => {
     <div style={{ fontSize: '12px', color: '#aaa', marginTop: '6px' }}>Org.nr. 930 827 525</div>
   </div>
   <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-    <a href="/retur" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Retur & Refusjon</a>
-    <a href="/angreskjema" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Angreskjema</a>
-    <a href="/vilkar" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Vilkår</a>
-    <a href="/personvern" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Personvern</a>
-    <div className="footer-text">© 2026 FjordFur. Alle rettigheter forbeholdt.</div>
+    <a href="/retur" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>{lang === 'en' ? 'Returns' : 'Retur & Refusjon'}</a>
+    <a href="/angreskjema" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>{lang === 'en' ? 'Cancellation form' : 'Angreskjema'}</a>
+    <a href="/vilkar" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>{lang === 'en' ? 'Terms' : 'Vilkår'}</a>
+    <a href="/personvern" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>{lang === 'en' ? 'Privacy' : 'Personvern'}</a>
+    <div className="footer-text">© 2026 FjordFur. {lang === 'en' ? 'All rights reserved.' : 'Alle rettigheter forbeholdt.'}</div>
   </div>
 </footer>
 
@@ -544,7 +571,7 @@ useEffect(() => {
           <div className="drawer-overlay" onClick={() => setKurvAapen(false)} />
           <div className="drawer">
             <div className="drawer-title">
-              Handlekurv
+              {lang === 'en' ? 'Cart' : 'Handlekurv'}
               <button className="drawer-close" onClick={() => setKurvAapen(false)}>×</button>
             </div>
             {handlekurv.length > 0 && (() => {
@@ -552,10 +579,10 @@ useEffect(() => {
               return (
                 <div className="drawer-frakt">
                   {sub >= 499 ? (
-                    <p className="drawer-frakt-done">🎉 Du har gratis frakt!</p>
+                    <p className="drawer-frakt-done">🎉 {lang === 'en' ? 'You have free shipping!' : 'Du har gratis frakt!'}</p>
                   ) : (
                     <>
-                      <p className="drawer-frakt-label">Handle for <strong>kr {499 - sub},–</strong> til for å få <strong>gratis frakt</strong></p>
+                      <p className="drawer-frakt-label">{lang === 'en' ? <>Spend <strong>NOK {499 - sub}</strong> more for <strong>free shipping</strong></> : <>Handle for <strong>kr {499 - sub},–</strong> til for å få <strong>gratis frakt</strong></>}</p>
                       <div className="drawer-frakt-track">
                         <div className="drawer-frakt-fill" style={{ width: `${Math.min(100, (sub / 499) * 100)}%` }} />
                       </div>
@@ -565,7 +592,7 @@ useEffect(() => {
               );
             })()}
             {handlekurv.length === 0 ? (
-              <p className="drawer-empty">Handlekurven er tom.</p>
+              <p className="drawer-empty">{lang === 'en' ? 'Your cart is empty.' : 'Handlekurven er tom.'}</p>
             ) : (
               handlekurv.map((item, i) => (
                 <div key={i} className="drawer-item">
@@ -594,11 +621,11 @@ useEffect(() => {
             )}
             <div className="drawer-total">
               <div className="drawer-total-row">
-                <span>Totalt</span>
+                <span>{lang === 'en' ? 'Total' : 'Totalt'}</span>
                 <span>kr {handlekurv.reduce((sum, item) => sum + item.price * item.quantity, 0)},–</span>
               </div>
               <a href="/handlekurv" style={{ display: 'block', width: '100%', textAlign: 'center', padding: '12px', borderRadius: '8px', border: '1px solid #d4d4ce', color: '#1a1a18', textDecoration: 'none', fontSize: '14px', fontWeight: 500, marginBottom: '10px', fontFamily: "'DM Sans', sans-serif" }}>
-                Gå til handlekurv
+                {lang === 'en' ? 'View cart' : 'Gå til handlekurv'}
               </a>
 <button className="btn-checkout" onClick={async () => {
   if (handlekurv.length === 0) {
@@ -631,7 +658,7 @@ useEffect(() => {
     alert('Noe gikk galt: ' + err);
   }
 }}>
-  Gå til betaling
+  {lang === 'en' ? 'Go to checkout' : 'Gå til betaling'}
 </button>
             </div>
           </div>

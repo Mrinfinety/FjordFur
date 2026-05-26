@@ -1,6 +1,26 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { useLanguage, type Lang } from '../../../lib/useLanguage';
+
+function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
+  return (
+    <div style={{ display: 'flex', gap: '3px', background: '#f0f0ec', borderRadius: '6px', padding: '3px' }}>
+      {(['no', 'en'] as const).map(l => (
+        <button key={l} onClick={() => setLang(l)} style={{
+          background: lang === l ? '#1a1a18' : 'transparent',
+          color: lang === l ? '#fafaf8' : '#888',
+          border: 'none', borderRadius: '4px',
+          padding: '4px 9px', fontSize: '11px', fontWeight: 600,
+          cursor: 'pointer', fontFamily: "'DM Sans', sans-serif",
+          letterSpacing: '0.06em',
+        }}>
+          {l.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 const STØRRELSE_REKKEFØLGE = ['xs', 's', 'm', 'l', 'xl'];
 
@@ -21,14 +41,18 @@ const SKJUL_VARIANTER: Record<string, string[]> = {};
 // Produkter som har varianter som ikke passer 2D-grid (f.eks. enkeltfarger + 2-pakker)
 const ENKEL_PICKER = new Set(['1653041912300969984']);
 
-const PRODUKT_INNHOLD: Record<string, { navn: string; beskrivelse: string }> = {
+const PRODUKT_INNHOLD: Record<string, { navn: string; navnEn: string; beskrivelse: string; beskrivelseEn: string }> = {
   '1653041912300969984': {
     navn: 'Sakte-forer Skål',
+    navnEn: 'Slow Feeder Bowl',
     beskrivelse: 'En spesiallaget skål som bremser ned spisetempoet til hunden eller katten din. Forhindrer kvelning, oppblåsthet og fordøyelsesproblemer som kan oppstå ved rask spising. Ribbestrukturen i bunnen gjør at kjæledyret ditt må jobbe litt for maten — noe som stimulerer både kropp og hjerne. Laget av slitesterkt, BPA-fritt materiale som er enkelt å rengjøre.',
+    beskrivelseEn: 'A specially designed bowl that slows down your dog or cat\'s eating pace. Prevents choking, bloating and digestive issues caused by rapid eating. The ridge structure at the bottom encourages your pet to work for their food — stimulating both body and mind. Made from durable, BPA-free material that is easy to clean.',
   },
   '2504100230321610200': {
     navn: 'Vannflaske 2-i-1',
+    navnEn: 'Water Bottle 2-in-1',
     beskrivelse: 'Praktisk 2-i-1 løsning med integrert vannflaske og matbeholder i én enhet. Perfekt for turer, hytteturer og utflukter med hunden din. Trykk på knappen for å fylle den innebygde drikkekoppen med akkurat passe vann — raskt og uten søl. Kompakt design som enkelt får plass i en ryggsekk eller hundebag.',
+    beskrivelseEn: 'A practical 2-in-1 solution with an integrated water bottle and food container in one unit. Perfect for hikes, cabin trips and outdoor adventures with your dog. Press the button to fill the built-in drinking cup with just the right amount of water — quickly and without spills. Compact design that fits easily in a backpack or dog bag.',
   },
 };
 
@@ -89,13 +113,14 @@ function finnVariant(varianter: any[], farge: string, annen: string): any {
   });
 }
 
-function andreDimLabel(verdier: string[]): string {
-  if (verdier.some(v => /ml/i.test(v))) return 'Kapasitet';
-  if (verdier.some(v => /xs|s|m|l|xl|small|medium|large/i.test(v))) return 'Størrelse';
+function andreDimLabel(verdier: string[], lang: Lang): string {
+  if (verdier.some(v => /ml/i.test(v))) return lang === 'en' ? 'Capacity' : 'Kapasitet';
+  if (verdier.some(v => /xs|s|m|l|xl|small|medium|large/i.test(v))) return lang === 'en' ? 'Size' : 'Størrelse';
   return 'Type';
 }
 
 export default function ProduktSide() {
+  const { lang, setLang } = useLanguage();
   const { id } = useParams();
   const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
   const fastPris = parseInt(searchParams.get('pris') || '0');
@@ -144,7 +169,7 @@ export default function ProduktSide() {
 
       const fast = PRODUKT_INNHOLD[id as string];
       setBeskrivelse(fast?.beskrivelse || '');
-      setProduktNavn(fast?.navn || '');
+      setProduktNavn(fast?.navn || ''); // navn oppdateres basert på lang i render
 
       const rel = RELATERTE[id as string] ?? [];
       const bilder: Record<string, string> = {};
@@ -409,10 +434,11 @@ export default function ProduktSide() {
 
       <nav className="pnav">
         <a href="/" className="plogo">Fjord<span>Fur</span></a>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <a href="/" className="pback">← Tilbake til butikken</a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <a href="/" className="pback">← {lang === 'en' ? 'Back to store' : 'Tilbake til butikken'}</a>
+          <LangToggle lang={lang} setLang={setLang} />
           <button className="pcart-btn" onClick={() => setKurvAapen(true)}>
-            🛒 Handlekurv ({handlekurv.reduce((sum, i) => sum + i.quantity, 0)})
+            🛒 {lang === 'en' ? 'Cart' : 'Handlekurv'} ({handlekurv.reduce((sum, i) => sum + i.quantity, 0)})
           </button>
         </div>
       </nav>
@@ -453,7 +479,7 @@ export default function ProduktSide() {
 
         <div className="pinfo">
           <p className="ptag">FjordFur</p>
-          <h1 className="ptitle">{produktNavn || produkt.productNameEn}</h1>
+          <h1 className="ptitle">{lang === 'en' ? (PRODUKT_INNHOLD[id as string]?.navnEn || produkt.productNameEn) : (produktNavn || produkt.productNameEn)}</h1>
           <p className="pprice">kr {visPris},–</p>
           <div className="pdivider" />
 
@@ -467,7 +493,7 @@ export default function ProduktSide() {
               return (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div>
-                    <p className="pvariant-label">{andreDimLabel(dim.andre)}</p>
+                    <p className="pvariant-label">{andreDimLabel(dim.andre, lang)}</p>
                     <div className="pvariants">
                       {dim.andre.map(a => (
                         <button key={a}
@@ -483,7 +509,7 @@ export default function ProduktSide() {
                     </div>
                   </div>
                   <div>
-                    <p className="pvariant-label">Farge</p>
+                    <p className="pvariant-label">{lang === 'en' ? 'Color' : 'Farge'}</p>
                     <div className="pvariants">
                       {dim.farger.map(f => (
                         <button key={f}
@@ -502,7 +528,7 @@ export default function ProduktSide() {
               );
             }
 
-            const label = dim.farger.length > 0 ? 'Farge' : dim.andre.length > 0 ? andreDimLabel(dim.andre) : 'Variant';
+            const label = dim.farger.length > 0 ? (lang === 'en' ? 'Color' : 'Farge') : dim.andre.length > 0 ? andreDimLabel(dim.andre, lang) : 'Variant';
             return (
               <div>
                 <p className="pvariant-label">{label}</p>
@@ -535,26 +561,28 @@ export default function ProduktSide() {
             setLagtTil(true);
             setTimeout(() => setLagtTil(false), 2500);
           }}>
-            {lagtTil ? '✓ Lagt i handlekurven' : 'Legg i handlekurv'}
+            {lagtTil ? (lang === 'en' ? '✓ Added to cart' : '✓ Lagt i handlekurven') : (lang === 'en' ? 'Add to cart' : 'Legg i handlekurv')}
           </button>
 
           <div className="pdivider" />
-          {beskrivelse && (
-  <p className="pdesc" style={{ lineHeight: '1.8', color: '#555' }}>{beskrivelse}</p>
+          {(beskrivelse || PRODUKT_INNHOLD[id as string]?.beskrivelseEn) && (
+  <p className="pdesc" style={{ lineHeight: '1.8', color: '#555' }}>
+    {lang === 'en' ? (PRODUKT_INNHOLD[id as string]?.beskrivelseEn || beskrivelse) : beskrivelse}
+  </p>
 )}
 <div className="pdivider" />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
   <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
     <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
-    <p className="pdesc">Gratis frakt over kr 499</p>
+    <p className="pdesc">{lang === 'en' ? 'Free shipping over NOK 499' : 'Gratis frakt over kr 499'}</p>
   </div>
   <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
     <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
-    <p className="pdesc">Sporbar levering hjem til deg</p>
+    <p className="pdesc">{lang === 'en' ? 'Tracked delivery to your door' : 'Sporbar levering hjem til deg'}</p>
   </div>
   <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
     <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
-    <p className="pdesc">14 dagers angrerett</p>
+    <p className="pdesc">{lang === 'en' ? '14-day return policy' : '14 dagers angrerett'}</p>
   </div>
 </div>
         </div>
@@ -563,7 +591,7 @@ export default function ProduktSide() {
       {/* Relaterte produkter */}
       {(RELATERTE[id as string] ?? []).length > 0 && (
         <div className="relaterte">
-          <h2 className="relaterte-tittel">Du vil kanskje også like</h2>
+          <h2 className="relaterte-tittel">{lang === 'en' ? 'You might also like' : 'Du vil kanskje også like'}</h2>
           <div className="relaterte-grid">
             {(RELATERTE[id as string] ?? []).map(r => (
               <div key={r.cjId} className="rel-card" onClick={() => window.location.assign(`/produkt/${r.cjId}?pris=${r.pris}&margin=${r.margin}`)}>
@@ -602,7 +630,7 @@ export default function ProduktSide() {
           setLagtTil(true);
           setTimeout(() => setLagtTil(false), 2500);
         }}>
-          {lagtTil ? '✓ Lagt til' : 'Legg i handlekurv'}
+          {lagtTil ? (lang === 'en' ? '✓ Added' : '✓ Lagt til') : (lang === 'en' ? 'Add to cart' : 'Legg i handlekurv')}
         </button>
       </div>
 
@@ -611,7 +639,7 @@ export default function ProduktSide() {
           <div className="drawer-overlay" onClick={() => setKurvAapen(false)} />
           <div className="drawer">
             <div className="drawer-title">
-              Handlekurv
+              {lang === 'en' ? 'Cart' : 'Handlekurv'}
               <button className="drawer-close" onClick={() => setKurvAapen(false)}>×</button>
             </div>
             {handlekurv.length > 0 && (() => {
@@ -619,10 +647,10 @@ export default function ProduktSide() {
               return (
                 <div className="drawer-frakt">
                   {sub >= 499 ? (
-                    <p className="drawer-frakt-done">🎉 Du har gratis frakt!</p>
+                    <p className="drawer-frakt-done">🎉 {lang === 'en' ? 'You have free shipping!' : 'Du har gratis frakt!'}</p>
                   ) : (
                     <>
-                      <p className="drawer-frakt-label">Handle for <strong>kr {499 - sub},–</strong> til for å få <strong>gratis frakt</strong></p>
+                      <p className="drawer-frakt-label">{lang === 'en' ? <><strong>NOK {499 - sub}</strong> more for <strong>free shipping</strong></> : <>Handle for <strong>kr {499 - sub},–</strong> til for å få <strong>gratis frakt</strong></>}</p>
                       <div className="drawer-frakt-track">
                         <div className="drawer-frakt-fill" style={{ width: `${Math.min(100, (sub / 499) * 100)}%` }} />
                       </div>
@@ -632,7 +660,7 @@ export default function ProduktSide() {
               );
             })()}
             {handlekurv.length === 0 ? (
-              <p className="drawer-empty">Handlekurven er tom.</p>
+              <p className="drawer-empty">{lang === 'en' ? 'Your cart is empty.' : 'Handlekurven er tom.'}</p>
             ) : (
               handlekurv.map((item, i) => (
                 <div key={i} className="drawer-item">
@@ -661,14 +689,14 @@ export default function ProduktSide() {
             )}
             <div className="drawer-total">
               <div className="drawer-total-row">
-                <span>Totalt</span>
+                <span>{lang === 'en' ? 'Total' : 'Totalt'}</span>
                 <span>kr {handlekurv.reduce((sum, item) => sum + item.price * item.quantity, 0)},–</span>
               </div>
               <a href="/handlekurv" style={{ display: 'block', width: '100%', textAlign: 'center', padding: '12px', borderRadius: '8px', border: '1px solid #d4d4ce', color: '#1a1a18', textDecoration: 'none', fontSize: '14px', fontWeight: 500, marginBottom: '10px', fontFamily: "'DM Sans', sans-serif" }}>
-                Gå til handlekurv
+                {lang === 'en' ? 'View cart' : 'Gå til handlekurv'}
               </a>
               <button className="btn-checkout" onClick={async () => {
-                if (handlekurv.length === 0) { alert('Handlekurven er tom!'); return; }
+                if (handlekurv.length === 0) { alert(lang === 'en' ? 'Your cart is empty!' : 'Handlekurven er tom!'); return; }
                 try {
                   const res = await fetch('/api/checkout', {
                     method: 'POST',
@@ -687,7 +715,7 @@ export default function ProduktSide() {
                   alert('Noe gikk galt: ' + err);
                 }
               }}>
-                Gå til betaling
+                {lang === 'en' ? 'Go to checkout' : 'Gå til betaling'}
               </button>
             </div>
           </div>

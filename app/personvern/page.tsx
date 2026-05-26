@@ -1,4 +1,9 @@
+'use client';
+import { useLanguage } from '../../lib/useLanguage';
+
 export default function Personvern() {
+  const { lang, setLang } = useLanguage();
+  const T = lang === 'en';
   return (
     <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#fafaf8', minHeight: '100vh' }}>
       <style>{`
@@ -55,54 +60,61 @@ export default function Personvern() {
 
       <nav className="rnav">
         <a href="/" className="rlogo">Fjord<span>Fur</span></a>
-        <a href="/" className="rback">← Tilbake til butikken</a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: 'flex', gap: '3px', background: '#f0f0ec', borderRadius: '6px', padding: '3px' }}>
+            {(['no', 'en'] as const).map(l => (
+              <button key={l} onClick={() => setLang(l)} style={{ background: lang === l ? '#1a1a18' : 'transparent', color: lang === l ? '#fafaf8' : '#888', border: 'none', borderRadius: '4px', padding: '4px 9px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", letterSpacing: '0.06em' }}>{l.toUpperCase()}</button>
+            ))}
+          </div>
+          <a href="/" className="rback">← {T ? 'Back to store' : 'Tilbake til butikken'}</a>
+        </div>
       </nav>
 
       <div className="rcontainer">
-        <h1 className="rtitle">Personvernerklæring</h1>
-        <p className="rsub">Oppdatert mai 2026</p>
+        <h1 className="rtitle">{T ? 'Privacy Policy' : 'Personvernerklæring'}</h1>
+        <p className="rsub">{T ? 'Updated May 2026' : 'Oppdatert mai 2026'}</p>
 
         <div className="rsection">
-          <h2 className="rsection-title">Hvem er vi</h2>
-          <p>FjordFur er en norsk nettbutikk som selger kjæledyrutstyr. Org.nr. 930 827 525. Kontakt oss på contact.fjordfur@gmail.com ved spørsmål om personvern.</p>
+          <h2 className="rsection-title">{T ? 'Who we are' : 'Hvem er vi'}</h2>
+          <p>{T ? 'FjordFur is a Norwegian online pet supplies store. Org.nr. 930 827 525. Contact us at contact.fjordfur@gmail.com for privacy-related questions.' : 'FjordFur er en norsk nettbutikk som selger kjæledyrutstyr. Org.nr. 930 827 525. Kontakt oss på contact.fjordfur@gmail.com ved spørsmål om personvern.'}</p>
         </div>
 
         <div className="rsection">
-          <h2 className="rsection-title">Hvilke data samler vi inn</h2>
-          <p>Når du handler hos oss samler vi inn følgende opplysninger:</p>
-          <p>— Navn og adresse for levering av varer</p>
-          <p>— E-postadresse for ordrebekreftelse</p>
-          <p>— Betalingsinformasjon behandles av Stripe og lagres ikke hos oss</p>
+          <h2 className="rsection-title">{T ? 'What data we collect' : 'Hvilke data samler vi inn'}</h2>
+          <p>{T ? 'When you place an order, we collect:' : 'Når du handler hos oss samler vi inn følgende opplysninger:'}</p>
+          <p>— {T ? 'Name and address for delivery' : 'Navn og adresse for levering av varer'}</p>
+          <p>— {T ? 'Email address for order confirmation' : 'E-postadresse for ordrebekreftelse'}</p>
+          <p>— {T ? 'Payment information is handled by Stripe and is not stored by us' : 'Betalingsinformasjon behandles av Stripe og lagres ikke hos oss'}</p>
         </div>
 
         <div className="rsection">
-          <h2 className="rsection-title">Hvordan bruker vi dataene</h2>
-          <p>Vi bruker opplysningene kun til å behandle og levere din bestilling. Vi selger aldri dine personopplysninger til tredjeparter.</p>
-          <p>Ordredata deles med CJdropshipping utelukkende for å gjennomføre leveringen.</p>
+          <h2 className="rsection-title">{T ? 'How we use the data' : 'Hvordan bruker vi dataene'}</h2>
+          <p>{T ? 'We use your data solely to process and deliver your order. We never sell your personal data to third parties.' : 'Vi bruker opplysningene kun til å behandle og levere din bestilling. Vi selger aldri dine personopplysninger til tredjeparter.'}</p>
+          <p>{T ? 'Order data is shared with CJdropshipping solely for the purpose of fulfilling delivery.' : 'Ordredata deles med CJdropshipping utelukkende for å gjennomføre leveringen.'}</p>
         </div>
 
         <div className="rsection">
-          <h2 className="rsection-title">Hvor lenge lagrer vi dataene</h2>
-          <p>Ordredata (navn, adresse, e-post) lagres i 5 år i henhold til bokføringsloven.</p>
-          <p>Øvrige henvendelser via e-post slettes etter 3 år.</p>
-          <p>Du kan når som helst be om at dine opplysninger slettes ved å kontakte oss, med mindre lagringen er påkrevd av lov.</p>
+          <h2 className="rsection-title">{T ? 'How long we store data' : 'Hvor lenge lagrer vi dataene'}</h2>
+          <p>{T ? 'Order data (name, address, email) is stored for 5 years in accordance with Norwegian accounting law.' : 'Ordredata (navn, adresse, e-post) lagres i 5 år i henhold til bokføringsloven.'}</p>
+          <p>{T ? 'Other email correspondence is deleted after 3 years.' : 'Øvrige henvendelser via e-post slettes etter 3 år.'}</p>
+          <p>{T ? 'You may request deletion of your data at any time by contacting us, unless storage is required by law.' : 'Du kan når som helst be om at dine opplysninger slettes ved å kontakte oss, med mindre lagringen er påkrevd av lov.'}</p>
         </div>
 
         <div className="rsection">
-          <h2 className="rsection-title">Informasjonskapsler (cookies)</h2>
-          <p>Vi bruker kun nødvendige informasjonskapsler for at butikken skal fungere. Vi bruker ingen sporings- eller reklamecookies.</p>
+          <h2 className="rsection-title">{T ? 'Cookies' : 'Informasjonskapsler (cookies)'}</h2>
+          <p>{T ? 'We only use strictly necessary cookies required for the store to function. We do not use tracking or advertising cookies.' : 'Vi bruker kun nødvendige informasjonskapsler for at butikken skal fungere. Vi bruker ingen sporings- eller reklamecookies.'}</p>
         </div>
 
         <div className="rsection">
-          <h2 className="rsection-title">Dine rettigheter (GDPR)</h2>
-          <p>Du har rett til innsyn i, retting av, sletting av og utlevering av dine personopplysninger. Du kan også protestere mot eller kreve begrenset behandling.</p>
-          <p>Ta kontakt på contact.fjordfur@gmail.com for å benytte disse rettighetene. Du har også rett til å klage til Datatilsynet (datatilsynet.no).</p>
+          <h2 className="rsection-title">{T ? 'Your rights (GDPR)' : 'Dine rettigheter (GDPR)'}</h2>
+          <p>{T ? 'You have the right to access, correct, delete and receive a copy of your personal data. You may also object to or request restricted processing.' : 'Du har rett til innsyn i, retting av, sletting av og utlevering av dine personopplysninger. Du kan også protestere mot eller kreve begrenset behandling.'}</p>
+          <p>{T ? 'Contact us at contact.fjordfur@gmail.com to exercise these rights. You also have the right to file a complaint with the Norwegian Data Protection Authority (datatilsynet.no).' : 'Ta kontakt på contact.fjordfur@gmail.com for å benytte disse rettighetene. Du har også rett til å klage til Datatilsynet (datatilsynet.no).'}</p>
         </div>
 
         <div className="rsection">
-          <h2 className="rsection-title">Kontakt</h2>
-          <p><strong>E-post:</strong> contact.fjordfur@gmail.com</p>
-          <p><strong>Svartid:</strong> Vi svarer innen 1-2 virkedager</p>
+          <h2 className="rsection-title">{T ? 'Contact' : 'Kontakt'}</h2>
+          <p><strong>{T ? 'Email' : 'E-post'}:</strong> contact.fjordfur@gmail.com</p>
+          <p><strong>{T ? 'Response time' : 'Svartid'}:</strong> {T ? 'We respond within 1–2 business days' : 'Vi svarer innen 1-2 virkedager'}</p>
         </div>
       </div>
     </div>

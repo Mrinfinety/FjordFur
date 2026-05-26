@@ -1,4 +1,9 @@
+'use client';
+import { useLanguage } from '../../lib/useLanguage';
+
 export default function OmOss() {
+  const { lang, setLang } = useLanguage();
+  const T = lang === 'en';
   return (
     <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#fafaf8', minHeight: '100vh' }}>
       <style>{`
@@ -95,47 +100,54 @@ export default function OmOss() {
 
       <nav className="rnav">
         <a href="/" className="rlogo">Fjord<span>Fur</span></a>
-        <a href="/" className="rback">← Tilbake til butikken</a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: 'flex', gap: '3px', background: '#f0f0ec', borderRadius: '6px', padding: '3px' }}>
+            {(['no', 'en'] as const).map(l => (
+              <button key={l} onClick={() => setLang(l)} style={{ background: lang === l ? '#1a1a18' : 'transparent', color: lang === l ? '#fafaf8' : '#888', border: 'none', borderRadius: '4px', padding: '4px 9px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", letterSpacing: '0.06em' }}>{l.toUpperCase()}</button>
+            ))}
+          </div>
+          <a href="/" className="rback">← {T ? 'Back to store' : 'Tilbake til butikken'}</a>
+        </div>
       </nav>
 
       <div className="hero">
-        <p className="hero-tag">Om oss</p>
-        <h1 className="hero-h1">Vi elsker kjæledyr like mye som deg</h1>
-        <p className="hero-p">FjordFur ble startet av kjæledyreiere som ville gjøre det enkelt å finne gode produkter til rimelige priser — levert rett hjem til deg i Norge.</p>
+        <p className="hero-tag">{T ? 'About us' : 'Om oss'}</p>
+        <h1 className="hero-h1">{T ? 'We love pets as much as you do' : 'Vi elsker kjæledyr like mye som deg'}</h1>
+        <p className="hero-p">{T ? 'FjordFur was started by pet owners who wanted to make it easy to find great products at fair prices — delivered straight to your door.' : 'FjordFur ble startet av kjæledyreiere som ville gjøre det enkelt å finne gode produkter til rimelige priser — levert rett hjem til deg i Norge.'}</p>
       </div>
 
       <div className="rcontainer">
         <div className="grid">
           <div className="grid-item">
             <div className="grid-icon">🐾</div>
-            <div className="grid-title">Kjæledyr først</div>
-            <div className="grid-text">Vi velger kun produkter vi selv ville brukt på våre egne kjæledyr. Kvalitet og dyrevelferd er alltid i fokus.</div>
+            <div className="grid-title">{T ? 'Pets first' : 'Kjæledyr først'}</div>
+            <div className="grid-text">{T ? 'We only choose products we would use for our own pets. Quality and animal welfare are always our priority.' : 'Vi velger kun produkter vi selv ville brukt på våre egne kjæledyr. Kvalitet og dyrevelferd er alltid i fokus.'}</div>
           </div>
           <div className="grid-item">
-            <div className="grid-icon">🇳🇴</div>
-            <div className="grid-title">Norsk kundeservice</div>
-            <div className="grid-text">Vi er norske og svarer på norsk. Ta kontakt på contact.fjordfur@gmail.com — vi svarer innen 1-2 virkedager.</div>
+            <div className="grid-icon">💬</div>
+            <div className="grid-title">{T ? 'Friendly support' : 'God kundeservice'}</div>
+            <div className="grid-text">{T ? 'Questions? Reach us at contact.fjordfur@gmail.com — we respond within 1–2 business days.' : 'Ta kontakt på contact.fjordfur@gmail.com — vi svarer innen 1-2 virkedager.'}</div>
           </div>
           <div className="grid-item">
             <div className="grid-icon">♻️</div>
-            <div className="grid-title">Enkel handel</div>
-            <div className="grid-text">14 dagers angrerett, gratis frakt over 499 kr og enkel refusjon. Vi gjør det trygt og enkelt å handle online.</div>
+            <div className="grid-title">{T ? 'Easy shopping' : 'Enkel handel'}</div>
+            <div className="grid-text">{T ? '14-day returns, free shipping over NOK 499, and hassle-free refunds. We make online shopping safe and simple.' : '14 dagers angrerett, gratis frakt over 499 kr og enkel refusjon. Vi gjør det trygt og enkelt å handle online.'}</div>
           </div>
         </div>
 
         <div className="story">
           <div>
-            <p className="story-tag">Vår historie</p>
-            <h2 className="story-title">Startet av kjæledyreiere, for kjæledyreiere</h2>
-            <p className="story-text">Vi startet FjordFur fordi vi selv opplevde det som vanskelig å finne gode kjæledyrprodukter til fornuftige priser i Norge. Målet vårt er enkelt — gi norske kjæledyreiere tilgang til de beste produktene, levert raskt og trygt.</p>
+            <p className="story-tag">{T ? 'Our story' : 'Vår historie'}</p>
+            <h2 className="story-title">{T ? 'Started by pet owners, for pet owners' : 'Startet av kjæledyreiere, for kjæledyreiere'}</h2>
+            <p className="story-text">{T ? 'We started FjordFur because we found it hard to find quality pet products at fair prices. Our goal is simple — give pet owners access to the best products, delivered quickly and safely.' : 'Vi startet FjordFur fordi vi selv opplevde det som vanskelig å finne gode kjæledyrprodukter til fornuftige priser i Norge. Målet vårt er enkelt — gi norske kjæledyreiere tilgang til de beste produktene, levert raskt og trygt.'}</p>
           </div>
           <div className="story-img">🐕</div>
         </div>
 
         <div className="cta">
-          <h2 className="cta-title">Klar til å handle?</h2>
-          <p className="cta-text">Utforsk vårt sortiment av nøye utvalgte kjæledyrprodukter.</p>
-          <a href="/" className="cta-btn">Se alle produkter</a>
+          <h2 className="cta-title">{T ? 'Ready to shop?' : 'Klar til å handle?'}</h2>
+          <p className="cta-text">{T ? 'Explore our range of carefully selected pet products.' : 'Utforsk vårt sortiment av nøye utvalgte kjæledyrprodukter.'}</p>
+          <a href="/" className="cta-btn">{T ? 'See all products' : 'Se alle produkter'}</a>
         </div>
       </div>
     </div>

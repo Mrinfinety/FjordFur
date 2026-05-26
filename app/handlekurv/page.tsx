@@ -1,7 +1,28 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useLanguage, type Lang } from '../../lib/useLanguage';
+
+function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
+  return (
+    <div style={{ display: 'flex', gap: '3px', background: '#f0f0ec', borderRadius: '6px', padding: '3px' }}>
+      {(['no', 'en'] as const).map(l => (
+        <button key={l} onClick={() => setLang(l)} style={{
+          background: lang === l ? '#1a1a18' : 'transparent',
+          color: lang === l ? '#fafaf8' : '#888',
+          border: 'none', borderRadius: '4px',
+          padding: '4px 9px', fontSize: '11px', fontWeight: 600,
+          cursor: 'pointer', fontFamily: "'DM Sans', sans-serif",
+          letterSpacing: '0.06em',
+        }}>
+          {l.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 export default function HandlekurvSide() {
+  const { lang, setLang } = useLanguage();
   const [handlekurv, setHandlekurv] = useState<{ id: number; name: string; price: number; cjId: string; variantId: string; quantity: number }[]>([]);
   const [betaler, setBetaler] = useState(false);
 
@@ -190,20 +211,23 @@ export default function HandlekurvSide() {
 
       <nav className="nav">
         <a href="/" className="logo">Fjord<span>Fur</span></a>
-        <a href="/" className="back">← Fortsett å handle</a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <LangToggle lang={lang} setLang={setLang} />
+          <a href="/" className="back">← {lang === 'en' ? 'Continue shopping' : 'Fortsett å handle'}</a>
+        </div>
       </nav>
 
       <div className="container">
-        <h1 className="page-title">Handlekurv</h1>
+        <h1 className="page-title">{lang === 'en' ? 'Shopping Cart' : 'Handlekurv'}</h1>
 
         {handlekurv.length > 0 && (
           <div className="frakt-bar-wrap">
             {subtotal >= 499 ? (
-              <p className="frakt-bar-done">🎉 Du har gratis frakt på denne bestillingen!</p>
+              <p className="frakt-bar-done">🎉 {lang === 'en' ? 'You have free shipping on this order!' : 'Du har gratis frakt på denne bestillingen!'}</p>
             ) : (
               <>
                 <p className="frakt-bar-label">
-                  Handle for <strong>kr {499 - subtotal},–</strong> til for å få <strong>gratis frakt</strong>
+                  {lang === 'en' ? <><strong>NOK {499 - subtotal}</strong> more for <strong>free shipping</strong></> : <>Handle for <strong>kr {499 - subtotal},–</strong> til for å få <strong>gratis frakt</strong></>}
                 </p>
                 <div className="frakt-bar-track">
                   <div className="frakt-bar-fill" style={{ width: `${Math.min(100, (subtotal / 499) * 100)}%` }} />
@@ -216,8 +240,8 @@ export default function HandlekurvSide() {
         {handlekurv.length === 0 ? (
           <div className="empty-box">
             <div className="empty-icon">🛒</div>
-            <p className="empty-text">Handlekurven din er tom</p>
-            <a href="/" className="btn-shop">Se alle produkter</a>
+            <p className="empty-text">{lang === 'en' ? 'Your cart is empty' : 'Handlekurven din er tom'}</p>
+            <a href="/" className="btn-shop">{lang === 'en' ? 'Browse products' : 'Se alle produkter'}</a>
           </div>
         ) : (
           <div className="layout">
@@ -237,25 +261,25 @@ export default function HandlekurvSide() {
             </div>
 
             <div className="summary-box">
-              <div className="summary-title">Oppsummering</div>
+              <div className="summary-title">{lang === 'en' ? 'Order summary' : 'Oppsummering'}</div>
               <div className="summary-row">
                 <span>Subtotal</span>
                 <span>kr {subtotal},–</span>
               </div>
               <div className="summary-row">
-                <span>Frakt</span>
-                <span>{frakt === 0 ? 'Gratis' : `kr ${frakt},–`}</span>
+                <span>{lang === 'en' ? 'Shipping' : 'Frakt'}</span>
+                <span>{frakt === 0 ? (lang === 'en' ? 'Free' : 'Gratis') : `kr ${frakt},–`}</span>
               </div>
               <div className="summary-divider" />
               <div className="summary-total">
-                <span>Totalt</span>
+                <span>{lang === 'en' ? 'Total' : 'Totalt'}</span>
                 <span>kr {total},–</span>
               </div>
               {frakt > 0 && (
-                <p className="frakt-info">Handle for kr {499 - subtotal},– til for gratis frakt</p>
+                <p className="frakt-info">{lang === 'en' ? `Spend NOK ${499 - subtotal} more for free shipping` : `Handle for kr ${499 - subtotal},– til for gratis frakt`}</p>
               )}
               <button className="btn-pay" onClick={gaTilBetaling} disabled={betaler}>
-                {betaler ? 'Sender til betaling...' : 'Gå til betaling'}
+                {betaler ? (lang === 'en' ? 'Processing...' : 'Sender til betaling...') : (lang === 'en' ? 'Go to checkout' : 'Gå til betaling')}
               </button>
             </div>
           </div>
