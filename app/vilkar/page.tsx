@@ -47,7 +47,7 @@ export default function Vilkar() {
 
         <div className="rsection">
           <h2 className="rsection-title">Om FjordFur</h2>
-          <p>FjordFur er en norsk nettbutikk som selger kjæledyrutstyr. Ved å handle hos oss godtar du disse vilkårene.</p>
+          <p>FjordFur er en norsk nettbutikk som selger kjæledyrutstyr. Org.nr. 930 827 525. Kontakt: contact.fjordfur@gmail.com. Ved å handle hos oss godtar du disse vilkårene.</p>
           <p>Kontakt: contact.fjordfur@gmail.com</p>
         </div>
 

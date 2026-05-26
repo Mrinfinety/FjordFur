@@ -522,7 +522,10 @@ useEffect(() => {
 
       {/* Footer */}
       <footer style={{ borderTop: '1px solid #e8e8e4', padding: '40px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-  <div className="footer-logo">Fjord<span>Fur</span></div>
+  <div>
+    <div className="footer-logo">Fjord<span>Fur</span></div>
+    <div style={{ fontSize: '12px', color: '#aaa', marginTop: '6px' }}>Org.nr. 930 827 525</div>
+  </div>
   <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
     <a href="/retur" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Retur & Refusjon</a>
     <a href="/angreskjema" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>Angreskjema</a>
