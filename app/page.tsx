@@ -332,6 +332,15 @@ useEffect(() => {
         }
         .drawer-item-name { color: #1a1a18; font-weight: 500; }
         .drawer-empty { color: #aaa; font-size: 14px; margin-top: 16px; font-weight: 300; }
+        .drawer-frakt {
+          background: #f4f4f0; border-radius: 8px;
+          padding: 12px 14px; margin-bottom: 16px;
+        }
+        .drawer-frakt-label { font-size: 13px; color: #444; margin-bottom: 8px; line-height: 1.4; }
+        .drawer-frakt-label strong { color: #1a1a18; }
+        .drawer-frakt-track { height: 5px; background: #e0e0da; border-radius: 99px; overflow: hidden; }
+        .drawer-frakt-fill { height: 100%; border-radius: 99px; background: #1D9E75; transition: width 0.4s ease; }
+        .drawer-frakt-done { font-size: 13px; color: #1D9E75; font-weight: 500; }
         .drawer-total {
           margin-top: auto; padding-top: 24px;
           border-top: 1px solid #e8e8e4;
@@ -506,6 +515,23 @@ useEffect(() => {
               Handlekurv
               <button className="drawer-close" onClick={() => setKurvAapen(false)}>×</button>
             </div>
+            {handlekurv.length > 0 && (() => {
+              const sub = handlekurv.reduce((s, i) => s + i.price * i.quantity, 0);
+              return (
+                <div className="drawer-frakt">
+                  {sub >= 499 ? (
+                    <p className="drawer-frakt-done">🎉 Du har gratis frakt!</p>
+                  ) : (
+                    <>
+                      <p className="drawer-frakt-label">Handle for <strong>kr {499 - sub},–</strong> til for å få <strong>gratis frakt</strong></p>
+                      <div className="drawer-frakt-track">
+                        <div className="drawer-frakt-fill" style={{ width: `${Math.min(100, (sub / 499) * 100)}%` }} />
+                      </div>
+                    </>
+                  )}
+                </div>
+              );
+            })()}
             {handlekurv.length === 0 ? (
               <p className="drawer-empty">Handlekurven er tom.</p>
             ) : (
