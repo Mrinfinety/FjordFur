@@ -63,7 +63,7 @@ function hentFarge(key: string): string | null {
 function hentAnnenDim(key: string): string {
   let k = key.trim();
   FARGE_ORD.forEach(f => { k = k.replace(new RegExp(`\\b${f}\\b`, 'gi'), ''); });
-  return k.trim();
+  return k.trim().toLowerCase();
 }
 
 function hentDimensjoner(varianter: any[]) {
