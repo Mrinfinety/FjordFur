@@ -254,7 +254,7 @@ export default function HandlekurvSide() {
                     <span className="qty-num">{item.quantity}</span>
                     <button className="qty-btn" onClick={() => endreAntall(i, 1)}>+</button>
                   </div>
-                  <div className="item-price">kr {item.price * item.quantity},–</div>
+                  <div className="item-price">{lang === 'en' ? `NOK ${item.price * item.quantity}` : `kr ${item.price * item.quantity},–`}</div>
                   <button className="remove-btn" onClick={() => fjern(i)}>×</button>
                 </div>
               ))}
@@ -264,16 +264,16 @@ export default function HandlekurvSide() {
               <div className="summary-title">{lang === 'en' ? 'Order summary' : 'Oppsummering'}</div>
               <div className="summary-row">
                 <span>Subtotal</span>
-                <span>kr {subtotal},–</span>
+                <span>{lang === 'en' ? `NOK ${subtotal}` : `kr ${subtotal},–`}</span>
               </div>
               <div className="summary-row">
                 <span>{lang === 'en' ? 'Shipping' : 'Frakt'}</span>
-                <span>{frakt === 0 ? (lang === 'en' ? 'Free' : 'Gratis') : `kr ${frakt},–`}</span>
+                <span>{frakt === 0 ? (lang === 'en' ? 'Free' : 'Gratis') : (lang === 'en' ? `NOK ${frakt}` : `kr ${frakt},–`)}</span>
               </div>
               <div className="summary-divider" />
               <div className="summary-total">
                 <span>{lang === 'en' ? 'Total' : 'Totalt'}</span>
-                <span>kr {total},–</span>
+                <span>{lang === 'en' ? `NOK ${total}` : `kr ${total},–`}</span>
               </div>
               {frakt > 0 && (
                 <p className="frakt-info">{lang === 'en' ? `Spend NOK ${499 - subtotal} more for free shipping` : `Handle for kr ${499 - subtotal},– til for gratis frakt`}</p>

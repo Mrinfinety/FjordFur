@@ -517,7 +517,7 @@ useEffect(() => {
         <div className="card-name">{lang === 'en' ? (p as any).nameEn : p.name}</div>
         <div className="card-sub">{lang === 'en' ? (p as any).subEn : p.sub}</div>
         <div className="card-footer">
-          <span className="price">kr {p.price},–</span>
+          <span className="price">{lang === 'en' ? `NOK ${p.price}` : `kr ${p.price},–`}</span>
           <button className="add" onClick={(e) => { e.stopPropagation(); leggTil(p); }}>
             {lang === 'en' ? 'Add' : 'Legg til'}
           </button>
@@ -609,7 +609,7 @@ useEffect(() => {
                       localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
                       return neste;
                     })}>+</button>
-                    <span style={{ marginLeft: 'auto', fontSize: '14px', fontWeight: 500, color: '#1a1a18' }}>kr {item.price * item.quantity},–</span>
+                    <span style={{ marginLeft: 'auto', fontSize: '14px', fontWeight: 500, color: '#1a1a18' }}>{lang === 'en' ? `NOK ${item.price * item.quantity}` : `kr ${item.price * item.quantity},–`}</span>
                     <button onClick={() => setHandlekurv(prev => {
                       const neste = prev.filter((_, idx) => idx !== i);
                       localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
@@ -622,7 +622,7 @@ useEffect(() => {
             <div className="drawer-total">
               <div className="drawer-total-row">
                 <span>{lang === 'en' ? 'Total' : 'Totalt'}</span>
-                <span>kr {handlekurv.reduce((sum, item) => sum + item.price * item.quantity, 0)},–</span>
+                <span>{lang === 'en' ? `NOK ${handlekurv.reduce((sum, item) => sum + item.price * item.quantity, 0)}` : `kr ${handlekurv.reduce((sum, item) => sum + item.price * item.quantity, 0)},–`}</span>
               </div>
               <a href="/handlekurv" style={{ display: 'block', width: '100%', textAlign: 'center', padding: '12px', borderRadius: '8px', border: '1px solid #d4d4ce', color: '#1a1a18', textDecoration: 'none', fontSize: '14px', fontWeight: 500, marginBottom: '10px', fontFamily: "'DM Sans', sans-serif" }}>
                 {lang === 'en' ? 'View cart' : 'Gå til handlekurv'}

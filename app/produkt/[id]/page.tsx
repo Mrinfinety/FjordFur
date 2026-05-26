@@ -492,7 +492,7 @@ export default function ProduktSide() {
         <div className="pinfo">
           <p className="ptag">FjordFur</p>
           <h1 className="ptitle">{lang === 'en' ? (PRODUKT_INNHOLD[id as string]?.navnEn || produkt.productNameEn) : (produktNavn || produkt.productNameEn)}</h1>
-          <p className="pprice">kr {visPris},–</p>
+          <p className="pprice">{lang === 'en' ? `NOK ${visPris}` : `kr ${visPris},–`}</p>
           <div className="pdivider" />
 
           {produkt.variants?.length > 1 && (() => {
@@ -614,7 +614,7 @@ export default function ProduktSide() {
                 </div>
                 <div className="rel-body">
                   <div className="rel-name">{lang === 'en' ? r.navnEn : r.navn}</div>
-                  <div className="rel-price">kr {r.pris},–</div>
+                  <div className="rel-price">{lang === 'en' ? `NOK ${r.pris}` : `kr ${r.pris},–`}</div>
                 </div>
               </div>
             ))}
@@ -625,7 +625,7 @@ export default function ProduktSide() {
       {/* Sticky kjøpsknapp på mobil */}
       <div className="sticky-add">
         <span className="sticky-add-name">{lang === 'en' ? (PRODUKT_INNHOLD[id as string]?.navnEn || produkt.productNameEn) : (produktNavn || produkt.productNameEn)}</span>
-        <span className="sticky-add-price">kr {visPris},–</span>
+        <span className="sticky-add-price">{lang === 'en' ? `NOK ${visPris}` : `kr ${visPris},–`}</span>
         <button className="sticky-add-btn" onClick={() => {
           if (!valgtVariant?.vid) return;
           setHandlekurv(prev => {
@@ -689,7 +689,7 @@ export default function ProduktSide() {
                       localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
                       return neste;
                     })}>+</button>
-                    <span style={{ marginLeft: 'auto', fontSize: '14px', fontWeight: 500, color: '#1a1a18' }}>kr {item.price * item.quantity},–</span>
+                    <span style={{ marginLeft: 'auto', fontSize: '14px', fontWeight: 500, color: '#1a1a18' }}>{lang === 'en' ? `NOK ${item.price * item.quantity}` : `kr ${item.price * item.quantity},–`}</span>
                     <button onClick={() => setHandlekurv(prev => {
                       const neste = prev.filter((_, idx) => idx !== i);
                       localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
@@ -702,7 +702,7 @@ export default function ProduktSide() {
             <div className="drawer-total">
               <div className="drawer-total-row">
                 <span>{lang === 'en' ? 'Total' : 'Totalt'}</span>
-                <span>kr {handlekurv.reduce((sum, item) => sum + item.price * item.quantity, 0)},–</span>
+                <span>{lang === 'en' ? `NOK ${handlekurv.reduce((sum, item) => sum + item.price * item.quantity, 0)}` : `kr ${handlekurv.reduce((sum, item) => sum + item.price * item.quantity, 0)},–`}</span>
               </div>
               <a href="/handlekurv" style={{ display: 'block', width: '100%', textAlign: 'center', padding: '12px', borderRadius: '8px', border: '1px solid #d4d4ce', color: '#1a1a18', textDecoration: 'none', fontSize: '14px', fontWeight: 500, marginBottom: '10px', fontFamily: "'DM Sans', sans-serif" }}>
                 {lang === 'en' ? 'View cart' : 'Gå til handlekurv'}
