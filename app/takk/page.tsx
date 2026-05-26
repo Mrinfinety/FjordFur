@@ -23,9 +23,14 @@ export default function Takk() {
           ? 'We have received your order and are processing it now. Estimated delivery time is 2–3 weeks. You will receive tracking information by email once your parcel has been shipped.'
           : 'Vi har mottatt bestillingen din og behandler den nå. Estimert leveringstid er 2–3 uker. Du vil motta sporingsinfo på e-post når pakken er sendt.'}
       </p>
-      <a href="/" style={{ marginTop: '16px', background: '#1a1a18', color: '#fafaf8', padding: '12px 28px', borderRadius: '8px', textDecoration: 'none', fontSize: '14px', fontWeight: 500 }}>
-        {lang === 'en' ? 'Back to store' : 'Tilbake til butikken'}
-      </a>
+      <div style={{ display: 'flex', gap: '12px', marginTop: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <a href="/sporing" style={{ background: '#1D9E75', color: '#fafaf8', padding: '12px 28px', borderRadius: '8px', textDecoration: 'none', fontSize: '14px', fontWeight: 500 }}>
+          {lang === 'en' ? 'Track your order' : 'Spor bestillingen'}
+        </a>
+        <a href="/" style={{ background: '#1a1a18', color: '#fafaf8', padding: '12px 28px', borderRadius: '8px', textDecoration: 'none', fontSize: '14px', fontWeight: 500 }}>
+          {lang === 'en' ? 'Back to store' : 'Tilbake til butikken'}
+        </a>
+      </div>
     </div>
   );
 }
