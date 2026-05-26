@@ -6,7 +6,7 @@ const products = [
   { id: 2, name: 'Vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, margin: 120, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
 ];
 
-const kategorier = ['alle', 'hund', 'katt', 'fugl', 'fisk', 'gnager'];
+const kategorier = ['alle', 'hund', 'katt'];
 
 async function fetchCJProduct(pid: string) {
   const res = await fetch(`/api/products?pid=${pid}`);
@@ -401,8 +401,6 @@ useEffect(() => {
         <div className="nav-links">
           <a onClick={() => setAktivKat('hund')}>Hund</a>
           <a onClick={() => setAktivKat('katt')}>Katt</a>
-          <a onClick={() => setAktivKat('fugl')}>Fugl</a>
-          <a onClick={() => setAktivKat('fisk')}>Fisk</a>
         </div>
         <div className="nav-right">
           <button className="cart-btn" onClick={() => setKurvAapen(true)}>
