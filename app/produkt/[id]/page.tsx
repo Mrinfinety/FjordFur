@@ -23,12 +23,10 @@ const PRODUKT_INNHOLD: Record<string, { navn: string; beskrivelse: string; stars
   '1653041912300969984': {
     navn: 'Sakte-forer Skål',
     beskrivelse: 'En spesiallaget skål som bremser ned spisetempoet til hunden eller katten din. Forhindrer kvelning, oppblåsthet og fordøyelsesproblemer som kan oppstå ved rask spising. Ribbestrukturen i bunnen gjør at kjæledyret ditt må jobbe litt for maten — noe som stimulerer både kropp og hjerne. Laget av slitesterkt, BPA-fritt materiale som er enkelt å rengjøre.',
-    stars: 4.8, reviews: 124,
   },
   '2504100230321610200': {
     navn: 'Vannflaske 2-i-1',
     beskrivelse: 'Praktisk 2-i-1 løsning med integrert vannflaske og matbeholder i én enhet. Perfekt for turer, hytteturer og utflukter med hunden din. Trykk på knappen for å fylle den innebygde drikkekoppen med akkurat passe vann — raskt og uten søl. Kompakt design som enkelt får plass i en ryggsekk eller hundebag.',
-    stars: 4.7, reviews: 89,
   },
 };
 
@@ -383,12 +381,6 @@ export default function ProduktSide() {
         <div className="pinfo">
           <p className="ptag">FjordFur</p>
           <h1 className="ptitle">{produktNavn || produkt.productNameEn}</h1>
-          {PRODUKT_INNHOLD[id as string] && (
-            <div className="pstars">
-              <span className="pstars-icons">{'★'.repeat(Math.floor(PRODUKT_INNHOLD[id as string].stars))}{'☆'.repeat(5 - Math.floor(PRODUKT_INNHOLD[id as string].stars))}</span>
-              <span className="pstars-text">{PRODUKT_INNHOLD[id as string].stars} ({PRODUKT_INNHOLD[id as string].reviews} anmeldelser)</span>
-            </div>
-          )}
           <p className="pprice">kr {visPris},–</p>
           <div className="pdivider" />
 

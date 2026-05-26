@@ -2,8 +2,8 @@
 import { useState, useEffect } from 'react';
 
 const products = [
-  { id: 1, name: 'Sakte-forer Skål', sub: 'Forhindrer kvelning, hund/katt', price: 149, margin: 132, bildIndex: 1, emoji: '🥣', cat: 'hund', cjId: '1653041912300969984', stars: 4.8, reviews: 124 },
-  { id: 2, name: 'Vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, margin: 120, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200', stars: 4.7, reviews: 89 },
+  { id: 1, name: 'Sakte-forer Skål', sub: 'Forhindrer kvelning, hund/katt', price: 149, margin: 132, bildIndex: 1, emoji: '🥣', cat: 'hund', cjId: '1653041912300969984' },
+  { id: 2, name: 'Vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, margin: 120, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
 ];
 
 const kategorier = ['alle', 'hund', 'katt'];
@@ -489,10 +489,6 @@ useEffect(() => {
       <div className="card-body">
         <div className="card-name">{p.name}</div>
         <div className="card-sub">{p.sub}</div>
-        <div className="card-stars">
-          <span className="stars-icons">{'★'.repeat(Math.floor((p as any).stars))}{'☆'.repeat(5 - Math.floor((p as any).stars))}</span>
-          <span className="stars-count">{(p as any).stars} ({(p as any).reviews})</span>
-        </div>
         <div className="card-footer">
           <span className="price">kr {p.price},–</span>
           <button className="add" onClick={(e) => { e.stopPropagation(); leggTil(p); }}>
