@@ -62,7 +62,15 @@ useEffect(() => {
   });
 }, []);
 
-  const filtrerte = aktivKat === 'alle' ? products : products.filter(p => p.cat === aktivKat);
+  const [sortering, setSortering] = useState('anbefalt');
+
+  const filtrerte = (() => {
+    const liste = aktivKat === 'alle' ? [...products] : products.filter(p => p.cat === aktivKat);
+    if (sortering === 'pris-lav') return liste.sort((a, b) => a.price - b.price);
+    if (sortering === 'pris-høy') return liste.sort((a, b) => b.price - a.price);
+    if (sortering === 'populær') return liste.sort((a, b) => (b as any).reviews - (a as any).reviews);
+    return liste;
+  })();
 
   function leggTil(p: typeof products[0]) {
     const variant = cjProducts[p.cjId]?.variants?.[0];
@@ -199,7 +207,19 @@ useEffect(() => {
           font-size: 28px; font-weight: 600; color: #1a1a18;
         }
 
-        .cats { display: flex; gap: 8px; margin-bottom: 36px; flex-wrap: wrap; }
+        .cats-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px; flex-wrap: wrap; gap: 12px; }
+        .cats { display: flex; gap: 8px; flex-wrap: wrap; }
+        .sort-select {
+          appearance: none; -webkit-appearance: none;
+          background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+          border: 1px solid #d4d4ce; border-radius: 8px;
+          padding: 8px 36px 8px 14px;
+          font-size: 13px; color: #444; cursor: pointer;
+          font-family: 'DM Sans', sans-serif;
+          transition: border-color 0.2s;
+        }
+        .sort-select:hover { border-color: #1a1a18; }
+        .sort-select:focus { outline: none; border-color: #1D9E75; }
         .cat {
           padding: 7px 18px; border-radius: 99px;
           border: 1px solid #d4d4ce;
@@ -438,16 +458,24 @@ useEffect(() => {
           <h2 className="section-title">Produkter</h2>
         </div>
 
-        <div className="cats">
-          {kategorier.map(kat => (
-            <button
-              key={kat}
-              className={`cat ${aktivKat === kat ? 'active' : ''}`}
-              onClick={() => setAktivKat(kat)}
-            >
-              {kat.charAt(0).toUpperCase() + kat.slice(1)}
-            </button>
-          ))}
+        <div className="cats-row">
+          <div className="cats">
+            {kategorier.map(kat => (
+              <button
+                key={kat}
+                className={`cat ${aktivKat === kat ? 'active' : ''}`}
+                onClick={() => setAktivKat(kat)}
+              >
+                {kat.charAt(0).toUpperCase() + kat.slice(1)}
+              </button>
+            ))}
+          </div>
+          <select className="sort-select" value={sortering} onChange={e => setSortering(e.target.value)}>
+            <option value="anbefalt">Anbefalt</option>
+            <option value="populær">Mest populær</option>
+            <option value="pris-lav">Pris: lav til høy</option>
+            <option value="pris-høy">Pris: høy til lav</option>
+          </select>
         </div>
 
 <div className="grid">
