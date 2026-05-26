@@ -114,7 +114,7 @@ useEffect(() => {
         localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
         return neste;
       }
-      const item = { id: p.id, name: p.name, price: p.price, cjId: p.cjId, variantId: variant.vid, quantity: 1 };
+      const item = { id: p.id, name: p.name, nameEn: (p as any).nameEn, price: p.price, cjId: p.cjId, variantId: variant.vid, quantity: 1 };
       const neste = [...prev, item];
       localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
       return neste;
@@ -510,7 +510,7 @@ useEffect(() => {
     <div key={p.id} className="card" onClick={() => p.cjId && window.location.assign(`/produkt/${p.cjId}?pris=${p.price}&margin=${p.margin}`)}>
       <div className="card-img">
         {p.cjId && cjProducts[p.cjId]
-          ? <img src={cjProducts[p.cjId].productImageSet?.[(p as any).bildIndex ?? 0] || cjProducts[p.cjId].bigImage} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ? <img src={cjProducts[p.cjId].productImageSet?.[(p as any).bildIndex ?? 0] || cjProducts[p.cjId].bigImage} alt={lang === 'en' ? (p as any).nameEn : p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           : <div style={{ width: '100%', height: '100%', background: '#f4f4f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px' }}>{p.emoji}</div>}
       </div>
       <div className="card-body">

@@ -3,7 +3,8 @@ import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' as any });
 
 export async function POST(req: Request) {
-  const { items } = await req.json();
+  const { items, lang } = await req.json();
+  const en = lang === 'en';
   const reqUrl = new URL(req.url);
   const origin = `${reqUrl.protocol}//${reqUrl.host}`;
 
@@ -11,10 +12,10 @@ export async function POST(req: Request) {
   const fraktNok = totalNok >= 499 ? 0 : 99;
 
   const lineItems = [
-    ...items.map((item: { name: string; price: number; quantity: number }) => ({
+    ...items.map((item: { name: string; nameEn?: string; price: number; quantity: number }) => ({
       price_data: {
         currency: 'nok',
-        product_data: { name: item.name },
+        product_data: { name: en ? (item.nameEn || item.name) : item.name },
         unit_amount: item.price * 100,
       },
       quantity: item.quantity,
@@ -22,7 +23,7 @@ export async function POST(req: Request) {
     ...(fraktNok > 0 ? [{
       price_data: {
         currency: 'nok',
-        product_data: { name: 'Frakt' },
+        product_data: { name: en ? 'Shipping' : 'Frakt' },
         unit_amount: fraktNok * 100,
       },
       quantity: 1,
@@ -31,6 +32,7 @@ export async function POST(req: Request) {
 
   const session = await stripe.checkout.sessions.create({
     phone_number_collection: { enabled: true },
+    locale: en ? 'en' : 'nb',
     line_items: lineItems,
     metadata: {
       cj_items: JSON.stringify(items.map((item: any) => ({

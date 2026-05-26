@@ -23,7 +23,7 @@ function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
 
 export default function HandlekurvSide() {
   const { lang, setLang } = useLanguage();
-  const [handlekurv, setHandlekurv] = useState<{ id: number; name: string; price: number; cjId: string; variantId: string; quantity: number }[]>([]);
+  const [handlekurv, setHandlekurv] = useState<{ id: number; name: string; nameEn?: string; price: number; cjId: string; variantId: string; quantity: number }[]>([]);
   const [betaler, setBetaler] = useState(false);
 
   useEffect(() => {
@@ -61,18 +61,18 @@ export default function HandlekurvSide() {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: handlekurv.map(item => ({ name: item.name, price: item.price, quantity: item.quantity, cjId: item.cjId, variantId: item.variantId })) }),
+        body: JSON.stringify({ lang, items: handlekurv.map(item => ({ name: item.name, nameEn: item.nameEn, price: item.price, quantity: item.quantity, cjId: item.cjId, variantId: item.variantId })) }),
       });
       const data = await res.json();
       if (data.url) {
         localStorage.removeItem('fjordfur-cart');
         window.location.href = data.url;
       } else {
-        alert('Feil: ' + JSON.stringify(data));
+        alert((lang === 'en' ? 'Error: ' : 'Feil: ') + JSON.stringify(data));
         setBetaler(false);
       }
     } catch (err) {
-      alert('Noe gikk galt: ' + err);
+      alert((lang === 'en' ? 'Something went wrong: ' : 'Noe gikk galt: ') + err);
       setBetaler(false);
     }
   }
@@ -248,7 +248,7 @@ export default function HandlekurvSide() {
             <div className="items-box">
               {handlekurv.map((item, i) => (
                 <div key={i} className="item-row">
-                  <div className="item-name">{item.name}</div>
+                  <div className="item-name">{lang === 'en' ? (item.nameEn || item.name) : item.name}</div>
                   <div className="qty-ctrl">
                     <button className="qty-btn" onClick={() => endreAntall(i, -1)}>−</button>
                     <span className="qty-num">{item.quantity}</span>

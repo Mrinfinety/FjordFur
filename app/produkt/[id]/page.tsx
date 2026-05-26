@@ -145,7 +145,7 @@ export default function ProduktSide() {
   const [produktNavn, setProduktNavn] = useState('');
   const [aktivBilde, setAktivBilde] = useState(0);
   const [lagtTil, setLagtTil] = useState(false);
-  const [handlekurv, setHandlekurv] = useState<{ id: number; name: string; price: number; cjId: string; variantId: string; quantity: number }[]>([]);
+  const [handlekurv, setHandlekurv] = useState<{ id: number; name: string; nameEn?: string; price: number; cjId: string; variantId: string; quantity: number }[]>([]);
   const [kurvaapen, setKurvAapen] = useState(false);
   const [relBilder, setRelBilder] = useState<Record<string, string>>({});
   const [valgtFarge, setValgtFarge] = useState('');
@@ -540,7 +540,7 @@ export default function ProduktSide() {
               );
             }
 
-            const label = dim.farger.length > 0 ? (lang === 'en' ? 'Color' : 'Farge') : dim.andre.length > 0 ? andreDimLabel(dim.andre, lang) : 'Variant';
+            const label = dim.farger.length > 0 ? (lang === 'en' ? 'Color' : 'Farge') : dim.andre.length > 0 ? andreDimLabel(dim.andre, lang) : (lang === 'en' ? 'Variant' : 'Variant');
             return (
               <div>
                 <p className="pvariant-label">{label}</p>
@@ -565,7 +565,7 @@ export default function ProduktSide() {
               if (eksisterende !== -1) {
                 neste = prev.map((i, idx) => idx === eksisterende ? { ...i, quantity: (i.quantity || 1) + 1 } : i);
               } else {
-                neste = [...prev, { id: Date.now(), name: produktNavn || produkt.productNameEn, price: visPris, cjId: id as string, variantId: valgtVariant.vid, quantity: 1 }];
+                neste = [...prev, { id: Date.now(), name: produktNavn || produkt.productNameEn, nameEn: PRODUKT_INNHOLD[id as string]?.navnEn || produkt.productNameEn, price: visPris, cjId: id as string, variantId: valgtVariant.vid, quantity: 1 }];
               }
               localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
               return neste;
@@ -609,7 +609,7 @@ export default function ProduktSide() {
               <div key={r.cjId} className="rel-card" onClick={() => window.location.assign(`/produkt/${r.cjId}?pris=${r.pris}&margin=${r.margin}`)}>
                 <div className="rel-img">
                   {relBilder[r.cjId]
-                    ? <img src={relBilder[r.cjId]} alt={r.navn} />
+                    ? <img src={relBilder[r.cjId]} alt={lang === 'en' ? r.navnEn : r.navn} />
                     : <div style={{ width: '100%', height: '100%', background: '#f4f4f0' }} />}
                 </div>
                 <div className="rel-body">
@@ -624,7 +624,7 @@ export default function ProduktSide() {
 
       {/* Sticky kjøpsknapp på mobil */}
       <div className="sticky-add">
-        <span className="sticky-add-name">{produktNavn || produkt.productNameEn}</span>
+        <span className="sticky-add-name">{lang === 'en' ? (PRODUKT_INNHOLD[id as string]?.navnEn || produkt.productNameEn) : (produktNavn || produkt.productNameEn)}</span>
         <span className="sticky-add-price">kr {visPris},–</span>
         <button className="sticky-add-btn" onClick={() => {
           if (!valgtVariant?.vid) return;
@@ -634,7 +634,7 @@ export default function ProduktSide() {
             if (eksisterende !== -1) {
               neste = prev.map((i, idx) => idx === eksisterende ? { ...i, quantity: (i.quantity || 1) + 1 } : i);
             } else {
-              neste = [...prev, { id: Date.now(), name: produktNavn || produkt.productNameEn, price: visPris, cjId: id as string, variantId: valgtVariant.vid, quantity: 1 }];
+              neste = [...prev, { id: Date.now(), name: produktNavn || produkt.productNameEn, nameEn: PRODUKT_INNHOLD[id as string]?.navnEn || produkt.productNameEn, price: visPris, cjId: id as string, variantId: valgtVariant.vid, quantity: 1 }];
             }
             localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
             return neste;
@@ -676,7 +676,7 @@ export default function ProduktSide() {
             ) : (
               handlekurv.map((item, i) => (
                 <div key={i} className="drawer-item">
-                  <span className="drawer-item-name">{item.name}</span>
+                  <span className="drawer-item-name">{lang === 'en' ? (item.nameEn || item.name) : item.name}</span>
                   <div className="drawer-item-row">
                     <button className="drawer-qty-btn" onClick={() => setHandlekurv(prev => {
                       const neste = prev.map((x, idx) => idx === i ? { ...x, quantity: Math.max(1, x.quantity - 1) } : x);
@@ -713,7 +713,7 @@ export default function ProduktSide() {
                   const res = await fetch('/api/checkout', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ items: handlekurv.map(item => ({ name: item.name, price: item.price, quantity: item.quantity, cjId: item.cjId, variantId: item.variantId })) }),
+                    body: JSON.stringify({ lang, items: handlekurv.map(item => ({ name: item.name, nameEn: item.nameEn, price: item.price, quantity: item.quantity, cjId: item.cjId, variantId: item.variantId })) }),
                   });
                   const data = await res.json();
                   if (data.url) {
