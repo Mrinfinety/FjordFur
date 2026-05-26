@@ -455,6 +455,23 @@ export default function ProduktSide() {
         </div>
       </nav>
 
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": produktNavn || produkt.productNameEn,
+        "description": beskrivelse || produkt.productNameEn,
+        "brand": { "@type": "Brand", "name": "FjordFur" },
+        "image": produkt.bigImage,
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "NOK",
+          "price": String(visPris),
+          "availability": "https://schema.org/InStock",
+          "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://fjordfur.vercel.app"}/produkt/${id}`,
+          "seller": { "@type": "Organization", "name": "FjordFur" },
+        },
+      })}} />
+
       <div className="pcontainer">
         <div className="pimages">
   <div style={{ position: 'relative' }}>

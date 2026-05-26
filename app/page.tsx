@@ -442,6 +442,18 @@ useEffect(() => {
         }
       `}</style>
 
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "OnlineStore",
+        "name": "FjordFur",
+        "url": process.env.NEXT_PUBLIC_SITE_URL || "https://fjordfur.vercel.app",
+        "description": "Nøye utvalgte kjæledyrprodukter av høy kvalitet. Gratis frakt over 499 kr. 14 dagers angrerett.",
+        "logo": `${process.env.NEXT_PUBLIC_SITE_URL || "https://fjordfur.vercel.app"}/icon.svg`,
+        "contactPoint": { "@type": "ContactPoint", "email": "contact.fjordfur@gmail.com", "contactType": "customer service" },
+        "areaServed": "NO",
+        "currenciesAccepted": "NOK",
+      })}} />
+
       {/* Navbar */}
       <nav className="nav">
         <div className="logo">Fjord<span>Fur</span></div>
