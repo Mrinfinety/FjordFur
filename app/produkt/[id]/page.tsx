@@ -418,6 +418,9 @@ export default function ProduktSide() {
                 <span>Totalt</span>
                 <span>kr {handlekurv.reduce((sum, item) => sum + item.price * item.quantity, 0)},–</span>
               </div>
+              <a href="/handlekurv" style={{ display: 'block', width: '100%', textAlign: 'center', padding: '12px', borderRadius: '8px', border: '1px solid #d4d4ce', color: '#1a1a18', textDecoration: 'none', fontSize: '14px', fontWeight: 500, marginBottom: '10px', fontFamily: "'DM Sans', sans-serif" }}>
+                Gå til handlekurv
+              </a>
               <button className="btn-checkout" onClick={async () => {
                 if (handlekurv.length === 0) { alert('Handlekurven er tom!'); return; }
                 try {
