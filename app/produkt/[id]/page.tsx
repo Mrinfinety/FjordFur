@@ -177,6 +177,17 @@ export default function ProduktSide() {
     </div>
   );
 
+  const allebilder: string[] = [...(produkt.productImageSet || [])];
+  produkt.variants?.forEach((v: any) => {
+    if (v.variantImage && !allebilder.includes(v.variantImage)) allebilder.push(v.variantImage);
+  });
+  function gaTilVariantBilde(v: any) {
+    if (v?.variantImage) {
+      const idx = allebilder.indexOf(v.variantImage);
+      if (idx >= 0) setAktivBilde(idx);
+    }
+  }
+
   return (
     <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#fafaf8', minHeight: '100vh' }}>
       <style>{`
@@ -409,7 +420,7 @@ export default function ProduktSide() {
   <div style={{ position: 'relative' }}>
     <img
       className="pmain-img"
-      src={produkt.productImageSet?.[aktivBilde] || valgtVariant?.variantImage || produkt.bigImage}
+      src={allebilder[aktivBilde] || produkt.bigImage}
       alt={produkt.productNameEn}
     />
     <button onClick={() => setAktivBilde(prev => Math.max(0, prev - 1))} style={{
@@ -418,15 +429,15 @@ export default function ProduktSide() {
       width: '36px', height: '36px', cursor: 'pointer', fontSize: '16px',
       display: aktivBilde === 0 ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center'
     }}>←</button>
-    <button onClick={() => setAktivBilde(prev => Math.min((produkt.productImageSet?.length || 1) - 1, prev + 1))} style={{
+    <button onClick={() => setAktivBilde(prev => Math.min(allebilder.length - 1, prev + 1))} style={{
       position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
       background: 'rgba(255,255,255,0.9)', border: 'none', borderRadius: '50%',
       width: '36px', height: '36px', cursor: 'pointer', fontSize: '16px',
-      display: aktivBilde === (produkt.productImageSet?.length || 1) - 1 ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center'
+      display: aktivBilde === allebilder.length - 1 ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center'
     }}>→</button>
   </div>
   <div className="pthumbs">
-    {produkt.productImageSet?.slice(0, 6).map((img: string, i: number) => (
+    {allebilder.map((img: string, i: number) => (
       <img
         key={i}
         src={img}
@@ -462,7 +473,7 @@ export default function ProduktSide() {
                           onClick={() => {
                             setValgtAnnen(a);
                             const v = finnVariant(synlige, valgtFarge, a);
-                            if (v) setValgtVariant(v);
+                            if (v) { setValgtVariant(v); gaTilVariantBilde(v); }
                           }}>
                           {oversett(a)}
                         </button>
@@ -478,7 +489,7 @@ export default function ProduktSide() {
                           onClick={() => {
                             setValgtFarge(f);
                             const v = finnVariant(synlige, f, valgtAnnen);
-                            if (v) setValgtVariant(v);
+                            if (v) { setValgtVariant(v); gaTilVariantBilde(v); }
                           }}>
                           {oversett(f)}
                         </button>
@@ -497,7 +508,7 @@ export default function ProduktSide() {
                   {synlige.map((v: any) => (
                     <button key={v.vid}
                       className={`pvariant ${valgtVariant?.vid === v.vid ? 'active' : ''}`}
-                      onClick={() => setValgtVariant(v)}>
+                      onClick={() => { setValgtVariant(v); gaTilVariantBilde(v); }}>
                       {oversett(v.variantKey || '')}
                     </button>
                   ))}
