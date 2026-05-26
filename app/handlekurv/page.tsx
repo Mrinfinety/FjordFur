@@ -160,6 +160,26 @@ export default function HandlekurvSide() {
         .btn-pay:disabled { background: #aaa; cursor: not-allowed; }
         .frakt-info { font-size: 12px; color: #1D9E75; text-align: center; }
 
+        .frakt-bar-wrap {
+          background: #f4f4f0; border-radius: 12px;
+          padding: 16px 20px; margin-bottom: 28px;
+          border: 1px solid #e8e8e4;
+        }
+        .frakt-bar-label {
+          font-size: 13px; color: #444; margin-bottom: 10px; line-height: 1.5;
+        }
+        .frakt-bar-label strong { color: #1a1a18; }
+        .frakt-bar-track {
+          height: 6px; background: #e0e0da; border-radius: 99px; overflow: hidden;
+        }
+        .frakt-bar-fill {
+          height: 100%; border-radius: 99px;
+          background: #1D9E75; transition: width 0.4s ease;
+        }
+        .frakt-bar-done {
+          font-size: 13px; color: #1D9E75; font-weight: 500;
+        }
+
         @media (max-width: 768px) {
           .nav { padding: 0 20px; }
           .container { padding: 24px 20px; }
@@ -175,6 +195,23 @@ export default function HandlekurvSide() {
 
       <div className="container">
         <h1 className="page-title">Handlekurv</h1>
+
+        {handlekurv.length > 0 && (
+          <div className="frakt-bar-wrap">
+            {subtotal >= 499 ? (
+              <p className="frakt-bar-done">🎉 Du har gratis frakt på denne bestillingen!</p>
+            ) : (
+              <>
+                <p className="frakt-bar-label">
+                  Handle for <strong>kr {499 - subtotal},–</strong> til for å få <strong>gratis frakt</strong>
+                </p>
+                <div className="frakt-bar-track">
+                  <div className="frakt-bar-fill" style={{ width: `${Math.min(100, (subtotal / 499) * 100)}%` }} />
+                </div>
+              </>
+            )}
+          </div>
+        )}
 
         {handlekurv.length === 0 ? (
           <div className="empty-box">
