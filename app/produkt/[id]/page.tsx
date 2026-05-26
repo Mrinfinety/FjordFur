@@ -15,7 +15,7 @@ function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
           cursor: 'pointer', fontFamily: "'DM Sans', sans-serif",
           letterSpacing: '0.06em',
         }}>
-          <img src={`https://flagcdn.com/20x15/${l === 'no' ? 'no' : 'gb'}.png`} alt={l} style={{ width: '20px', height: '15px', borderRadius: '2px', display: 'block' }} />
+          <img src={`https://flagcdn.com/20x15/${l === 'no' ? 'no' : 'gb'}.png`} alt={l} style={{ width: '18px', height: '13px', borderRadius: '2px' }} /> {l.toUpperCase()}
         </button>
       ))}
     </div>
