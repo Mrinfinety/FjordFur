@@ -57,10 +57,11 @@ export default function Home() {
   const [toast, setToast] = useState('');
   const [kurvaapen, setKurvAapen] = useState(false);
   const [cjProducts, setCjProducts] = useState<Record<string, any>>({});
+  const [cjLaster, setCjLaster] = useState(false);
 
 useEffect(() => {
   const cjIds = products.filter(p => p.cjId).map(p => p.cjId!);
-  
+
   // Last fra cache først
   const cached: Record<string, any> = {};
   cjIds.forEach(pid => {
@@ -73,6 +74,7 @@ useEffect(() => {
   const mangler = cjIds.filter(pid => !cached[pid]);
   if (mangler.length === 0) return;
 
+  setCjLaster(true);
   Promise.all(
     mangler.map(async (pid) => {
       const data = await fetchCJProduct(pid);
@@ -85,6 +87,7 @@ useEffect(() => {
       if (data) newProducts[pid] = data;
     });
     setCjProducts(newProducts);
+    setCjLaster(false);
   });
 }, []);
 
@@ -271,6 +274,10 @@ useEffect(() => {
           overflow: hidden;
         }
         .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); border-color: #d4d4ce; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .skel { background: linear-gradient(90deg, #f0f0ec 25%, #e8e8e4 50%, #f0f0ec 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 6px; }
+        .card-skeleton { cursor: default; pointer-events: none; }
+        .card-skeleton:hover { transform: none; box-shadow: none; }
         .card-img {
           height: 220px;
           display: flex; align-items: center; justify-content: center;
@@ -502,25 +509,43 @@ useEffect(() => {
         </div>
 
 <div className="grid">
-  {filtrerte.map(p => (
-    <div key={p.id} className="card" onClick={() => p.cjId && window.location.assign(`/produkt/${p.cjId}?pris=${p.price}&margin=${p.margin}`)}>
-      <div className="card-img">
-        {p.cjId && cjProducts[p.cjId]
-          ? <img src={cjProducts[p.cjId].productImageSet?.[(p as any).bildIndex ?? 0] || cjProducts[p.cjId].bigImage} alt={lang === 'en' ? (p as any).nameEn : p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          : <div style={{ width: '100%', height: '100%', background: '#f4f4f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px' }}>{p.emoji}</div>}
-      </div>
-      <div className="card-body">
-        <div className="card-name">{lang === 'en' ? (p as any).nameEn : p.name}</div>
-        <div className="card-sub">{lang === 'en' ? (p as any).subEn : p.sub}</div>
-        <div className="card-footer">
-          <span className="price">{lang === 'en' ? `NOK ${p.price}` : `kr ${p.price},–`}</span>
-          <button className="add" onClick={(e) => { e.stopPropagation(); leggTil(p); }}>
-            {lang === 'en' ? 'Add' : 'Legg til'}
-          </button>
+  {filtrerte.map(p => {
+    const lasterDenne = cjLaster && !cjProducts[p.cjId];
+    return (
+      <div key={p.id} className={`card${lasterDenne ? ' card-skeleton' : ''}`} onClick={() => !lasterDenne && p.cjId && window.location.assign(`/produkt/${p.cjId}?pris=${p.price}&margin=${p.margin}`)}>
+        <div className="card-img">
+          {lasterDenne
+            ? <div className="skel" style={{ width: '100%', height: '100%' }} />
+            : p.cjId && cjProducts[p.cjId]
+              ? <img src={cjProducts[p.cjId].productImageSet?.[(p as any).bildIndex ?? 0] || cjProducts[p.cjId].bigImage} alt={lang === 'en' ? (p as any).nameEn : p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              : <div style={{ width: '100%', height: '100%', background: '#f4f4f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px' }}>{p.emoji}</div>}
+        </div>
+        <div className="card-body">
+          {lasterDenne ? (
+            <>
+              <div className="skel" style={{ height: '16px', width: '70%' }} />
+              <div className="skel" style={{ height: '13px', width: '90%', marginTop: '6px' }} />
+              <div className="card-footer" style={{ marginTop: '16px' }}>
+                <div className="skel" style={{ height: '16px', width: '50px' }} />
+                <div className="skel" style={{ height: '34px', width: '80px', borderRadius: '8px' }} />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="card-name">{lang === 'en' ? (p as any).nameEn : p.name}</div>
+              <div className="card-sub">{lang === 'en' ? (p as any).subEn : p.sub}</div>
+              <div className="card-footer">
+                <span className="price">{lang === 'en' ? `NOK ${p.price}` : `kr ${p.price},–`}</span>
+                <button className="add" onClick={(e) => { e.stopPropagation(); leggTil(p); }}>
+                  {lang === 'en' ? 'Add' : 'Legg til'}
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
-    </div>
-  ))}
+    );
+  })}
 </div>
 
         {/* Tillitsstripe */}
