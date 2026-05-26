@@ -19,16 +19,32 @@ function sorterVarianter(varianter: any[]) {
 
 const SKJUL_VARIANTER: Record<string, string[]> = {};
 
-const PRODUKT_INNHOLD: Record<string, { navn: string; beskrivelse: string }> = {
+const PRODUKT_INNHOLD: Record<string, { navn: string; beskrivelse: string; stars: number; reviews: number }> = {
   '1653041912300969984': {
     navn: 'Sakte-forer Skål',
     beskrivelse: 'En spesiallaget skål som bremser ned spisetempoet til hunden eller katten din. Forhindrer kvelning, oppblåsthet og fordøyelsesproblemer som kan oppstå ved rask spising. Ribbestrukturen i bunnen gjør at kjæledyret ditt må jobbe litt for maten — noe som stimulerer både kropp og hjerne. Laget av slitesterkt, BPA-fritt materiale som er enkelt å rengjøre.',
+    stars: 4.8, reviews: 124,
   },
   '2504100230321610200': {
     navn: 'Vannflaske 2-i-1',
     beskrivelse: 'Praktisk 2-i-1 løsning med integrert vannflaske og matbeholder i én enhet. Perfekt for turer, hytteturer og utflukter med hunden din. Trykk på knappen for å fylle den innebygde drikkekoppen med akkurat passe vann — raskt og uten søl. Kompakt design som enkelt får plass i en ryggsekk eller hundebag.',
+    stars: 4.7, reviews: 89,
   },
 };
+
+const RELATERTE: Record<string, { cjId: string; navn: string; pris: number; margin: number; bildIndex?: number }[]> = {
+  '1653041912300969984': [{ cjId: '2504100230321610200', navn: 'Vannflaske 2-i-1', pris: 249, margin: 120 }],
+  '2504100230321610200': [{ cjId: '1653041912300969984', navn: 'Sakte-forer Skål', pris: 149, margin: 132, bildIndex: 1 }],
+};
+
+function variantTypeLabel(varianter: any[]): string {
+  const keys = varianter.map(v => v.variantKey?.toLowerCase() || '');
+  const fargeOrd = ['green', 'blue', 'red', 'pink', 'orange', 'black', 'white', 'yellow', 'purple', 'gray', 'grey', 'brown', 'set'];
+  const størrOrd = ['xs', 's', 'm', 'l', 'xl', 'small', 'medium', 'large'];
+  if (keys.some(k => fargeOrd.some(f => k.includes(f)))) return 'Farge';
+  if (keys.some(k => størrOrd.some(s => k === s || k.endsWith(`-${s}`)))) return 'Størrelse';
+  return 'Variant';
+}
 
 export default function ProduktSide() {
   const { id } = useParams();
@@ -45,6 +61,7 @@ export default function ProduktSide() {
   const [lagtTil, setLagtTil] = useState(false);
   const [handlekurv, setHandlekurv] = useState<{ id: number; name: string; price: number; cjId: string; variantId: string; quantity: number }[]>([]);
   const [kurvaapen, setKurvAapen] = useState(false);
+  const [relBilder, setRelBilder] = useState<Record<string, string>>({});
 
   useEffect(() => {
     try {
@@ -68,6 +85,16 @@ export default function ProduktSide() {
       const fast = PRODUKT_INNHOLD[id as string];
       setBeskrivelse(fast?.beskrivelse || '');
       setProduktNavn(fast?.navn || '');
+
+      const rel = RELATERTE[id as string] ?? [];
+      const bilder: Record<string, string> = {};
+      await Promise.all(rel.map(async r => {
+        const res = await fetch(`/api/products?pid=${r.cjId}`);
+        const d = await res.json();
+        const imgSet = d.data?.productImageSet;
+        bilder[r.cjId] = imgSet?.[r.bildIndex ?? 0] || d.data?.bigImage || '';
+      }));
+      setRelBilder(bilder);
     });
 }, [id]);
 
@@ -175,6 +202,48 @@ export default function ProduktSide() {
 
         .pdesc {
           font-size: 14px; color: #888; line-height: 1.8; font-weight: 300;
+        }
+
+        .pstars { display: flex; align-items: center; gap: 8px; }
+        .pstars-icons { color: #f59e0b; font-size: 16px; letter-spacing: 1px; }
+        .pstars-text { font-size: 13px; color: #888; }
+
+        .sticky-add {
+          display: none;
+          position: fixed; bottom: 0; left: 0; right: 0; z-index: 150;
+          background: #fafaf8; border-top: 1px solid #e8e8e4;
+          padding: 14px 20px; gap: 12px; align-items: center;
+        }
+        .sticky-add-name { font-size: 14px; font-weight: 500; color: #1a1a18; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sticky-add-price { font-size: 15px; font-weight: 600; color: #1a1a18; }
+        .sticky-add-btn {
+          background: #1D9E75; color: #fafaf8; border: none;
+          border-radius: 8px; padding: 12px 20px;
+          font-size: 14px; font-weight: 500; cursor: pointer;
+          font-family: 'DM Sans', sans-serif; white-space: nowrap;
+        }
+
+        .relaterte { max-width: 1100px; margin: 0 auto; padding: 0 48px 64px; }
+        .relaterte-tittel {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 24px; font-weight: 600; color: #1a1a18; margin-bottom: 20px;
+        }
+        .relaterte-grid { display: flex; gap: 16px; }
+        .rel-card {
+          flex: 0 0 240px; border: 1px solid #e8e8e4; border-radius: 12px;
+          overflow: hidden; cursor: pointer; background: #fff;
+          transition: all 0.2s;
+        }
+        .rel-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.07); }
+        .rel-img { height: 160px; overflow: hidden; background: #f7f7f5; }
+        .rel-img img { width: 100%; height: 100%; object-fit: cover; }
+        .rel-body { padding: 14px 16px; }
+        .rel-name { font-size: 14px; font-weight: 500; color: #1a1a18; margin-bottom: 4px; }
+        .rel-price { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: #1a1a18; }
+
+        @media (max-width: 768px) {
+          .sticky-add { display: flex; }
+          .relaterte { padding: 0 20px 80px; }
         }
 
         .pcart-btn {
@@ -313,15 +382,19 @@ export default function ProduktSide() {
 
         <div className="pinfo">
           <p className="ptag">FjordFur</p>
-          <h1 className="ptitle">
-  {produktNavn || produkt.productNameEn}
-</h1>
+          <h1 className="ptitle">{produktNavn || produkt.productNameEn}</h1>
+          {PRODUKT_INNHOLD[id as string] && (
+            <div className="pstars">
+              <span className="pstars-icons">{'★'.repeat(Math.floor(PRODUKT_INNHOLD[id as string].stars))}{'☆'.repeat(5 - Math.floor(PRODUKT_INNHOLD[id as string].stars))}</span>
+              <span className="pstars-text">{PRODUKT_INNHOLD[id as string].stars} ({PRODUKT_INNHOLD[id as string].reviews} anmeldelser)</span>
+            </div>
+          )}
           <p className="pprice">kr {visPris},–</p>
           <div className="pdivider" />
 
           {produkt.variants?.length > 1 && (
             <div>
-              <p className="pvariant-label">Variant</p>
+              <p className="pvariant-label">{variantTypeLabel(produkt.variants)}</p>
               <div className="pvariants">
                 {sorterVarianter(produkt.variants.filter((v: any) =>
                   !(SKJUL_VARIANTER[id as string] ?? []).some(s => v.variantKey?.toLowerCase().includes(s))
@@ -393,11 +466,11 @@ export default function ProduktSide() {
   </div>
   <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
     <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
-    <p className="pdesc">Levering 2–3 uker</p>
+    <p className="pdesc">Sporbar levering hjem til deg</p>
   </div>
   <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
     <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
-    <p className="pdesc">14 Dagers angrerett</p>
+    <p className="pdesc">14 dagers angrerett</p>
   </div>
   <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
     <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
@@ -405,6 +478,52 @@ export default function ProduktSide() {
   </div>
 </div>
         </div>
+      </div>
+
+      {/* Relaterte produkter */}
+      {(RELATERTE[id as string] ?? []).length > 0 && (
+        <div className="relaterte">
+          <h2 className="relaterte-tittel">Du vil kanskje også like</h2>
+          <div className="relaterte-grid">
+            {(RELATERTE[id as string] ?? []).map(r => (
+              <div key={r.cjId} className="rel-card" onClick={() => window.location.assign(`/produkt/${r.cjId}?pris=${r.pris}&margin=${r.margin}`)}>
+                <div className="rel-img">
+                  {relBilder[r.cjId]
+                    ? <img src={relBilder[r.cjId]} alt={r.navn} />
+                    : <div style={{ width: '100%', height: '100%', background: '#f4f4f0' }} />}
+                </div>
+                <div className="rel-body">
+                  <div className="rel-name">{r.navn}</div>
+                  <div className="rel-price">kr {r.pris},–</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Sticky kjøpsknapp på mobil */}
+      <div className="sticky-add">
+        <span className="sticky-add-name">{produktNavn || produkt.productNameEn}</span>
+        <span className="sticky-add-price">kr {visPris},–</span>
+        <button className="sticky-add-btn" onClick={() => {
+          if (!valgtVariant?.vid) return;
+          setHandlekurv(prev => {
+            const eksisterende = prev.findIndex(i => i.variantId === valgtVariant.vid);
+            let neste;
+            if (eksisterende !== -1) {
+              neste = prev.map((i, idx) => idx === eksisterende ? { ...i, quantity: (i.quantity || 1) + 1 } : i);
+            } else {
+              neste = [...prev, { id: Date.now(), name: produktNavn || produkt.productNameEn, price: visPris, cjId: id as string, variantId: valgtVariant.vid, quantity: 1 }];
+            }
+            localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
+            return neste;
+          });
+          setLagtTil(true);
+          setTimeout(() => setLagtTil(false), 2500);
+        }}>
+          {lagtTil ? '✓ Lagt til' : 'Legg i handlekurv'}
+        </button>
       </div>
 
       {kurvaapen && (
