@@ -575,6 +575,7 @@ useEffect(() => {
     <div style={{ fontSize: '12px', color: '#aaa', marginTop: '6px' }}>Org.nr. 930 827 525</div>
   </div>
   <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+    <a href="/sporing" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>{lang === 'en' ? 'Track order' : 'Spor bestilling'}</a>
     <a href="/retur" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>{lang === 'en' ? 'Returns' : 'Retur & Refusjon'}</a>
     <a href="/angreskjema" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>{lang === 'en' ? 'Cancellation form' : 'Angreskjema'}</a>
     <a href="/vilkar" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>{lang === 'en' ? 'Terms' : 'Vilkår'}</a>
