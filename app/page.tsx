@@ -101,7 +101,7 @@ useEffect(() => {
   function leggTil(p: typeof products[0]) {
     const variant = cjProducts[p.cjId]?.variants?.[0];
     if (!variant?.vid) {
-      setToast('Laster produktinfo, prøv igjen om et sekund...');
+      setToast(lang === 'en' ? 'Loading product info, try again in a moment...' : 'Laster produktinfo, prøv igjen om et sekund...');
       setTimeout(() => setToast(''), 2500);
       return;
     }

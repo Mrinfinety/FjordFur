@@ -56,9 +56,9 @@ const PRODUKT_INNHOLD: Record<string, { navn: string; navnEn: string; beskrivels
   },
 };
 
-const RELATERTE: Record<string, { cjId: string; navn: string; pris: number; margin: number; bildIndex?: number }[]> = {
-  '1653041912300969984': [{ cjId: '2504100230321610200', navn: 'Vannflaske 2-i-1', pris: 249, margin: 120 }],
-  '2504100230321610200': [{ cjId: '1653041912300969984', navn: 'Sakte-forer Skål', pris: 149, margin: 132, bildIndex: 1 }],
+const RELATERTE: Record<string, { cjId: string; navn: string; navnEn: string; pris: number; margin: number; bildIndex?: number }[]> = {
+  '1653041912300969984': [{ cjId: '2504100230321610200', navn: 'Vannflaske 2-i-1', navnEn: 'Water Bottle 2-in-1', pris: 249, margin: 120 }],
+  '2504100230321610200': [{ cjId: '1653041912300969984', navn: 'Sakte-forer Skål', navnEn: 'Slow Feeder Bowl', pris: 149, margin: 132, bildIndex: 1 }],
 };
 
 const FARGE_ORD = ['green','blue','red','pink','orange','black','white','yellow','purple','gray','grey','brown'];
@@ -73,8 +73,20 @@ const NORSK: Record<string, string> = {
   'xs':'XS','s':'S','m':'M','l':'L','xl':'XL',
 };
 
-function oversett(tekst: string): string {
+const ENGLISH: Record<string, string> = {
+  'set1': '2-pack Pink & Orange',
+  'set': '2-pack Orange & Green',
+  'water grain cup': 'With food container',
+};
+
+function oversett(tekst: string, lang: Lang = 'no'): string {
   let t = tekst.trim();
+  if (lang === 'en') {
+    for (const [key, val] of Object.entries(ENGLISH)) {
+      t = t.replace(new RegExp(`\\b${key}\\b`, 'gi'), val);
+    }
+    return t.replace(/\b\w/g, c => c.toUpperCase());
+  }
   for (const [en, no] of Object.entries(NORSK)) {
     t = t.replace(new RegExp(`\\b${en}\\b`, 'gi'), no);
   }
@@ -185,7 +197,7 @@ export default function ProduktSide() {
 
   if (laster) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', fontFamily: 'DM Sans, sans-serif' }}>
-      Laster produkt...
+      {lang === 'en' ? 'Loading product...' : 'Laster produkt...'}
     </div>
   );
 
@@ -200,7 +212,7 @@ export default function ProduktSide() {
 
   if (!produkt) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', fontFamily: 'DM Sans, sans-serif' }}>
-      Produkt ikke funnet.
+      {lang === 'en' ? 'Product not found.' : 'Produkt ikke funnet.'}
     </div>
   );
 
@@ -503,7 +515,7 @@ export default function ProduktSide() {
                             const v = finnVariant(synlige, valgtFarge, a);
                             if (v) { setValgtVariant(v); gaTilVariantBilde(v); }
                           }}>
-                          {oversett(a)}
+                          {oversett(a, lang)}
                         </button>
                       ))}
                     </div>
@@ -519,7 +531,7 @@ export default function ProduktSide() {
                             const v = finnVariant(synlige, f, valgtAnnen);
                             if (v) { setValgtVariant(v); gaTilVariantBilde(v); }
                           }}>
-                          {oversett(f)}
+                          {oversett(f, lang)}
                         </button>
                       ))}
                     </div>
@@ -537,7 +549,7 @@ export default function ProduktSide() {
                     <button key={v.vid}
                       className={`pvariant ${valgtVariant?.vid === v.vid ? 'active' : ''}`}
                       onClick={() => { setValgtVariant(v); gaTilVariantBilde(v); }}>
-                      {oversett(v.variantKey || '')}
+                      {oversett(v.variantKey || '', lang)}
                     </button>
                   ))}
                 </div>
@@ -601,7 +613,7 @@ export default function ProduktSide() {
                     : <div style={{ width: '100%', height: '100%', background: '#f4f4f0' }} />}
                 </div>
                 <div className="rel-body">
-                  <div className="rel-name">{r.navn}</div>
+                  <div className="rel-name">{lang === 'en' ? r.navnEn : r.navn}</div>
                   <div className="rel-price">kr {r.pris},–</div>
                 </div>
               </div>
