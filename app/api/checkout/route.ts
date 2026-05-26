@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     },
     mode: 'payment',
     shipping_address_collection: {
-      allowed_countries: [
+      allowed_countries: ([
         'AC','AD','AE','AG','AL','AM','AO','AR','AT','AU','AW','AZ',
         'BA','BB','BD','BE','BF','BG','BH','BI','BJ','BM','BN','BO','BR','BS','BT','BW','BY','BZ',
         'CA','CD','CF','CG','CH','CI','CK','CL','CM','CN','CO','CR','CV','CW','CY','CZ',
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
         'XK',
         'YE',
         'ZA','ZM','ZW',
-      ],
+      ] as any),
     },
     success_url: `${origin}/takk`,
     cancel_url: origin,
