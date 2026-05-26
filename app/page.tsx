@@ -2,8 +2,8 @@
 import { useState, useEffect } from 'react';
 
 const products = [
-  { id: 1, name: 'Sakte-forer Skål', sub: 'Forhindrer kvelning, hund/katt', price: 149, margin: 132, bildIndex: 1, emoji: '🥣', cat: 'hund', cjId: '1653041912300969984' },
-  { id: 2, name: 'Vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, margin: 120, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
+  { id: 1, name: 'Sakte-forer Skål', sub: 'Forhindrer kvelning, hund/katt', price: 149, margin: 132, bildIndex: 1, emoji: '🥣', cat: 'hund', cjId: '1653041912300969984', stars: 4.8, reviews: 124 },
+  { id: 2, name: 'Vannflaske 2-i-1', sub: 'Med matbeholder, perfekt for turer', price: 249, margin: 120, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200', stars: 4.7, reviews: 89 },
 ];
 
 const kategorier = ['alle', 'hund', 'katt'];
@@ -213,49 +213,43 @@ useEffect(() => {
 
         .grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 1px; background: #e8e8e4;
-          border: 1px solid #e8e8e4;
-          border-radius: 12px; overflow: hidden;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 16px;
           margin-bottom: 64px;
         }
         .card {
-          background: #fafaf8; cursor: pointer;
-          transition: background 0.2s;
+          background: #fff; cursor: pointer;
+          transition: all 0.2s;
           display: flex; flex-direction: column;
+          border: 1px solid #e8e8e4; border-radius: 12px;
+          overflow: hidden;
         }
-        .card:hover { background: #f4f4f0; }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); border-color: #d4d4ce; }
         .card-img {
-          height: 140px;
+          height: 220px;
           display: flex; align-items: center; justify-content: center;
-          font-size: 48px; background: #f4f4f0;
-          border-bottom: 1px solid #e8e8e4;
-          transition: background 0.2s;
+          font-size: 56px; background: #f7f7f5;
+          overflow: hidden;
         }
-        .card:hover .card-img { background: #eceee8; }
-        .card-body { padding: 18px; flex: 1; display: flex; flex-direction: column; }
-        .badge {
-          display: inline-block; font-size: 10px; font-weight: 500;
-          padding: 3px 8px; border-radius: 4px; margin-bottom: 8px;
-          letter-spacing: 0.06em; text-transform: uppercase;
-        }
-        .badge-new { background: #E1F5EE; color: #085041; }
-        .badge-sale { background: #FCEBEB; color: #791F1F; }
-        .card-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; color: #1a1a18; }
-        .card-sub { font-size: 12px; color: #888; margin-bottom: 16px; line-height: 1.5; flex: 1; }
-        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .card-body { padding: 18px 20px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .card-name { font-size: 15px; font-weight: 500; color: #1a1a18; }
+        .card-sub { font-size: 13px; color: #888; line-height: 1.5; flex: 1; }
+        .card-stars { display: flex; align-items: center; gap: 5px; }
+        .stars-icons { color: #f59e0b; font-size: 13px; letter-spacing: 1px; }
+        .stars-count { font-size: 12px; color: #aaa; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
         .price {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 19px; font-weight: 600; color: #1a1a18;
+          font-size: 22px; font-weight: 600; color: #1a1a18;
         }
         .add {
-          background: transparent; border: 1px solid #d4d4ce;
-          color: #666; border-radius: 7px;
-          font-size: 12px; padding: 6px 13px;
+          background: #1a1a18; border: none;
+          color: #fafaf8; border-radius: 8px;
+          font-size: 13px; padding: 8px 16px;
           cursor: pointer; font-family: 'DM Sans', sans-serif;
-          transition: all 0.2s;
+          font-weight: 500; transition: background 0.2s;
         }
-        .add:hover { background: #1a1a18; color: #fafaf8; border-color: #1a1a18; }
+        .add:hover { background: #1D9E75; }
 
         .trust-strip {
           display: grid; grid-template-columns: repeat(3, 1fr);
@@ -380,7 +374,7 @@ useEffect(() => {
           .main { padding: 36px 20px; }
 
           .grid { grid-template-columns: repeat(2, 1fr); }
-          .card-img { height: 120px; }
+          .card-img { height: 160px; }
 
           .trust-strip { grid-template-columns: 1fr; }
 
@@ -413,8 +407,8 @@ useEffect(() => {
       <div className="hero">
         <div className="hero-left">
           <p className="hero-tag">Premium kjæledyrutstyr</p>
-          <h1 className="hero-h1">Det beste for ditt kjæledyr</h1>
-          <p className="hero-p">Nøye utvalgte produkter av høy kvalitet — for hund og katt. Rask levering, gratis frakt over 499 kr.</p>
+          <h1 className="hero-h1">Skap glede for kjæledyret ditt</h1>
+          <p className="hero-p">Nøye utvalgte produkter som gjør hverdagen bedre — for deg og kjæledyret ditt. Gratis frakt over 499 kr.</p>
           <div className="hero-btns">
             <button className="btn-primary" onClick={() => document.getElementById('produkter')?.scrollIntoView({ behavior: 'smooth' })}>
               Se alle produkter
@@ -424,16 +418,16 @@ useEffect(() => {
         </div>
         <div className="hero-right">
           <div className="stat-row">
-            <div className="stat-num">14</div>
-<div className="stat-label">Dagers angrerett</div>
-          </div>
-          <div className="stat-row">
-            <div className="stat-num">2–3</div>
-<div className="stat-label">Ukers levering</div>
-          </div>
-          <div className="stat-row">
             <div className="stat-num">Gratis</div>
             <div className="stat-label">Frakt over kr 499</div>
+          </div>
+          <div className="stat-row">
+            <div className="stat-num">14</div>
+            <div className="stat-label">Dagers angrerett</div>
+          </div>
+          <div className="stat-row">
+            <div className="stat-num">100%</div>
+            <div className="stat-label">Sikker betaling</div>
           </div>
         </div>
       </div>
@@ -465,12 +459,16 @@ useEffect(() => {
           : <div style={{ width: '100%', height: '100%', background: '#f4f4f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px' }}>{p.emoji}</div>}
       </div>
       <div className="card-body">
-<div className="card-name">{p.name}</div>
+        <div className="card-name">{p.name}</div>
         <div className="card-sub">{p.sub}</div>
+        <div className="card-stars">
+          <span className="stars-icons">{'★'.repeat(Math.floor((p as any).stars))}{'☆'.repeat(5 - Math.floor((p as any).stars))}</span>
+          <span className="stars-count">{(p as any).stars} ({(p as any).reviews})</span>
+        </div>
         <div className="card-footer">
           <span className="price">kr {p.price},–</span>
           <button className="add" onClick={(e) => { e.stopPropagation(); leggTil(p); }}>
-            + Legg til
+            Legg til
           </button>
         </div>
       </div>
@@ -482,18 +480,18 @@ useEffect(() => {
         <div className="trust-strip">
           <div className="trust-item">
             <div className="trust-icon">🚚</div>
-            <div className="trust-title">Rask levering</div>
-            <div className="trust-text">Leverer i hele Norge på 2–3 uker. Gratis frakt over kr 499.</div>
+            <div className="trust-title">Gratis frakt over 499 kr</div>
+            <div className="trust-text">Leverer til hele verden. Sporbar frakt rett hjem til deg.</div>
           </div>
           <div className="trust-item">
-            <div className="trust-icon">♻️</div>
-            <div className="trust-title">Enkel refusjon</div>
-<div className="trust-text">14 dagers angrerett. Vi refunderer uten at du trenger å sende varen tilbake.</div>
+            <div className="trust-icon">🔄</div>
+            <div className="trust-title">14 dagers angrerett</div>
+            <div className="trust-text">Ikke fornøyd? Vi refunderer uten spørsmål og uten at du trenger sende varen tilbake.</div>
           </div>
           <div className="trust-item">
             <div className="trust-icon">🐾</div>
-            <div className="trust-title">Ekspertråd</div>
-            <div className="trust-text">Alle produkter er testet og godkjent av veterinærer og dyreelskere.</div>
+            <div className="trust-title">Elsket av kjæledyr</div>
+            <div className="trust-text">Nøye utvalgte produkter testet og godkjent av dyreelskere over hele verden.</div>
           </div>
         </div>
       </div>
