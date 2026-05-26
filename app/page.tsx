@@ -629,7 +629,7 @@ useEffect(() => {
               </a>
 <button className="btn-checkout" onClick={async () => {
   if (handlekurv.length === 0) {
-    alert('Handlekurven er tom!');
+    alert(lang === 'en' ? 'Your cart is empty!' : 'Handlekurven er tom!');
     return;
   }
   try {
@@ -652,10 +652,10 @@ useEffect(() => {
       setHandlekurv([]);
       window.location.href = data.url;
     } else {
-      alert('Feil: ' + JSON.stringify(data));
+      alert((lang === 'en' ? 'Error: ' : 'Feil: ') + JSON.stringify(data));
     }
   } catch (err) {
-    alert('Noe gikk galt: ' + err);
+    alert((lang === 'en' ? 'Something went wrong: ' : 'Noe gikk galt: ') + err);
   }
 }}>
   {lang === 'en' ? 'Go to checkout' : 'Gå til betaling'}

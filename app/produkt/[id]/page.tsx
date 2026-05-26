@@ -482,7 +482,7 @@ export default function ProduktSide() {
         key={i}
         src={img}
         className={`pthumb ${aktivBilde === i ? 'active' : ''}`}
-        alt={`Bilde ${i + 1}`}
+        alt={`${lang === 'en' ? 'Image' : 'Bilde'} ${i + 1}`}
         onClick={() => setAktivBilde(i)}
       />
     ))}
@@ -721,10 +721,10 @@ export default function ProduktSide() {
                     setHandlekurv([]);
                     window.location.href = data.url;
                   } else {
-                    alert('Feil: ' + JSON.stringify(data));
+                    alert((lang === 'en' ? 'Error: ' : 'Feil: ') + JSON.stringify(data));
                   }
                 } catch (err) {
-                  alert('Noe gikk galt: ' + err);
+                  alert((lang === 'en' ? 'Something went wrong: ' : 'Noe gikk galt: ') + err);
                 }
               }}>
                 {lang === 'en' ? 'Go to checkout' : 'Gå til betaling'}
