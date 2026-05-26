@@ -556,10 +556,6 @@ export default function ProduktSide() {
     <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
     <p className="pdesc">14 dagers angrerett</p>
   </div>
-  <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-    <span style={{ color: '#1D9E75', fontSize: '16px' }}>✓</span>
-    <p className="pdesc">Testet og godkjent av veterinærer</p>
-  </div>
 </div>
         </div>
       </div>
