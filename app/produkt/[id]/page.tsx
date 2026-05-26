@@ -19,7 +19,7 @@ function sorterVarianter(varianter: any[]) {
 
 const SKJUL_VARIANTER: Record<string, string[]> = {};
 
-const PRODUKT_INNHOLD: Record<string, { navn: string; beskrivelse: string; stars: number; reviews: number }> = {
+const PRODUKT_INNHOLD: Record<string, { navn: string; beskrivelse: string }> = {
   '1653041912300969984': {
     navn: 'Sakte-forer Skål',
     beskrivelse: 'En spesiallaget skål som bremser ned spisetempoet til hunden eller katten din. Forhindrer kvelning, oppblåsthet og fordøyelsesproblemer som kan oppstå ved rask spising. Ribbestrukturen i bunnen gjør at kjæledyret ditt må jobbe litt for maten — noe som stimulerer både kropp og hjerne. Laget av slitesterkt, BPA-fritt materiale som er enkelt å rengjøre.',
