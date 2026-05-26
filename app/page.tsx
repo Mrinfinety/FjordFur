@@ -141,7 +141,7 @@ useEffect(() => {
         }
         .logo {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 22px; font-weight: 600; letter-spacing: 0.3px;
+          font-size: 28px; font-weight: 600; letter-spacing: 0.3px;
           color: #1a1a18;
         }
         .logo span { color: #1D9E75; }
@@ -438,10 +438,6 @@ useEffect(() => {
       {/* Navbar */}
       <nav className="nav">
         <div className="logo">Fjord<span>Fur</span></div>
-        <div className="nav-links">
-          <a onClick={() => setAktivKat('hund')}>{lang === 'en' ? 'Dog' : 'Hund'}</a>
-          <a onClick={() => setAktivKat('katt')}>{lang === 'en' ? 'Cat' : 'Katt'}</a>
-        </div>
         <div className="nav-right">
           <LangToggle lang={lang} setLang={setLang} />
           <button className="cart-btn" onClick={() => setKurvAapen(true)}>
