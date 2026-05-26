@@ -166,7 +166,7 @@ export default function HandlekurvSide() {
           border: 1px solid #e8e8e4;
         }
         .frakt-bar-label {
-          font-size: 13px; color: #444; margin-bottom: 10px; line-height: 1.5;
+          font-size: 17px; color: #444; margin-bottom: 10px; line-height: 1.5;
         }
         .frakt-bar-label strong { color: #1a1a18; }
         .frakt-bar-track {
