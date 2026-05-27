@@ -60,7 +60,7 @@ async function sendOrdreBekreftelse(session: any) {
               ? 'Once your order has been dispatched, you can track your package here:'
               : 'Når bestillingen er sendt, kan du spore pakken din her:'}
           </p>
-          <a href="https://t.cjdropshipping.com/" style="display:inline-block;background:#1D9E75;color:#ffffff;text-decoration:none;padding:11px 28px;border-radius:6px;font-size:13px;font-weight:600;margin-bottom:12px">${en ? 'Track my order' : 'Spor pakken min'}</a>
+          <a href="https://fjordfur.com/sporing" style="display:inline-block;background:#1D9E75;color:#ffffff;text-decoration:none;padding:11px 28px;border-radius:6px;font-size:13px;font-weight:600;margin-bottom:12px">${en ? 'Track my order' : 'Spor pakken min'}</a>
           <p style="font-size:12px;color:#888;margin:0">
             ${en
               ? 'Use your order number <strong>' + ordreNr + '</strong> or the tracking number you receive when the package is shipped.'
