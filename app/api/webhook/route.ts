@@ -6,6 +6,7 @@ async function sendOrdreBekreftelse(session: any) {
   const customer = session.customer_details;
   if (!customer?.email) return;
 
+  const en = session.metadata?.lang === 'en';
   const items: { name: string; qty: number }[] = JSON.parse(session.metadata?.cj_items || '[]');
   const totalNok = (session.amount_total / 100).toFixed(0);
   const ordreNr = `FF-${session.id.slice(-12)}`;
@@ -28,43 +29,56 @@ async function sendOrdreBekreftelse(session: any) {
       </div>
 
       <div style="padding:32px">
-        <h1 style="font-family:Georgia,serif;font-size:24px;color:#1a1a18;margin:0 0 8px">Takk for bestillingen${navn ? ', ' + navn.split(' ')[0] : ''}!</h1>
-        <p style="color:#666;font-size:14px;margin:0 0 28px">Ordrenummer: <strong>${ordreNr}</strong></p>
+        <h1 style="font-family:Georgia,serif;font-size:24px;color:#1a1a18;margin:0 0 8px">${en ? `Thank you for your order${navn ? ', ' + navn.split(' ')[0] : ''}!` : `Takk for bestillingen${navn ? ', ' + navn.split(' ')[0] : ''}!`}</h1>
+        <p style="color:#666;font-size:14px;margin:0 0 28px">${en ? 'Order number' : 'Ordrenummer'}: <strong>${ordreNr}</strong></p>
 
         <table style="width:100%;border-collapse:collapse;margin-bottom:24px">
           ${raderHtml}
           <tr>
-            <td style="padding:12px 0;font-weight:600;color:#1a1a18;font-size:15px">Totalt betalt</td>
-            <td style="padding:12px 0;font-weight:600;color:#1a1a18;text-align:right;font-size:15px">kr ${totalNok},–</td>
+            <td style="padding:12px 0;font-weight:600;color:#1a1a18;font-size:15px">${en ? 'Total paid' : 'Totalt betalt'}</td>
+            <td style="padding:12px 0;font-weight:600;color:#1a1a18;text-align:right;font-size:15px">NOK ${totalNok}</td>
           </tr>
         </table>
 
         ${leveringsadresse ? `
         <div style="background:#f7f7f5;border-radius:6px;padding:16px 20px;margin-bottom:24px">
-          <p style="font-size:12px;color:#888;margin:0 0 6px;text-transform:uppercase;letter-spacing:0.08em">Leveringsadresse</p>
+          <p style="font-size:12px;color:#888;margin:0 0 6px;text-transform:uppercase;letter-spacing:0.08em">${en ? 'Delivery address' : 'Leveringsadresse'}</p>
           <p style="font-size:14px;color:#333;margin:0;line-height:1.7">${leveringsadresse}</p>
         </div>` : ''}
 
         <div style="background:#f7f7f5;border-radius:6px;padding:16px 20px;margin-bottom:28px">
           <p style="font-size:14px;color:#444;margin:0;line-height:1.7">
-            Pakken sendes direkte fra vårt lager og leveres innen <strong>2–3 uker</strong>.
-            Du mottar sporingsinfo på e-post så snart pakken er sendt.
+            ${en
+              ? 'Your package will be shipped directly from our warehouse and delivered within <strong>2–3 weeks</strong>. You will receive tracking information by email once your parcel has been dispatched.'
+              : 'Pakken sendes direkte fra vårt lager og leveres innen <strong>2–3 uker</strong>. Du mottar sporingsinfo på e-post så snart pakken er sendt.'}
           </p>
         </div>
 
         <div style="border-top:1px solid #e8e8e4;padding-top:24px;margin-bottom:24px">
-          <p style="font-size:14px;color:#444;margin:0 0 8px"><strong>Spørsmål?</strong> Ta kontakt med oss:</p>
-          <p style="font-size:14px;color:#444;margin:0">E-post: <a href="mailto:contact.fjordfur@gmail.com" style="color:#1D9E75">contact.fjordfur@gmail.com</a></p>
-          <p style="font-size:13px;color:#888;margin:6px 0 0">Vi svarer innen 1–2 virkedager.</p>
+          <p style="font-size:14px;color:#444;margin:0 0 8px"><strong>${en ? 'Questions?' : 'Spørsmål?'}</strong> ${en ? 'Contact us:' : 'Ta kontakt med oss:'}</p>
+          <p style="font-size:14px;color:#444;margin:0">${en ? 'Email' : 'E-post'}: <a href="mailto:contact.fjordfur@gmail.com" style="color:#1D9E75">contact.fjordfur@gmail.com</a></p>
+          <p style="font-size:13px;color:#888;margin:6px 0 0">${en ? 'We respond within 1–2 business days.' : 'Vi svarer innen 1–2 virkedager.'}</p>
         </div>
 
         <div style="text-align:center;margin-bottom:28px">
-          <a href="https://fjordfur.com" style="display:inline-block;background:#1a1a18;color:#ffffff;text-decoration:none;padding:11px 24px;border-radius:6px;font-size:13px;font-weight:600">Se flere produkter på fjordfur.com</a>
+          <a href="https://fjordfur.com" style="display:inline-block;background:#1a1a18;color:#ffffff;text-decoration:none;padding:11px 24px;border-radius:6px;font-size:13px;font-weight:600">${en ? 'Back to fjordfur.com' : 'Se flere produkter på fjordfur.com'}</a>
         </div>
 
         <hr style="border:none;border-top:1px solid #e8e8e4;margin:0 0 24px">
 
         <div style="background:#f7f7f5;border-radius:6px;padding:20px;font-size:12px;color:#555;line-height:1.8">
+          ${en ? `
+          <p style="margin:0 0 10px;font-weight:600;color:#333">Standard cancellation / right of withdrawal form</p>
+          <p style="margin:0 0 6px">To: FjordFur, contact.fjordfur@gmail.com</p>
+          <p style="margin:0 0 6px">I hereby give notice that I wish to withdraw from my purchase of:</p>
+          <p style="margin:0 0 6px">______________________________________</p>
+          <p style="margin:0 0 6px">Ordered on: _______________ &nbsp; Received on: _______________</p>
+          <p style="margin:0 0 6px">Name: ______________________________________</p>
+          <p style="margin:0 0 6px">Address: ______________________________________</p>
+          <p style="margin:0 0 6px">Email address: ______________________________________</p>
+          <p style="margin:0 0 6px">Date: _______________</p>
+          <p style="margin:12px 0 0;color:#888;font-style:italic">Signature is not required when submitting by email. You have 14 days right of withdrawal from receipt of the goods. We will refund the full purchase price without requiring you to return the item.</p>
+          ` : `
           <p style="margin:0 0 10px;font-weight:600;color:#333">Standardskjema for bruk av angrerett (angrerettloven vedlegg 1)</p>
           <p style="margin:0 0 6px">Til: FjordFur, contact.fjordfur@gmail.com</p>
           <p style="margin:0 0 6px">Jeg meddeler herved at jeg ønsker å benytte angreretten for kjøp av:</p>
@@ -75,11 +89,12 @@ async function sendOrdreBekreftelse(session: any) {
           <p style="margin:0 0 6px">E-postadresse: ______________________________________</p>
           <p style="margin:0 0 6px">Dato: _______________</p>
           <p style="margin:12px 0 0;color:#888;font-style:italic">Underskrift er ikke nødvendig ved innsending per e-post. Du har 14 dagers angrerett fra mottak av varen. Vi refunderer hele kjøpesummen uten at du trenger å sende varen tilbake.</p>
+          `}
         </div>
       </div>
 
       <div style="background:#f7f7f5;padding:16px 32px;border-top:1px solid #e8e8e4;text-align:center">
-        <p style="font-size:11px;color:#aaa;margin:0">© 2026 FjordFur — Premium kjæledyrutstyr &nbsp;|&nbsp; <a href="https://fjordfur.com/personvern" style="color:#aaa">Personvern</a> &nbsp;|&nbsp; <a href="https://fjordfur.com/vilkar" style="color:#aaa">Vilkår</a></p>
+        <p style="font-size:11px;color:#aaa;margin:0">© 2026 FjordFur — Premium pet supplies &nbsp;|&nbsp; <a href="https://fjordfur.com/personvern" style="color:#aaa">${en ? 'Privacy' : 'Personvern'}</a> &nbsp;|&nbsp; <a href="https://fjordfur.com/vilkar" style="color:#aaa">${en ? 'Terms' : 'Vilkår'}</a></p>
       </div>
     </div>
   `;
@@ -93,7 +108,7 @@ async function sendOrdreBekreftelse(session: any) {
     body: JSON.stringify({
       from: 'FjordFur <ordre@fjordfur.com>',
       to: customer.email,
-      subject: `Ordrebekreftelse ${ordreNr} — FjordFur`,
+      subject: en ? `Order confirmation ${ordreNr} — FjordFur` : `Ordrebekreftelse ${ordreNr} — FjordFur`,
       html,
     }),
   });

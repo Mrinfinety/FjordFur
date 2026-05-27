@@ -35,10 +35,11 @@ export async function POST(req: Request) {
     locale: en ? 'en' : 'nb',
     line_items: lineItems,
     metadata: {
+      lang: lang || 'no',
       cj_items: JSON.stringify(items.map((item: any) => ({
         vid: item.variantId,
         qty: item.quantity,
-        name: item.name,
+        name: en ? (item.nameEn || item.name) : item.name,
       }))),
     },
     mode: 'payment',
