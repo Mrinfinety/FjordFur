@@ -4,16 +4,16 @@ import { NextRequest } from 'next/server';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' as any });
 
 async function kvGet(key: string): Promise<string | null> {
-  const res = await fetch(`${process.env.UPSTASH_REDIS_REST_URL}/get/${key}`, {
-    headers: { Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}` },
+  const res = await fetch(`${process.env.KV_REST_API_URL}/get/${key}`, {
+    headers: { Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}` },
   });
   const data = await res.json();
   return data.result ?? null;
 }
 
 async function kvSet(key: string, value: string, exSeconds: number): Promise<void> {
-  await fetch(`${process.env.UPSTASH_REDIS_REST_URL}/set/${key}/${value}?ex=${exSeconds}`, {
-    headers: { Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}` },
+  await fetch(`${process.env.KV_REST_API_URL}/set/${key}/${value}?ex=${exSeconds}`, {
+    headers: { Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}` },
   });
 }
 
