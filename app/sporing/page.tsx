@@ -88,7 +88,7 @@ export default function Sporing() {
               <p className="step-text">{T ? 'Tracking updates can take 2–3 days to appear after the package is shipped.' : 'Sporingsoppdateringer kan ta 2–3 dager å dukke opp etter at pakken er sendt.'}</p>
             </div>
           </div>
-          <a href="https://t.cjdropshipping.com/" target="_blank" rel="noopener noreferrer" className="track-btn">
+          <a href="https://www.17track.net/en" target="_blank" rel="noopener noreferrer" className="track-btn">
             {T ? 'Track your package →' : 'Spor pakken din →'}
           </a>
         </div>
