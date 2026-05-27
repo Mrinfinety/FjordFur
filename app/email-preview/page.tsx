@@ -107,7 +107,6 @@ function buildSporingsHtml(en: boolean) {
         <div style="background:#eaf7f2;border:1px solid #c3e9d8;border-radius:6px;padding:24px;margin-bottom:28px;text-align:center">
           <p style="font-size:12px;color:#888;margin:0 0 6px;text-transform:uppercase;letter-spacing:0.08em">${en ? 'Tracking number' : 'Sporingsnummer'}</p>
           <p style="font-size:24px;font-weight:700;color:#1a1a18;letter-spacing:0.06em;margin:0 0 6px">${TRACKING}</p>
-          <p style="font-size:12px;color:#888;margin:0 0 20px">${en ? 'Carrier' : 'Fraktbærer'}: ${LOGISTIC}</p>
           <a href="https://www.17track.net/en#nums=${TRACKING}" style="display:inline-block;background:#1D9E75;color:#ffffff;text-decoration:none;padding:12px 32px;border-radius:6px;font-size:14px;font-weight:600">
             ${en ? 'Track my package →' : 'Spor pakken min →'}
           </a>
@@ -115,8 +114,8 @@ function buildSporingsHtml(en: boolean) {
         <div style="background:#f7f7f5;border-radius:6px;padding:16px 20px;margin-bottom:28px">
           <p style="font-size:14px;color:#444;margin:0;line-height:1.7">
             ${en
-              ? 'Tracking updates may take 2–3 days to appear after the package is dispatched. Estimated delivery to Norway: <strong>2–3 weeks</strong>.'
-              : 'Sporingsoppdateringer kan ta 2–3 dager å dukke opp etter at pakken er sendt. Estimert levering til Norge: <strong>2–3 uker</strong>.'}
+              ? 'Tracking updates may take 2–3 days to appear after the package is dispatched.'
+              : 'Sporingsoppdateringer kan ta 2–3 dager å dukke opp etter at pakken er sendt.'}
           </p>
         </div>
         <div style="border-top:1px solid #e8e8e4;padding-top:24px;margin-bottom:24px">
