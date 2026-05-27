@@ -55,17 +55,15 @@ async function sendOrdreBekreftelse(session: any) {
         </div>
 
         <div style="background:#eaf7f2;border:1px solid #c3e9d8;border-radius:6px;padding:20px;margin-bottom:28px;text-align:center">
-          <p style="font-size:13px;color:#555;margin:0 0 14px">
+          <p style="font-size:13px;color:#555;margin:0 0 6px">
             ${en
-              ? 'Once your order has been dispatched, you can track your package here:'
-              : 'Når bestillingen er sendt, kan du spore pakken din her:'}
+              ? '📦 You will receive a separate email with your tracking number as soon as the package is dispatched.'
+              : '📦 Du mottar en egen e-post med sporingsnummer så snart pakken er sendt.'}
           </p>
-          <a href="https://fjordfur.com/sporing" style="display:inline-block;background:#1D9E75;color:#ffffff;text-decoration:none;padding:11px 28px;border-radius:6px;font-size:13px;font-weight:600;margin-bottom:12px">${en ? 'Track my order' : 'Spor pakken min'}</a>
-          <p style="font-size:12px;color:#888;margin:0">
-            ${en
-              ? 'Use your order number <strong>' + ordreNr + '</strong> or the tracking number you receive when the package is shipped.'
-              : 'Bruk ordrenummer <strong>' + ordreNr + '</strong> eller sporingsnummeret du får når pakken sendes.'}
+          <p style="font-size:12px;color:#888;margin:0 0 14px">
+            ${en ? 'Want to check delivery info in the meantime?' : 'Vil du se leveringsinformasjon i mellomtiden?'}
           </p>
+          <a href="https://fjordfur.com/sporing" style="display:inline-block;background:#1D9E75;color:#ffffff;text-decoration:none;padding:11px 28px;border-radius:6px;font-size:13px;font-weight:600">${en ? 'Tracking info →' : 'Sporingsinformasjon →'}</a>
         </div>
 
         <div style="border-top:1px solid #e8e8e4;padding-top:24px;margin-bottom:24px">
