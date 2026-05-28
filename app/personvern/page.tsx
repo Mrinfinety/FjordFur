@@ -76,7 +76,7 @@ export default function Personvern() {
 
         <div className="rsection">
           <h2 className="rsection-title">{T ? 'Who we are' : 'Hvem er vi'}</h2>
-          <p>{T ? 'FjordFur is a Norwegian online pet supplies store. Org.nr. 930 827 525. Contact us at contact.fjordfur@gmail.com for privacy-related questions.' : 'FjordFur er en norsk nettbutikk som selger kjæledyrutstyr. Org.nr. 930 827 525. Kontakt oss på contact.fjordfur@gmail.com ved spørsmål om personvern.'}</p>
+          <p>{T ? 'FjordFur is a Norwegian online pet supplies store. Org.nr. 930 795 593. Contact us at contact.fjordfur@gmail.com for privacy-related questions.' : 'FjordFur er en norsk nettbutikk som selger kjæledyrutstyr. Org.nr. 930 795 593. Kontakt oss på contact.fjordfur@gmail.com ved spørsmål om personvern.'}</p>
         </div>
 
         <div className="rsection">

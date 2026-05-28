@@ -59,7 +59,7 @@ export default function Vilkar() {
 
         <div className="rsection">
           <h2 className="rsection-title">{T ? 'About FjordFur' : 'Om FjordFur'}</h2>
-          <p>{T ? 'FjordFur is a Norwegian online pet supplies store. Org.nr. 930 827 525. Contact: contact.fjordfur@gmail.com. By shopping with us you agree to these terms.' : 'FjordFur er en norsk nettbutikk som selger kjæledyrutstyr. Org.nr. 930 827 525. Kontakt: contact.fjordfur@gmail.com. Ved å handle hos oss godtar du disse vilkårene.'}</p>
+          <p>{T ? 'FjordFur is a Norwegian online pet supplies store. Org.nr. 930 795 593. Contact: contact.fjordfur@gmail.com. By shopping with us you agree to these terms.' : 'FjordFur er en norsk nettbutikk som selger kjæledyrutstyr. Org.nr. 930 795 593. Kontakt: contact.fjordfur@gmail.com. Ved å handle hos oss godtar du disse vilkårene.'}</p>
         </div>
 
         <div className="rsection">
