@@ -204,6 +204,28 @@ async function opprettCJOrdre(sessionId: string) {
   return res.json();
 }
 
+async function sendInternVarsel(session: any) {
+  const customer = session.customer_details;
+  const ordreNr = `FF-${session.id.slice(-12)}`;
+  const totalNok = (session.amount_total / 100).toFixed(0);
+  const items: { name: string; qty: number }[] = JSON.parse(session.metadata?.cj_items || '[]');
+  const produkter = items.map(i => `${i.name} ×${i.qty}`).join(', ');
+
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'FjordFur <ordre@fjordfur.com>',
+      to: 'rolf.leo.stumpf@gmail.com',
+      subject: `Nytt salg ${ordreNr} — NOK ${totalNok}`,
+      html: `<p><strong>${ordreNr}</strong> — NOK ${totalNok}</p><p>${customer?.name || ''} &lt;${customer?.email || ''}&gt;</p><p>${produkter}</p>`,
+    }),
+  });
+}
+
 export async function POST(req: Request) {
   const body = await req.text();
   const sig = req.headers.get('stripe-signature');
@@ -230,6 +252,11 @@ export async function POST(req: Request) {
       await sendOrdreBekreftelse(session);
     } catch (err) {
       console.error('Feil ved e-post:', err);
+    }
+    try {
+      await sendInternVarsel(session);
+    } catch (err) {
+      console.error('Feil ved internt varsel:', err);
     }
   }
 
