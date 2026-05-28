@@ -134,11 +134,53 @@ function buildSporingsHtml(en: boolean) {
   `;
 }
 
+function buildAnmeldelseHtml(en: boolean) {
+  const fornavn = NAVN.split(' ')[0];
+  const reviewUrl = 'https://www.trustpilot.com/review/fjordfur.com';
+  return `
+    <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #e8e8e4;border-radius:8px;overflow:hidden">
+      <div style="background:#1a1a18;padding:24px 32px">
+        <span style="font-family:Georgia,serif;font-size:22px;color:#ffffff">Fjord<span style="color:#1D9E75">Fur</span></span>
+      </div>
+      <div style="padding:32px">
+        <h1 style="font-family:Georgia,serif;font-size:24px;color:#1a1a18;margin:0 0 8px">
+          ${en ? `How was your order, ${fornavn}?` : `Hvordan var bestillingen, ${fornavn}?`}
+        </h1>
+        <p style="color:#666;font-size:14px;margin:0 0 28px">${en ? 'Order number' : 'Ordrenummer'}: <strong>${ORDRE_NR}</strong></p>
+        <div style="background:#f7f7f5;border-radius:6px;padding:24px;margin-bottom:28px;text-align:center">
+          <p style="font-size:15px;color:#333;margin:0 0 20px;line-height:1.6">
+            ${en
+              ? "We hope your order arrived safely! If you have a moment, we'd love to hear what you think."
+              : 'Vi håper pakken kom frem som den skulle! Hvis du har et øyeblikk, vil vi gjerne høre hva du synes.'}
+          </p>
+          <div style="margin-bottom:12px">
+            <span style="font-size:28px;letter-spacing:4px">★★★★★</span>
+          </div>
+          <a href="${reviewUrl}" style="display:inline-block;background:#1D9E75;color:#ffffff;text-decoration:none;padding:12px 32px;border-radius:6px;font-size:14px;font-weight:600">
+            ${en ? 'Leave a review →' : 'Skriv en anmeldelse →'}
+          </a>
+        </div>
+        <div style="border-top:1px solid #e8e8e4;padding-top:24px;margin-bottom:24px">
+          <p style="font-size:14px;color:#444;margin:0 0 8px"><strong>${en ? 'Questions?' : 'Spørsmål?'}</strong></p>
+          <p style="font-size:14px;color:#444;margin:0">${en ? 'Email' : 'E-post'}: <a href="mailto:contact.fjordfur@gmail.com" style="color:#1D9E75">contact.fjordfur@gmail.com</a></p>
+          <p style="font-size:13px;color:#888;margin:6px 0 0">${en ? 'We respond within 1–2 business days.' : 'Vi svarer innen 1–2 virkedager.'}</p>
+        </div>
+        <div style="text-align:center;margin-bottom:24px">
+          <a href="https://fjordfur.com" style="display:inline-block;background:#1a1a18;color:#ffffff;text-decoration:none;padding:11px 24px;border-radius:6px;font-size:13px;font-weight:600">${en ? 'Back to fjordfur.com' : 'Se flere produkter på fjordfur.com'}</a>
+        </div>
+      </div>
+      <div style="background:#f7f7f5;padding:16px 32px;border-top:1px solid #e8e8e4;text-align:center">
+        <p style="font-size:11px;color:#aaa;margin:0">© 2026 FjordFur — Premium pet supplies &nbsp;|&nbsp; <a href="https://fjordfur.com/personvern" style="color:#aaa">${en ? 'Privacy' : 'Personvern'}</a></p>
+      </div>
+    </div>
+  `;
+}
+
 export default function EmailPreview() {
   const [lang, setLang] = useState<'no' | 'en'>('no');
-  const [type, setType] = useState<'ordre' | 'sporing'>('ordre');
+  const [type, setType] = useState<'ordre' | 'sporing' | 'anmeldelse'>('ordre');
   const en = lang === 'en';
-  const html = type === 'ordre' ? buildOrdreHtml(en) : buildSporingsHtml(en);
+  const html = type === 'ordre' ? buildOrdreHtml(en) : type === 'sporing' ? buildSporingsHtml(en) : buildAnmeldelseHtml(en);
 
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', background: '#e8e8e4', minHeight: '100vh', padding: '24px' }}>
@@ -151,6 +193,9 @@ export default function EmailPreview() {
             </button>
             <button onClick={() => setType('sporing')} style={{ padding: '6px 14px', borderRadius: '4px', border: 'none', cursor: 'pointer', background: type === 'sporing' ? '#1a1a18' : '#ccc', color: type === 'sporing' ? '#fff' : '#333', fontWeight: 600 }}>
               2. Sporingsepost
+            </button>
+            <button onClick={() => setType('anmeldelse')} style={{ padding: '6px 14px', borderRadius: '4px', border: 'none', cursor: 'pointer', background: type === 'anmeldelse' ? '#1a1a18' : '#ccc', color: type === 'anmeldelse' ? '#fff' : '#333', fontWeight: 600 }}>
+              3. Anmeldelse
             </button>
           </div>
           <div style={{ display: 'flex', gap: '6px' }}>
