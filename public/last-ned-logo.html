@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body style="background:#333;display:flex;align-items:center;justify-content:center;height:100vh;margin:0">
+  <div style="text-align:center">
+    <canvas id="c" width="500" height="500" style="border-radius:12px;display:block;margin-bottom:16px"></canvas>
+    <button onclick="last()" style="padding:12px 28px;background:#1D9E75;color:#fff;border:none;border-radius:6px;font-size:16px;cursor:pointer">Last ned PNG</button>
+  </div>
+  <script>
+    const c = document.getElementById('c');
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#1a1a18';
+    ctx.fillRect(0, 0, 500, 500);
+
+    ctx.font = 'bold 88px Georgia, serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+
+    const fjordW = ctx.measureText('Fjord').width;
+    const furW = ctx.measureText('Fur').width;
+    const totalW = fjordW + furW;
+    const startX = (500 - totalW) / 2;
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('Fjord', startX, 250);
+    ctx.fillStyle = '#1D9E75';
+    ctx.fillText('Fur', startX + fjordW, 250);
+
+    function last() {
+      const a = document.createElement('a');
+      a.download = 'fjordfur-logo.png';
+      a.href = c.toDataURL('image/png');
+      a.click();
+    }
+  </script>
+</body>
+</html>
