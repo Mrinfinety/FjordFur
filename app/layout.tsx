@@ -4,6 +4,9 @@ import CookieBanner from "@/app/components/CookieBanner";
 import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
+  other: {
+    'trustpilot-one-time-domain-verification-id': '7f8f1900-eb82-4a08-bd77-e43c0bbb9e42',
+  },
   title: {
     default: 'FjordFur — Premium kjæledyrutstyr',
     template: '%s | FjordFur',
