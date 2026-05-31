@@ -11,11 +11,11 @@ export const metadata: Metadata = {
     default: 'FjordFur — Premium kjæledyrutstyr',
     template: '%s | FjordFur',
   },
-  description: 'Nøye utvalgte kjæledyrprodukter av høy kvalitet. Gratis frakt over 499 kr. 14 dagers angrerett.',
+  description: 'Nøye utvalgte kjæledyrprodukter av høy kvalitet. Gratis frakt over 499 kr.',
   keywords: ['kjæledyr', 'hundeutstyr', 'kattutstyr', 'kjæledyrbutikk', 'pet supplies', 'Norway'],
   openGraph: {
     title: 'FjordFur — Premium kjæledyrutstyr',
-    description: 'Nøye utvalgte kjæledyrprodukter av høy kvalitet. Gratis frakt over 499 kr. 14 dagers angrerett.',
+    description: 'Nøye utvalgte kjæledyrprodukter av høy kvalitet. Gratis frakt over 499 kr.',
     url: 'https://fjordfur.com',
     siteName: 'FjordFur',
     locale: 'nb_NO',
