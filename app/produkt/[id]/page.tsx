@@ -75,8 +75,8 @@ const PRODUKT_INNHOLD: Record<string, { navn: string; navnEn: string; beskrivels
 };
 
 const RELATERTE: Record<string, { cjId: string; navn: string; navnEn: string; pris: number; margin: number; bildIndex?: number }[]> = {
-  '1653041912300969984': [{ cjId: '2504100230321610200', navn: 'Vannflaske 2-i-1', navnEn: 'Water Bottle 2-in-1', pris: 249, margin: 120 }, { cjId: '1767124394830204928', navn: 'Bajspose-holder', navnEn: 'Poop Bag Holder', pris: 149, margin: 79 }],
-  '2504100230321610200': [{ cjId: '1653041912300969984', navn: 'Sakte-forer Skål', navnEn: 'Slow Feeder Bowl', pris: 149, margin: 132, bildIndex: 1 }, { cjId: '1767124394830204928', navn: 'Bajspose-holder', navnEn: 'Poop Bag Holder', pris: 149, margin: 79 }],
+  '1653041912300969984': [{ cjId: '2504100230321610200', navn: 'Vannflaske 2-i-1', navnEn: 'Water Bottle 2-in-1', pris: 249, margin: 120 }, { cjId: '1767124394830204928', navn: 'Bajspose-holder', navnEn: 'Poop Bag Holder', pris: 169, margin: 79 }],
+  '2504100230321610200': [{ cjId: '1653041912300969984', navn: 'Sakte-forer Skål', navnEn: 'Slow Feeder Bowl', pris: 149, margin: 132, bildIndex: 1 }, { cjId: '1767124394830204928', navn: 'Bajspose-holder', navnEn: 'Poop Bag Holder', pris: 169, margin: 79 }],
   '1767124394830204928': [{ cjId: '1653041912300969984', navn: 'Sakte-forer Skål', navnEn: 'Slow Feeder Bowl', pris: 149, margin: 132, bildIndex: 1 }, { cjId: '2504100230321610200', navn: 'Vannflaske 2-i-1', navnEn: 'Water Bottle 2-in-1', pris: 249, margin: 120 }],
 };
 

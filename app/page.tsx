@@ -5,7 +5,7 @@ import { useLanguage, type Lang } from '../lib/useLanguage';
 const products = [
   { id: 1, name: 'Sakte-forer Skål', nameEn: 'Slow Feeder Bowl', sub: 'Forhindrer kvelning, hund/katt', subEn: 'Prevents choking, dogs & cats', price: 149, margin: 132, bildIndex: 1, emoji: '🥣', cat: 'hund', cjId: '1653041912300969984' },
   { id: 2, name: 'Vannflaske 2-i-1', nameEn: 'Water Bottle 2-in-1', sub: 'Med matbeholder, perfekt for turer', subEn: 'With food container, perfect for trips', price: 249, margin: 120, emoji: '🚰', cat: 'hund', cjId: '2504100230321610200' },
-  { id: 3, name: 'Bajspose-holder', nameEn: 'Poop Bag Holder', sub: 'Praktisk holder til hundeposen', subEn: 'Practical holder for dog waste bags', price: 149, margin: 79, emoji: '🐾', cat: 'hund', cjId: '1767124394830204928' },
+  { id: 3, name: 'Bajspose-holder', nameEn: 'Poop Bag Holder', sub: 'Praktisk holder til hundeposen', subEn: 'Practical holder for dog waste bags', price: 169, margin: 79, emoji: '🐾', cat: 'hund', cjId: '1767124394830204928' },
 ];
 
 const kategorier = ['alle', 'hund', 'katt'];
