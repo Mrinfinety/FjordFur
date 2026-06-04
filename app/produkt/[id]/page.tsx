@@ -233,14 +233,7 @@ export default function ProduktSide() {
     </div>
   );
 
-  const visPris = (() => {
-    const alleFormulaPriser = produkt?.variants?.map((v: any) =>
-      Math.round(v.variantSellPrice * margin / 10) * 10) ?? [];
-    const minFormulaPrice = alleFormulaPriser.length > 0 ? Math.min(...alleFormulaPriser) : fastPris;
-    const currentFormulaPrice = Math.round(valgtVariant?.variantSellPrice * margin / 10) * 10;
-    if (currentFormulaPrice === minFormulaPrice) return fastPris;
-    return Math.round(currentFormulaPrice * fastPris / minFormulaPrice / 10) * 10 - 1;
-  })();
+  const visPris = fastPris;
 
   if (!produkt) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', fontFamily: 'DM Sans, sans-serif' }}>
