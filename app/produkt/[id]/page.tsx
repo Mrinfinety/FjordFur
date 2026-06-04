@@ -97,15 +97,20 @@ const ENGLISH: Record<string, string> = {
   'set1': '2-pack Pink & Orange',
   'set': '2-pack Orange & Green',
   'water grain cup': 'With food container',
+  'without logo': '',
+  'with label': '',
+  'new striped blue': 'Blue Stripes',
+  'new striped gray': 'Gray Stripes',
 };
 
 function oversett(tekst: string, lang: Lang = 'no'): string {
   let t = tekst.trim();
   if (lang === 'en') {
-    for (const [key, val] of Object.entries(ENGLISH)) {
+    const sortertEn = Object.entries(ENGLISH).sort((a, b) => b[0].length - a[0].length);
+    for (const [key, val] of sortertEn) {
       t = t.replace(new RegExp(`\\b${key}\\b`, 'gi'), val);
     }
-    return t.replace(/\b\w/g, c => c.toUpperCase());
+    return t.trim().replace(/\b\w/g, c => c.toUpperCase());
   }
   const sortert = Object.entries(NORSK).sort((a, b) => b[0].length - a[0].length);
   for (const [en, no] of sortert) {
