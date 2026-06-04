@@ -38,6 +38,18 @@ function sorterVarianter(varianter: any[]) {
 }
 
 const SKJUL_VARIANTER: Record<string, string[]> = {};
+
+const TILLATTE_VIDER: Record<string, string[]> = {
+  '1767124394830204928': [
+    'CJYD198632001AZ',
+    'CJYD198632002BY',
+    'CJYD198632005EV',
+    'CJYD198632006FU',
+    'CJYD198632007GT',
+    'CJYD198632010JQ',
+    'CJYD198632011KP',
+  ],
+};
 // Produkter som har varianter som ikke passer 2D-grid (f.eks. enkeltfarger + 2-pakker)
 const ENKEL_PICKER = new Set(['1653041912300969984', '1767124394830204928']);
 
@@ -172,8 +184,10 @@ export default function ProduktSide() {
     .then(async data => {
       setProdukt(data.data);
       const skjul = SKJUL_VARIANTER[id as string] ?? [];
+      const tillatte = TILLATTE_VIDER[id as string];
       const synligeVarianter = data.data?.variants?.filter((v: any) =>
-        !skjul.some(s => v.variantKey?.toLowerCase().includes(s))
+        !skjul.some(s => v.variantKey?.toLowerCase().includes(s)) &&
+        (!tillatte || tillatte.includes(v.vid))
       );
       const førsteVariant = synligeVarianter?.[0] ?? data.data?.variants?.[0];
       setValgtVariant(førsteVariant);
@@ -521,8 +535,10 @@ export default function ProduktSide() {
           <div className="pdivider" />
 
           {produkt.variants?.length > 1 && (() => {
+            const tillatteVider = TILLATTE_VIDER[id as string];
             const synlige = sorterVarianter(produkt.variants.filter((v: any) =>
-              !(SKJUL_VARIANTER[id as string] ?? []).some(s => v.variantKey?.toLowerCase().includes(s))
+              !(SKJUL_VARIANTER[id as string] ?? []).some(s => v.variantKey?.toLowerCase().includes(s)) &&
+              (!tillatteVider || tillatteVider.includes(v.vid))
             ));
             const dim = hentDimensjoner(synlige);
 
