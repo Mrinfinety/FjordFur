@@ -40,7 +40,7 @@ function sorterVarianter(varianter: any[]) {
 const SKJUL_VARIANTER: Record<string, string[]> = {};
 
 const BEHOLD_BILDER: Record<string, number[]> = {
-  '1767124394830204928': [0, 3, 4, 5, 6, 8, 18, 20, 21, 23, 27, 28, 29],
+  '1767124394830204928': [0, 3, 4, 5, 8, 12, 18, 20, 21, 23, 27, 28, 29, 32],
 };
 
 const TILLATTE_VIDER: Record<string, string[]> = {
