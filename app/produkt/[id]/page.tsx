@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useLanguage, type Lang } from '../../../lib/useLanguage';
+import { PRODUKTER, hentRelaterte } from '../../../lib/produkter';
 
 function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
   return (
@@ -38,51 +39,6 @@ function sorterVarianter(varianter: any[]) {
 }
 
 const SKJUL_VARIANTER: Record<string, string[]> = {};
-
-const BEHOLD_BILDER: Record<string, number[]> = {
-  '1767124394830204928': [0, 3, 4, 5, 8, 12, 18, 20, 21, 23, 27, 28, 29, 35, 36, 37],
-};
-
-const TILLATTE_VIDER: Record<string, string[]> = {
-  '1767124394830204928': [
-    '1767124394905702400', // New Striped Blue
-    '1767124394964422656', // New Striped Gray
-    '1767124395123806208', // Blue Without Logo
-    '1767124395178332160', // Black Without Logo
-    '1767124395249635328', // Purple Without Logo
-    '1767124395409018880', // Red Without Logo
-    '1767124395463544832', // Dark Blue Without Logo
-  ],
-};
-// Produkter som har varianter som ikke passer 2D-grid (f.eks. enkeltfarger + 2-pakker)
-const ENKEL_PICKER = new Set(['1653041912300969984', '1767124394830204928']);
-
-const PRODUKT_INNHOLD: Record<string, { navn: string; navnEn: string; beskrivelse: string; beskrivelseEn: string }> = {
-  '1653041912300969984': {
-    navn: 'Sakte-forer Skål',
-    navnEn: 'Slow Feeder Bowl',
-    beskrivelse: 'En spesiallaget skål som bremser ned spisetempoet til hunden eller katten din. Forhindrer kvelning, oppblåsthet og fordøyelsesproblemer som kan oppstå ved rask spising. Ribbestrukturen i bunnen gjør at kjæledyret ditt må jobbe litt for maten — noe som stimulerer både kropp og hjerne. Laget av slitesterkt, BPA-fritt materiale som er enkelt å rengjøre.',
-    beskrivelseEn: 'A specially designed bowl that slows down your dog or cat\'s eating pace. Prevents choking, bloating and digestive issues caused by rapid eating. The ridge structure at the bottom encourages your pet to work for their food — stimulating both body and mind. Made from durable, BPA-free material that is easy to clean.',
-  },
-  '2504100230321610200': {
-    navn: 'Vannflaske 2-i-1',
-    navnEn: 'Water Bottle 2-in-1',
-    beskrivelse: 'Praktisk 2-i-1 løsning med integrert vannflaske og matbeholder i én enhet. Perfekt for turer, hytteturer og utflukter med hunden din. Trykk på knappen for å fylle den innebygde drikkekoppen med akkurat passe vann — raskt og uten søl. Kompakt design som enkelt får plass i en ryggsekk eller hundebag.',
-    beskrivelseEn: 'A practical 2-in-1 solution with an integrated water bottle and food container in one unit. Perfect for hikes, cabin trips and outdoor adventures with your dog. Press the button to fill the built-in drinking cup with just the right amount of water — quickly and without spills. Compact design that fits easily in a backpack or dog bag.',
-  },
-  '1767124394830204928': {
-    navn: 'Bajspose-holder',
-    navnEn: 'Poop Bag Holder',
-    beskrivelse: 'En hendig og diskret holder til hundeposen som enkelt festes til båndet, ryggsekken eller nøkkelknippet. Slipper du å rote i lommene etter poser — holderen holder dem alltid tilgjengelig der du trenger dem. Tett lukking holder posene på plass, og det kompakte designet er lett å ta med overalt. Velg mellom flere farger.',
-    beskrivelseEn: 'A convenient and discreet dog waste bag holder that easily attaches to a leash, backpack or keychain. No more searching through pockets — the holder keeps bags always at hand when you need them. A secure closure keeps bags in place, and the compact design makes it easy to bring along anywhere. Available in multiple colours.',
-  },
-};
-
-const RELATERTE: Record<string, { cjId: string; navn: string; navnEn: string; pris: number; margin: number; bildIndex?: number }[]> = {
-  '1653041912300969984': [{ cjId: '2504100230321610200', navn: 'Vannflaske 2-i-1', navnEn: 'Water Bottle 2-in-1', pris: 249, margin: 120 }, { cjId: '1767124394830204928', navn: 'Bajspose-holder', navnEn: 'Poop Bag Holder', pris: 169, margin: 79 }],
-  '2504100230321610200': [{ cjId: '1653041912300969984', navn: 'Sakte-forer Skål', navnEn: 'Slow Feeder Bowl', pris: 149, margin: 132, bildIndex: 1 }, { cjId: '1767124394830204928', navn: 'Bajspose-holder', navnEn: 'Poop Bag Holder', pris: 169, margin: 79 }],
-  '1767124394830204928': [{ cjId: '1653041912300969984', navn: 'Sakte-forer Skål', navnEn: 'Slow Feeder Bowl', pris: 149, margin: 132, bildIndex: 1 }, { cjId: '2504100230321610200', navn: 'Vannflaske 2-i-1', navnEn: 'Water Bottle 2-in-1', pris: 249, margin: 120 }],
-};
 
 const FARGE_ORD = ['green','blue','red','pink','orange','black','white','yellow','purple','gray','grey','brown'];
 
@@ -193,8 +149,9 @@ export default function ProduktSide() {
     .then(res => res.json())
     .then(async data => {
       setProdukt(data.data);
-      const skjul = SKJUL_VARIANTER[id as string] ?? [];
-      const tillatte = TILLATTE_VIDER[id as string];
+      const konfig = PRODUKTER.find(p => p.cjId === id);
+      const skjul = SKJUL_VARIANTER[id as string] ?? konfig?.skjul_varianter ?? [];
+      const tillatte = konfig?.tillatte_vider;
       const synligeVarianter = data.data?.variants?.filter((v: any) =>
         !skjul.some(s => v.variantKey?.toLowerCase().includes(s)) &&
         (!tillatte || tillatte.some(t => t.toLowerCase() === (v.vid || v.variantSku || '')?.toLowerCase()))
@@ -211,11 +168,10 @@ export default function ProduktSide() {
       }
       setLaster(false);
 
-      const fast = PRODUKT_INNHOLD[id as string];
-      setBeskrivelse(fast?.beskrivelse || '');
-      setProduktNavn(fast?.navn || ''); // navn oppdateres basert på lang i render
+      setBeskrivelse(konfig?.beskrivelse || '');
+      setProduktNavn(konfig?.navn || '');
 
-      const rel = RELATERTE[id as string] ?? [];
+      const rel = hentRelaterte(id as string);
       const bilder: Record<string, string> = {};
       await Promise.all(rel.map(async r => {
         const res = await fetch(`/api/products?pid=${r.cjId}`);
@@ -245,7 +201,8 @@ export default function ProduktSide() {
   produkt.variants?.forEach((v: any) => {
     if (v.variantImage && !allebilderRå.includes(v.variantImage)) allebilderRå.push(v.variantImage);
   });
-  const behold = BEHOLD_BILDER[id as string];
+  const konfig = PRODUKTER.find(p => p.cjId === id);
+  const behold = konfig?.behold_bilder;
   const allebilder = behold ? allebilderRå.filter((_, i) => behold.includes(i)) : allebilderRå;
   function gaTilVariantBilde(v: any) {
     if (v?.variantImage) {
@@ -535,19 +492,19 @@ export default function ProduktSide() {
 
         <div className="pinfo">
           <p className="ptag">FjordFur</p>
-          <h1 className="ptitle">{lang === 'en' ? (PRODUKT_INNHOLD[id as string]?.navnEn || produkt.productNameEn) : (produktNavn || produkt.productNameEn)}</h1>
+          <h1 className="ptitle">{lang === 'en' ? (konfig?.navnEn || produkt.productNameEn) : (produktNavn || produkt.productNameEn)}</h1>
           <p className="pprice">{lang === 'en' ? `NOK ${visPris}` : `kr ${visPris},–`}</p>
           <div className="pdivider" />
 
           {produkt.variants?.length > 1 && (() => {
-            const tillatteVider = TILLATTE_VIDER[id as string];
+            const tillatteVider = konfig?.tillatte_vider;
             const synlige = sorterVarianter(produkt.variants.filter((v: any) =>
-              !(SKJUL_VARIANTER[id as string] ?? []).some(s => v.variantKey?.toLowerCase().includes(s)) &&
+              !(SKJUL_VARIANTER[id as string] ?? konfig?.skjul_varianter ?? []).some(s => v.variantKey?.toLowerCase().includes(s)) &&
               (!tillatteVider || tillatteVider.some(t => t.toLowerCase() === (v.vid || v.variantSku || '')?.toLowerCase()))
             ));
             const dim = hentDimensjoner(synlige);
 
-            if (dim.harBegge && !ENKEL_PICKER.has(id as string)) {
+            if (dim.harBegge && !konfig?.enkel_picker) {
               return (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div>
@@ -611,7 +568,7 @@ export default function ProduktSide() {
               if (eksisterende !== -1) {
                 neste = prev.map((i, idx) => idx === eksisterende ? { ...i, quantity: (i.quantity || 1) + 1 } : i);
               } else {
-                neste = [...prev, { id: Date.now(), name: produktNavn || produkt.productNameEn, nameEn: PRODUKT_INNHOLD[id as string]?.navnEn || produkt.productNameEn, price: visPris, cjId: id as string, variantId: valgtVariant.vid, quantity: 1 }];
+                neste = [...prev, { id: Date.now(), name: produktNavn || produkt.productNameEn, nameEn: konfig?.navnEn || produkt.productNameEn, price: visPris, cjId: id as string, variantId: valgtVariant.vid, quantity: 1 }];
               }
               localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
               return neste;
@@ -623,9 +580,9 @@ export default function ProduktSide() {
           </button>
 
           <div className="pdivider" />
-          {(beskrivelse || PRODUKT_INNHOLD[id as string]?.beskrivelseEn) && (
+          {(beskrivelse || konfig?.beskrivelseEn) && (
   <p className="pdesc" style={{ lineHeight: '1.8', color: '#555' }}>
-    {lang === 'en' ? (PRODUKT_INNHOLD[id as string]?.beskrivelseEn || beskrivelse) : beskrivelse}
+    {lang === 'en' ? (konfig?.beskrivelseEn || beskrivelse) : beskrivelse}
   </p>
 )}
 <div className="pdivider" />
@@ -647,11 +604,11 @@ export default function ProduktSide() {
       </div>
 
       {/* Relaterte produkter */}
-      {(RELATERTE[id as string] ?? []).length > 0 && (
+      {hentRelaterte(id as string).length > 0 && (
         <div className="relaterte">
           <h2 className="relaterte-tittel">{lang === 'en' ? 'You might also like' : 'Du vil kanskje også like'}</h2>
           <div className="relaterte-grid">
-            {(RELATERTE[id as string] ?? []).map(r => (
+            {hentRelaterte(id as string).map(r => (
               <div key={r.cjId} className="rel-card" onClick={() => window.location.assign(`/produkt/${r.cjId}?pris=${r.pris}&margin=${r.margin}`)}>
                 <div className="rel-img">
                   {relBilder[r.cjId]
@@ -670,7 +627,7 @@ export default function ProduktSide() {
 
       {/* Sticky kjøpsknapp på mobil */}
       <div className="sticky-add">
-        <span className="sticky-add-name">{lang === 'en' ? (PRODUKT_INNHOLD[id as string]?.navnEn || produkt.productNameEn) : (produktNavn || produkt.productNameEn)}</span>
+        <span className="sticky-add-name">{lang === 'en' ? (konfig?.navnEn || produkt.productNameEn) : (produktNavn || produkt.productNameEn)}</span>
         <span className="sticky-add-price">{lang === 'en' ? `NOK ${visPris}` : `kr ${visPris},–`}</span>
         <button className="sticky-add-btn" onClick={() => {
           if (!valgtVariant?.vid) return;
@@ -680,7 +637,7 @@ export default function ProduktSide() {
             if (eksisterende !== -1) {
               neste = prev.map((i, idx) => idx === eksisterende ? { ...i, quantity: (i.quantity || 1) + 1 } : i);
             } else {
-              neste = [...prev, { id: Date.now(), name: produktNavn || produkt.productNameEn, nameEn: PRODUKT_INNHOLD[id as string]?.navnEn || produkt.productNameEn, price: visPris, cjId: id as string, variantId: valgtVariant.vid, quantity: 1 }];
+              neste = [...prev, { id: Date.now(), name: produktNavn || produkt.productNameEn, nameEn: konfig?.navnEn || produkt.productNameEn, price: visPris, cjId: id as string, variantId: valgtVariant.vid, quantity: 1 }];
             }
             localStorage.setItem('fjordfur-cart', JSON.stringify(neste));
             return neste;
