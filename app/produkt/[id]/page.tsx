@@ -39,6 +39,10 @@ function sorterVarianter(varianter: any[]) {
 
 const SKJUL_VARIANTER: Record<string, string[]> = {};
 
+const BEHOLD_BILDER: Record<string, number[]> = {
+  '1767124394830204928': [0, 3, 4, 5, 6, 8, 18, 20, 21, 23, 27, 28, 29],
+};
+
 const TILLATTE_VIDER: Record<string, string[]> = {
   '1767124394830204928': [
     '1767124394905702400', // New Striped Blue
@@ -244,10 +248,12 @@ export default function ProduktSide() {
     </div>
   );
 
-  const allebilder: string[] = [...(produkt.productImageSet || [])];
+  const allebilderRå: string[] = [...(produkt.productImageSet || [])];
   produkt.variants?.forEach((v: any) => {
-    if (v.variantImage && !allebilder.includes(v.variantImage)) allebilder.push(v.variantImage);
+    if (v.variantImage && !allebilderRå.includes(v.variantImage)) allebilderRå.push(v.variantImage);
   });
+  const behold = BEHOLD_BILDER[id as string];
+  const allebilder = behold ? allebilderRå.filter((_, i) => behold.includes(i)) : allebilderRå;
   function gaTilVariantBilde(v: any) {
     if (v?.variantImage) {
       const idx = allebilder.indexOf(v.variantImage);
