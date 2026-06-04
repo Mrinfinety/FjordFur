@@ -39,7 +39,7 @@ function sorterVarianter(varianter: any[]) {
 
 const SKJUL_VARIANTER: Record<string, string[]> = {};
 // Produkter som har varianter som ikke passer 2D-grid (f.eks. enkeltfarger + 2-pakker)
-const ENKEL_PICKER = new Set(['1653041912300969984']);
+const ENKEL_PICKER = new Set(['1653041912300969984', '1767124394830204928']);
 
 const PRODUKT_INNHOLD: Record<string, { navn: string; navnEn: string; beskrivelse: string; beskrivelseEn: string }> = {
   '1653041912300969984': {
@@ -54,11 +54,18 @@ const PRODUKT_INNHOLD: Record<string, { navn: string; navnEn: string; beskrivels
     beskrivelse: 'Praktisk 2-i-1 løsning med integrert vannflaske og matbeholder i én enhet. Perfekt for turer, hytteturer og utflukter med hunden din. Trykk på knappen for å fylle den innebygde drikkekoppen med akkurat passe vann — raskt og uten søl. Kompakt design som enkelt får plass i en ryggsekk eller hundebag.',
     beskrivelseEn: 'A practical 2-in-1 solution with an integrated water bottle and food container in one unit. Perfect for hikes, cabin trips and outdoor adventures with your dog. Press the button to fill the built-in drinking cup with just the right amount of water — quickly and without spills. Compact design that fits easily in a backpack or dog bag.',
   },
+  '1767124394830204928': {
+    navn: 'Bajspose-holder',
+    navnEn: 'Poop Bag Holder',
+    beskrivelse: 'En hendig og diskret holder til hundeposen som enkelt festes til båndet, ryggsekken eller nøkkelknippet. Slipper du å rote i lommene etter poser — holderen holder dem alltid tilgjengelig der du trenger dem. Tett lukking holder posene på plass, og det kompakte designet er lett å ta med overalt. Velg mellom flere farger.',
+    beskrivelseEn: 'A convenient and discreet dog waste bag holder that easily attaches to a leash, backpack or keychain. No more searching through pockets — the holder keeps bags always at hand when you need them. A secure closure keeps bags in place, and the compact design makes it easy to bring along anywhere. Available in multiple colours.',
+  },
 };
 
 const RELATERTE: Record<string, { cjId: string; navn: string; navnEn: string; pris: number; margin: number; bildIndex?: number }[]> = {
-  '1653041912300969984': [{ cjId: '2504100230321610200', navn: 'Vannflaske 2-i-1', navnEn: 'Water Bottle 2-in-1', pris: 249, margin: 120 }],
-  '2504100230321610200': [{ cjId: '1653041912300969984', navn: 'Sakte-forer Skål', navnEn: 'Slow Feeder Bowl', pris: 149, margin: 132, bildIndex: 1 }],
+  '1653041912300969984': [{ cjId: '2504100230321610200', navn: 'Vannflaske 2-i-1', navnEn: 'Water Bottle 2-in-1', pris: 249, margin: 120 }, { cjId: '1767124394830204928', navn: 'Bajspose-holder', navnEn: 'Poop Bag Holder', pris: 149, margin: 79 }],
+  '2504100230321610200': [{ cjId: '1653041912300969984', navn: 'Sakte-forer Skål', navnEn: 'Slow Feeder Bowl', pris: 149, margin: 132, bildIndex: 1 }, { cjId: '1767124394830204928', navn: 'Bajspose-holder', navnEn: 'Poop Bag Holder', pris: 149, margin: 79 }],
+  '1767124394830204928': [{ cjId: '1653041912300969984', navn: 'Sakte-forer Skål', navnEn: 'Slow Feeder Bowl', pris: 149, margin: 132, bildIndex: 1 }, { cjId: '2504100230321610200', navn: 'Vannflaske 2-i-1', navnEn: 'Water Bottle 2-in-1', pris: 249, margin: 120 }],
 };
 
 const FARGE_ORD = ['green','blue','red','pink','orange','black','white','yellow','purple','gray','grey','brown'];
@@ -67,7 +74,8 @@ const NORSK: Record<string, string> = {
   'set1':'2-pk Rosa & Oransje','set':'2-pk Oransje & Grønn',
   'green':'Grønn','pink':'Rosa','orange':'Oransje','blue':'Blå','red':'Rød',
   'black':'Svart','white':'Hvit','yellow':'Gul','purple':'Lilla',
-  'gray':'Grå','grey':'Grå','brown':'Brun',
+  'gray':'Grå','grey':'Grå','brown':'Brun','dark blue':'Mørkeblå',
+  'without logo':'','with label':'',
   'small':'Liten','medium':'Medium','large':'Stor',
   'water grain cup':'Med matbeholder',
   'xs':'XS','s':'S','m':'M','l':'L','xl':'XL',

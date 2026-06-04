@@ -5,6 +5,7 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL || 'https://fjordfur.com';
 const PRODUCTS = [
   '1653041912300969984',
   '2504100230321610200',
+  '1767124394830204928',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
