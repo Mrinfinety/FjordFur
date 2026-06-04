@@ -41,13 +41,13 @@ const SKJUL_VARIANTER: Record<string, string[]> = {};
 
 const TILLATTE_VIDER: Record<string, string[]> = {
   '1767124394830204928': [
-    'CJYD198632001AZ',
-    'CJYD198632002BY',
-    'CJYD198632005EV',
-    'CJYD198632006FU',
-    'CJYD198632007GT',
-    'CJYD198632010JQ',
-    'CJYD198632011KP',
+    '1767124394905702400', // New Striped Blue
+    '1767124394964422656', // New Striped Gray
+    '1767124395123806208', // Blue Without Logo
+    '1767124395178332160', // Black Without Logo
+    '1767124395249635328', // Purple Without Logo
+    '1767124395409018880', // Red Without Logo
+    '1767124395463544832', // Dark Blue Without Logo
   ],
 };
 // Produkter som har varianter som ikke passer 2D-grid (f.eks. enkeltfarger + 2-pakker)
@@ -87,7 +87,7 @@ const NORSK: Record<string, string> = {
   'green':'Grønn','pink':'Rosa','orange':'Oransje','blue':'Blå','red':'Rød',
   'black':'Svart','white':'Hvit','yellow':'Gul','purple':'Lilla',
   'gray':'Grå','grey':'Grå','brown':'Brun','dark blue':'Mørkeblå',
-  'without logo':'','with label':'',
+  'without logo':'','with label':'','new striped blue':'Blå striper','new striped gray':'Grå striper',
   'small':'Liten','medium':'Medium','large':'Stor',
   'water grain cup':'Med matbeholder',
   'xs':'XS','s':'S','m':'M','l':'L','xl':'XL',
@@ -189,7 +189,6 @@ export default function ProduktSide() {
         !skjul.some(s => v.variantKey?.toLowerCase().includes(s)) &&
         (!tillatte || tillatte.some(t => t.toLowerCase() === (v.vid || v.variantSku || '')?.toLowerCase()))
       );
-      if (tillatte) console.log('CJ variants:', data.data?.variants?.map((v: any) => ({ vid: v.vid, key: v.variantKey })));
       const førsteVariant = synligeVarianter?.[0] ?? data.data?.variants?.[0];
       setValgtVariant(førsteVariant);
 
