@@ -189,7 +189,7 @@ export default function ProduktSide() {
         !skjul.some(s => v.variantKey?.toLowerCase().includes(s)) &&
         (!tillatte || tillatte.some(t => t.toLowerCase() === (v.vid || v.variantSku || '')?.toLowerCase()))
       );
-      if (tillatte) console.log('CJ variant vids:', data.data?.variants?.map((v: any) => v.vid || v.variantSku || v.variantId));
+      if (tillatte) console.log('CJ variants:', data.data?.variants?.map((v: any) => ({ vid: v.vid, key: v.variantKey })));
       const førsteVariant = synligeVarianter?.[0] ?? data.data?.variants?.[0];
       setValgtVariant(førsteVariant);
 
