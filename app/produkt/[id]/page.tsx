@@ -187,8 +187,9 @@ export default function ProduktSide() {
       const tillatte = TILLATTE_VIDER[id as string];
       const synligeVarianter = data.data?.variants?.filter((v: any) =>
         !skjul.some(s => v.variantKey?.toLowerCase().includes(s)) &&
-        (!tillatte || tillatte.includes(v.vid))
+        (!tillatte || tillatte.some(t => t.toLowerCase() === (v.vid || v.variantSku || '')?.toLowerCase()))
       );
+      if (tillatte) console.log('CJ variant vids:', data.data?.variants?.map((v: any) => v.vid || v.variantSku || v.variantId));
       const førsteVariant = synligeVarianter?.[0] ?? data.data?.variants?.[0];
       setValgtVariant(førsteVariant);
 
@@ -538,7 +539,7 @@ export default function ProduktSide() {
             const tillatteVider = TILLATTE_VIDER[id as string];
             const synlige = sorterVarianter(produkt.variants.filter((v: any) =>
               !(SKJUL_VARIANTER[id as string] ?? []).some(s => v.variantKey?.toLowerCase().includes(s)) &&
-              (!tillatteVider || tillatteVider.includes(v.vid))
+              (!tillatteVider || tillatteVider.some(t => t.toLowerCase() === (v.vid || v.variantSku || '')?.toLowerCase()))
             ));
             const dim = hentDimensjoner(synlige);
 
