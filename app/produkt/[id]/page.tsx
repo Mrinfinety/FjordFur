@@ -107,10 +107,11 @@ function oversett(tekst: string, lang: Lang = 'no'): string {
     }
     return t.replace(/\b\w/g, c => c.toUpperCase());
   }
-  for (const [en, no] of Object.entries(NORSK)) {
+  const sortert = Object.entries(NORSK).sort((a, b) => b[0].length - a[0].length);
+  for (const [en, no] of sortert) {
     t = t.replace(new RegExp(`\\b${en}\\b`, 'gi'), no);
   }
-  return t.replace(/\bml\b/gi, 'ml');
+  return t.trim().replace(/\bml\b/gi, 'ml');
 }
 
 function hentFarge(key: string): string | null {
