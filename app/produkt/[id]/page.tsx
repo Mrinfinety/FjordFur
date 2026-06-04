@@ -252,6 +252,7 @@ export default function ProduktSide() {
   produkt.variants?.forEach((v: any) => {
     if (v.variantImage && !allebilderRå.includes(v.variantImage)) allebilderRå.push(v.variantImage);
   });
+  console.log('Totalt bilder i allebilderRå:', allebilderRå.length, allebilderRå.map((_, i) => i));
   const behold = BEHOLD_BILDER[id as string];
   const allebilder = behold ? allebilderRå.filter((_, i) => behold.includes(i)) : allebilderRå;
   function gaTilVariantBilde(v: any) {
