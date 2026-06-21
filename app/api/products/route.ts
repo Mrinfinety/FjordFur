@@ -23,5 +23,15 @@ export async function GET(req: Request) {
   });
 
   const data = await res.json();
-  return Response.json(data);
+
+  // Produktdata (bilder/varianter) endres sjelden, og pris styres uansett
+  // av URL-parametere – ikke av dette svaret. La derfor CDN-en cache
+  // vellykkede svar en kort stund for raskere responstid, mens stale svar
+  // kan serveres mens et nytt hentes i bakgrunnen. Feil caches ikke.
+  const headers: Record<string, string> = {};
+  if (data?.data) {
+    headers['Cache-Control'] = 'public, s-maxage=600, stale-while-revalidate=86400';
+  }
+
+  return Response.json(data, { headers });
 }

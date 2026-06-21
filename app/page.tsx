@@ -539,7 +539,7 @@ useEffect(() => {
           {lasterDenne
             ? <div className="skel" style={{ width: '100%', height: '100%' }} />
             : p.cjId && cjProducts[p.cjId]
-              ? <img src={cjProducts[p.cjId].productImageSet?.[(p as any).bildIndex ?? 0] || cjProducts[p.cjId].bigImage} alt={lang === 'en' ? (p as any).nameEn : p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              ? <img src={cjProducts[p.cjId].productImageSet?.[(p as any).bildIndex ?? 0] || cjProducts[p.cjId].bigImage} alt={lang === 'en' ? (p as any).nameEn : p.name} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               : <div style={{ width: '100%', height: '100%', background: '#f4f4f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px' }}>{p.emoji}</div>}
         </div>
         <div className="card-body">

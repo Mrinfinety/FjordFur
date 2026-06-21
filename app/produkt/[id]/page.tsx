@@ -463,6 +463,8 @@ export default function ProduktSide() {
       className="pmain-img"
       src={allebilder[aktivBilde] || produkt.bigImage}
       alt={produkt.productNameEn}
+      fetchPriority="high"
+      decoding="async"
     />
     <button onClick={() => setAktivBilde(prev => Math.max(0, prev - 1))} style={{
       position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)',
@@ -485,6 +487,8 @@ export default function ProduktSide() {
         className={`pthumb ${aktivBilde === i ? 'active' : ''}`}
         alt={`${lang === 'en' ? 'Image' : 'Bilde'} ${i + 1}`}
         onClick={() => setAktivBilde(i)}
+        loading="lazy"
+        decoding="async"
       />
     ))}
   </div>
@@ -612,7 +616,7 @@ export default function ProduktSide() {
               <div key={r.cjId} className="rel-card" onClick={() => window.location.assign(`/produkt/${r.cjId}?pris=${r.pris}&margin=${r.margin}`)}>
                 <div className="rel-img">
                   {relBilder[r.cjId]
-                    ? <img src={relBilder[r.cjId]} alt={lang === 'en' ? r.navnEn : r.navn} />
+                    ? <img src={relBilder[r.cjId]} alt={lang === 'en' ? r.navnEn : r.navn} loading="lazy" decoding="async" />
                     : <div style={{ width: '100%', height: '100%', background: '#f4f4f0' }} />}
                 </div>
                 <div className="rel-body">

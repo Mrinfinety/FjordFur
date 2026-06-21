@@ -27,6 +27,17 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Statiske medie-/font-filer endres sjelden – la nettleser/CDN
+        // cache dem en god stund (med stale-while-revalidate i bakgrunnen).
+        source: '/:all*(svg|jpg|jpeg|png|webp|avif|gif|ico|woff|woff2)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, stale-while-revalidate=604800',
+          },
+        ],
+      },
     ];
   },
 };
