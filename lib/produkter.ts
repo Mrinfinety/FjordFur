@@ -11,6 +11,8 @@ export interface ProduktKonfig {
   bildIndex?: number;
   beskrivelse: string;
   beskrivelseEn: string;
+  metaTittel: string;
+  metaBeskrivelse: string;
   behold_bilder?: number[];
   tillatte_vider?: string[];
   skjul_varianter?: string[];
@@ -30,8 +32,10 @@ export const PRODUKTER: ProduktKonfig[] = [
     cat: 'hund',
     bildIndex: 1,
     enkel_picker: true,
-    beskrivelse: 'En spesiallaget skål som bremser ned spisetempoet til hunden eller katten din. Forhindrer kvelning, oppblåsthet og fordøyelsesproblemer som kan oppstå ved rask spising. Ribbestrukturen i bunnen gjør at kjæledyret ditt må jobbe litt for maten — noe som stimulerer både kropp og hjerne. Laget av slitesterkt, BPA-fritt materiale som er enkelt å rengjøre.',
-    beskrivelseEn: "A specially designed bowl that slows down your dog or cat's eating pace. Prevents choking, bloating and digestive issues caused by rapid eating. The ridge structure at the bottom encourages your pet to work for their food — stimulating both body and mind. Made from durable, BPA-free material that is easy to clean.",
+    beskrivelse: 'Spiser hunden eller katten din altfor fort? Denne sakte fôrer skålen er laget for å bremse spisetempoet og gi kjæledyret ditt en sunnere og roligere måltidsopplevelse. Den smarte labyrintstrukturen i bunnen gjør at maten må «jaktes» frem, noe som forhindrer kvelning, oppblåsthet og fordøyelsesproblemer som ofte oppstår ved rask spising. En sakte fôrer hund og katt vil elske, fordi den samtidig stimulerer hjernen og forlenger måltidet på en naturlig måte — perfekt for ivrige slukere. Skålen er laget av slitesterkt, BPA-fritt materiale med sklisikker bunn, og kan enkelt vaskes for hånd eller i oppvaskmaskin. Et lite, men effektivt grep for bedre helse og trivsel hver eneste dag.',
+    beskrivelseEn: "Does your dog or cat eat way too fast? This slow feeder bowl is designed to slow down eating pace and give your pet a healthier, calmer mealtime. The clever maze structure at the bottom turns every meal into a fun challenge, preventing choking, bloating and digestive issues that often come from rapid eating. It also gently stimulates the brain and naturally extends mealtime — perfect for eager eaters. Made from durable, BPA-free material with a non-slip base, it is easy to clean by hand or in the dishwasher. A small but effective step toward better health and well-being every single day.",
+    metaTittel: 'Sakte Fôrer Skål til Hund & Katt – Forhindrer Kvelning',
+    metaBeskrivelse: 'Sakte fôrer til hund og katt som bremser spisetempoet og forhindrer kvelning og oppblåsthet. Slitesterk, BPA-fri og enkel å rengjøre. Fri frakt over 499 kr.',
   },
   {
     cjId: '2504100230321610200',
@@ -43,8 +47,10 @@ export const PRODUKTER: ProduktKonfig[] = [
     margin: 120,
     emoji: '🚰',
     cat: 'hund',
-    beskrivelse: 'Praktisk 2-i-1 løsning med integrert vannflaske og matbeholder i én enhet. Perfekt for turer, hytteturer og utflukter med hunden din. Trykk på knappen for å fylle den innebygde drikkekoppen med akkurat passe vann — raskt og uten søl. Kompakt design som enkelt får plass i en ryggsekk eller hundebag.',
-    beskrivelseEn: 'A practical 2-in-1 solution with an integrated water bottle and food container in one unit. Perfect for hikes, cabin trips and outdoor adventures with your dog. Press the button to fill the built-in drinking cup with just the right amount of water — quickly and without spills. Compact design that fits easily in a backpack or dog bag.',
+    beskrivelse: 'En vannflaske til hund på tur bør være enkel, sølfri og rask å bruke — og denne 2-i-1-løsningen er alt dette og mer. Vannflaske og matbeholder er samlet i én kompakt enhet, slik at du har med både drikke og snacks uansett hvor turen går. Trykk enkelt på knappen for å fylle den innebygde drikkekoppen med akkurat passe mengde vann, og hell ubrukt vann tilbake i flasken uten å søle en eneste dråpe. Perfekt for lange turer, hytteturer, treningsøkter og varme sommerdager der hunden trenger å holde seg hydrert. Det lekkasjesikre designet får lett plass i en ryggsekk eller hundebag, og det robuste, BPA-frie materialet tåler aktiv bruk. Gi hunden din friheten til å drikke når som helst, hvor som helst.',
+    beskrivelseEn: 'A water bottle for dogs on the go should be simple, spill-free and quick to use — and this 2-in-1 solution is all that and more. The water bottle and food container are combined into one compact unit, so you can bring both drink and snacks wherever the trail leads. Just press the button to fill the built-in drinking cup with the right amount of water, then pour any unused water back into the bottle without spilling a drop. Perfect for long walks, cabin trips, training sessions and hot summer days when your dog needs to stay hydrated. The leak-proof design fits easily in a backpack or dog bag, and the sturdy, BPA-free material handles active use. Give your dog the freedom to drink anytime, anywhere.',
+    metaTittel: 'Vannflaske til Hund på Tur – 2-i-1 med Matbeholder',
+    metaBeskrivelse: 'Praktisk vannflaske til hund på tur med innebygd drikkekopp og matbeholder i ett. Sølfri og kompakt – perfekt for turer og hytteliv. Fri frakt over 499 kr.',
   },
   {
     cjId: '1767124394830204928',
@@ -67,8 +73,10 @@ export const PRODUKTER: ProduktKonfig[] = [
       '1767124395409018880',
       '1767124395463544832',
     ],
-    beskrivelse: 'En hendig og diskret holder til hundeposen som enkelt festes til båndet, ryggsekken eller nøkkelknippet. Slipper du å rote i lommene etter poser — holderen holder dem alltid tilgjengelig der du trenger dem. Tett lukking holder posene på plass, og det kompakte designet er lett å ta med overalt. Velg mellom flere farger.',
-    beskrivelseEn: 'A convenient and discreet dog waste bag holder that easily attaches to a leash, backpack or keychain. No more searching through pockets — the holder keeps bags always at hand when you need them. A secure closure keeps bags in place, and the compact design makes it easy to bring along anywhere. Available in multiple colours.',
+    beskrivelse: 'En bæsjeposeholder til bånd er det lille tilbehøret som gjør hver tur enklere. Denne hendige og diskrete holderen festes raskt til hundebåndet, ryggsekken eller nøkkelknippet, slik at du alltid har poser tilgjengelig akkurat når du trenger dem — slutt på å rote i lommene etter poser. Den tette lukkingen holder posene trygt på plass, og det kompakte, lette designet gjør den enkel å ta med overalt. Holderen passer til de fleste standard poseruller og er laget av slitesterkt materiale som tåler daglig bruk i all slags vær. Velg mellom flere stilrene farger som matcher båndet eller utstyret ditt, og gjør hundeturen litt mer organisert og bekymringsfri.',
+    beskrivelseEn: 'A poop bag holder for your leash is the little accessory that makes every walk easier. This handy, discreet holder attaches quickly to your dog\'s leash, backpack or keychain, so you always have bags ready exactly when you need them — no more digging through pockets. The secure closure keeps bags safely in place, and the compact, lightweight design makes it easy to bring along anywhere. It fits most standard bag rolls and is made from durable material that withstands daily use in all kinds of weather. Choose from several sleek colours to match your leash or gear, and make every dog walk a little more organised and worry-free.',
+    metaTittel: 'Bæsjeposeholder til Bånd – Diskret Holder til Hundeposer',
+    metaBeskrivelse: 'Bæsjeposeholder til bånd, ryggsekk eller nøkkelknippe. Hold hundeposene alltid for hånden på tur. Kompakt design i flere farger. Fri frakt over 499 kr.',
   },
 ];
 
