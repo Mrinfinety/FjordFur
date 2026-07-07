@@ -1,7 +1,7 @@
 'use client';
 import { useParams } from 'next/navigation';
 import { PRODUKTER } from '../../../lib/produkter';
-import { hentArtikkel } from '../../../lib/blogg';
+import { ARTIKLER, hentArtikkel } from '../../../lib/blogg';
 
 function produktLenke(cjId: string): string {
   const p = PRODUKTER.find(x => x.cjId === cjId);
@@ -55,8 +55,15 @@ const INNHOLD: Record<string, React.ReactNode> = {
       <p>
         Hvis hunden plutselig endrer spisevaner, virker oppblåst, prøver å kaste opp uten å få det til, eller
         virker urolig og smertepåvirket etter måltid, bør du kontakte veterinær raskt. Dette kan være tegn på
-        GDV, som krever akutt hjelp. Med små justeringer i rutinene — og riktige hjelpemidler — kan måltidene
-        bli både tryggere og roligere for hunden din.
+        GDV, som krever akutt hjelp. Du finner gode råd om hold og fôring av hund hos{' '}
+        <a className="blink" href="https://www.mattilsynet.no/dyr/kjaledyr-og-konkurransedyr/hund" target="_blank" rel="noopener noreferrer">Mattilsynet</a>.
+        Med små justeringer i rutinene — og riktige hjelpemidler — kan måltidene bli både tryggere og
+        roligere for hunden din.
+      </p>
+      <p>
+        Skal dere ut på tur etter måltidet? Se også vår{' '}
+        <a className="blink" href="/blogg/pakkeliste-til-hundeturen">pakkeliste til hundeturen</a>, så er
+        dere godt forberedt.
       </p>
     </>
   ),
@@ -75,7 +82,9 @@ const INNHOLD: Record<string, React.ReactNode> = {
         løsning er en{' '}
         <a className="blink" href={produktLenke(VANNFLASKE)}>vannflaske 2-i-1</a> med integrert drikkekopp og
         matbeholder, slik at hunden enkelt kan drikke underveis uten søl. Skal dere på en lengre tur, pakk også
-        litt tørrfôr eller godbiter for ekstra energi.
+        litt tørrfôr eller godbiter for ekstra energi. Spiser hunden litt vel ivrig? Les hvorfor{' '}
+        <a className="blink" href="/blogg/hvorfor-spiser-hunden-for-fort">hunden spiser for fort</a> — og hva du
+        kan gjøre med det.
       </p>
 
       <h2>Bæsjeposer og hygiene</h2>
@@ -90,7 +99,9 @@ const INNHOLD: Record<string, React.ReactNode> = {
       <h2>Bånd, sele og sikkerhet</h2>
       <p>
         Sørg for at båndet og selen sitter godt og er i god stand. På ukjente områder, eller i nærheten av vei
-        og dyreliv, bør hunden holdes i bånd. En refleks eller et lys på halsbåndet er smart hvis dere er ute i
+        og dyreliv, bør hunden holdes i bånd — husk også den{' '}
+        <a className="blink" href="https://lovdata.no/dokument/NL/lov/2003-07-04-74" target="_blank" rel="noopener noreferrer">lovpålagte båndtvangen</a>{' '}
+        som gjelder store deler av året. En refleks eller et lys på halsbåndet er smart hvis dere er ute i
         mørket. Ha også med ID-merking og kontaktinformasjon, i tilfelle hunden skulle komme bort.
       </p>
 
@@ -149,6 +160,22 @@ export default function Artikkel() {
         }
         .blink { color: #1D9E75; font-weight: 500; text-decoration: underline; text-underline-offset: 2px; }
         .blink:hover { color: #1a1a18; }
+        .arelated { margin-top: 48px; padding-top: 32px; border-top: 1px solid #e8e8e4; }
+        .arelated-title {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 22px; font-weight: 600; color: #1a1a18; margin-bottom: 20px;
+        }
+        .arelated-list { display: grid; gap: 12px; }
+        .arelated-card {
+          display: flex; align-items: center; gap: 14px;
+          padding: 14px 16px; background: #fff;
+          border: 1px solid #e8e8e4; border-radius: 10px;
+          text-decoration: none; transition: all 0.2s;
+        }
+        .arelated-card:hover { border-color: #d4d4ce; box-shadow: 0 6px 20px rgba(0,0,0,0.06); transform: translateY(-2px); }
+        .arelated-emoji { font-size: 28px; }
+        .arelated-name { display: block; font-size: 15px; font-weight: 500; color: #1a1a18; }
+        .arelated-meta { display: block; font-size: 12px; color: #aaa; margin-top: 2px; }
         .afooter {
           margin-top: 48px; padding-top: 32px; border-top: 1px solid #e8e8e4;
           display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center;
@@ -193,6 +220,22 @@ export default function Artikkel() {
             <p className="ameta">{artikkel.dato} · {artikkel.lesetid} lesing</p>
             <h1 className="atitle">{artikkel.tittel}</h1>
             <div className="abody">{innhold}</div>
+            {ARTIKLER.filter(a => a.slug !== (slug as string)).length > 0 && (
+              <aside className="arelated">
+                <h2 className="arelated-title">Les også</h2>
+                <div className="arelated-list">
+                  {ARTIKLER.filter(a => a.slug !== (slug as string)).map(a => (
+                    <a key={a.slug} href={`/blogg/${a.slug}`} className="arelated-card">
+                      <span className="arelated-emoji">{a.emoji}</span>
+                      <span>
+                        <span className="arelated-name">{a.tittel}</span>
+                        <span className="arelated-meta">{a.dato} · {a.lesetid} lesing</span>
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </aside>
+            )}
             <div className="afooter">
               <a href="/blogg" className="aback-link">← Tilbake til bloggen</a>
               <a href="/" className="acta">Se alle produkter</a>
