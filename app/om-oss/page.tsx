@@ -148,6 +148,12 @@ export default function OmOss() {
           <h2 className="cta-title">{T ? 'Ready to shop?' : 'Klar til å handle?'}</h2>
           <p className="cta-text">{T ? 'Explore our range of carefully selected pet products.' : 'Utforsk vårt sortiment av nøye utvalgte kjæledyrprodukter.'}</p>
           <a href="/" className="cta-btn">{T ? 'See all products' : 'Se alle produkter'}</a>
+          <p style={{ fontSize: '13px', color: '#888', marginTop: '20px' }}>
+            {T ? 'Want tips and advice? ' : 'Vil du ha tips og råd? '}
+            <a href="/blogg" style={{ color: '#1D9E75', textDecoration: 'none', fontWeight: 500 }}>
+              {T ? 'Read our blog' : 'Les bloggen vår'}
+            </a>
+          </p>
         </div>
       </div>
     </div>
