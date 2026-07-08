@@ -1,12 +1,4 @@
-async function getCJToken() {
-  const res = await fetch('https://developers.cjdropshipping.com/api2.0/v1/authentication/getAccessToken', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ apiKey: process.env.CJ_API_KEY }),
-  });
-  const data = await res.json();
-  return data.data?.accessToken;
-}
+import { getCJToken } from '../../../lib/cj';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -17,6 +9,9 @@ export async function GET(req: Request) {
   }
 
   const token = await getCJToken();
+  if (!token) {
+    return Response.json({ error: 'CJ midlertidig utilgjengelig' }, { status: 503 });
+  }
 
   const res = await fetch(`https://developers.cjdropshipping.com/api2.0/v1/product/query?pid=${pid}`, {
     headers: { 'CJ-Access-Token': token },

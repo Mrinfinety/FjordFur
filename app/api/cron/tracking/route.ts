@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import { NextRequest } from 'next/server';
+import { getCJToken } from '../../../../lib/cj';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' as any });
 
@@ -15,16 +16,6 @@ async function kvSet(key: string, value: string, exSeconds: number): Promise<voi
   await fetch(`${process.env.KV_REST_API_URL}/set/${key}/${value}?ex=${exSeconds}`, {
     headers: { Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}` },
   });
-}
-
-async function getCJToken() {
-  const res = await fetch('https://developers.cjdropshipping.com/api2.0/v1/authentication/getAccessToken', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ apiKey: process.env.CJ_API_KEY }),
-  });
-  const data = await res.json();
-  return data.data?.accessToken;
 }
 
 async function hentOrdrer(token: string, status: string): Promise<any[]> {
@@ -215,6 +206,9 @@ export async function GET(req: NextRequest) {
 
   try {
     const token = await getCJToken();
+    if (!token) {
+      return Response.json({ feil: 'Fikk ikke CJ-token – prøver igjen neste kjøring' }, { status: 503 });
+    }
     const [sendteOrdrer, leverteOrdrer] = await Promise.all([
       hentOrdrer(token, 'SHIPPED'),
       hentOrdrer(token, 'FINISH'),

@@ -1,14 +1,5 @@
 import { NextRequest } from 'next/server';
-
-async function getCJToken() {
-  const res = await fetch('https://developers.cjdropshipping.com/api2.0/v1/authentication/getAccessToken', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ apiKey: process.env.CJ_API_KEY }),
-  });
-  const data = await res.json();
-  return data.data?.accessToken;
-}
+import { getCJToken } from '../../../lib/cj';
 
 async function hentOrdreDetaljer(token: string, orderNum: string) {
   const res = await fetch(
@@ -43,6 +34,10 @@ export async function POST(req: NextRequest) {
 
   try {
     const token = await getCJToken();
+    if (!token) {
+      console.error('Sporings-e-post: fikk ikke CJ-token for ordre', orderNum);
+      return Response.json({ mottatt: true });
+    }
     const ordre = await hentOrdreDetaljer(token, orderNum);
     const email: string = ordre?.email || '';
     const kundenavn: string = ordre?.shippingCustomerName || '';
