@@ -15,9 +15,44 @@ const products = PRODUKTER.map((p, i) => ({
   emoji: p.emoji,
   cat: p.cat,
   cjId: p.cjId,
+  beskrivelse: p.beskrivelse,
+  beskrivelseEn: p.beskrivelseEn,
 }));
 
 const kategorier = ['alle', 'hund', 'katt'];
+
+const faq = [
+  {
+    q: 'Hvor lang er leveringstiden?',
+    qEn: 'How long is the delivery time?',
+    a: 'De fleste bestillinger leveres innen 7–15 virkedager. Du får sporingsnummer på e-post så snart pakken er sendt, slik at du kan følge forsendelsen hele veien hjem til døren.',
+    aEn: 'Most orders arrive within 7–15 business days. You will receive a tracking number by email as soon as your parcel ships, so you can follow the delivery all the way to your door.',
+  },
+  {
+    q: 'Hva koster frakten?',
+    qEn: 'How much does shipping cost?',
+    a: 'Vi tilbyr gratis frakt på alle ordrer over 499 kr. På mindre ordrer beregnes frakten automatisk i kassen før du betaler.',
+    aEn: 'We offer free shipping on all orders over NOK 499. For smaller orders, shipping is calculated automatically at checkout before you pay.',
+  },
+  {
+    q: 'Kan jeg returnere et produkt?',
+    qEn: 'Can I return a product?',
+    a: 'Ja. Du har 14 dagers angrerett fra du mottar varen. Er du ikke fornøyd, refunderer vi kjøpet – og i mange tilfeller trenger du ikke engang sende varen tilbake. Kontakt oss på contact.fjordfur@gmail.com, så hjelper vi deg.',
+    aEn: 'Yes. You have a 14-day right of return from the day you receive your item. If you are not happy, we refund your purchase – and in many cases you do not even need to send the item back. Contact us at contact.fjordfur@gmail.com and we will help you.',
+  },
+  {
+    q: 'Er produktene trygge for kjæledyret mitt?',
+    qEn: 'Are the products safe for my pet?',
+    a: 'Alle produkter er nøye utvalgt og laget av slitesterke, BPA-frie materialer som tåler daglig bruk. Vi velger kun produkter vi selv ville brukt til våre egne dyr.',
+    aEn: 'All our products are carefully selected and made from durable, BPA-free materials built for daily use. We only choose products we would use for our own pets.',
+  },
+  {
+    q: 'Hvilke betalingsmåter kan jeg bruke?',
+    qEn: 'Which payment methods can I use?',
+    a: 'Du kan betale trygt med de vanligste kort- og betalingsløsningene i kassen. All betaling håndteres kryptert og sikkert.',
+    aEn: 'You can pay securely with the most common card and payment options at checkout. All payments are handled with encryption and full security.',
+  },
+];
 
 function katLabel(kat: string, lang: Lang) {
   if (lang === 'en') return kat === 'alle' ? 'All' : kat === 'hund' ? 'Dog' : 'Cat';
@@ -328,6 +363,52 @@ useEffect(() => {
         .trust-title { font-size: 14px; font-weight: 500; color: #1a1a18; }
         .trust-text { font-size: 13px; color: #888; line-height: 1.6; font-weight: 300; }
 
+        .content { max-width: 1000px; margin: 0 auto; padding: 0 48px 72px; }
+        .content-section { margin-bottom: 64px; }
+        .content-h2 {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 30px; font-weight: 600; color: #1a1a18; margin-bottom: 18px;
+        }
+        .content-lead {
+          font-size: 15px; color: #666; line-height: 1.8;
+          font-weight: 300; margin-bottom: 24px; max-width: 720px;
+        }
+        .prod-feature {
+          display: grid; grid-template-columns: 200px 1fr; gap: 28px;
+          align-items: center; padding: 28px 0; border-top: 1px solid #e8e8e4;
+        }
+        .prod-feature-img {
+          width: 100%; aspect-ratio: 1; border-radius: 12px;
+          object-fit: cover; background: #f4f4f0; border: 1px solid #e8e8e4;
+        }
+        .prod-feature-emoji {
+          width: 100%; aspect-ratio: 1; border-radius: 12px;
+          background: #f4f4f0; display: flex; align-items: center;
+          justify-content: center; font-size: 56px; border: 1px solid #e8e8e4;
+        }
+        .prod-feature-h3 {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 22px; font-weight: 600; color: #1a1a18; margin-bottom: 10px;
+        }
+        .prod-feature-text { font-size: 14px; color: #666; line-height: 1.8; font-weight: 300; }
+        .prod-feature-link {
+          display: inline-block; margin-top: 12px; font-size: 13px;
+          color: #1D9E75; text-decoration: none; font-weight: 500;
+        }
+        .prod-feature-link:hover { text-decoration: underline; }
+
+        .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .cat-box { background: #f4f4f0; border-radius: 12px; padding: 28px; }
+        .cat-box h3 {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 22px; font-weight: 600; color: #1a1a18; margin-bottom: 10px;
+        }
+        .cat-box p { font-size: 14px; color: #666; line-height: 1.8; font-weight: 300; }
+
+        .faq-item { border-top: 1px solid #e8e8e4; padding: 22px 0; }
+        .faq-item h3 { font-size: 15px; font-weight: 500; color: #1a1a18; margin-bottom: 8px; }
+        .faq-item p { font-size: 14px; color: #666; line-height: 1.8; font-weight: 300; }
+
         .footer {
           border-top: 1px solid #e8e8e4;
           padding: 40px 48px;
@@ -440,6 +521,11 @@ useEffect(() => {
           .card-img { height: 160px; }
 
           .trust-strip { grid-template-columns: 1fr; }
+
+          .content { padding: 0 20px 56px; }
+          .prod-feature { grid-template-columns: 1fr; gap: 16px; }
+          .prod-feature-img, .prod-feature-emoji { max-width: 220px; }
+          .cat-grid { grid-template-columns: 1fr; }
 
           .drawer { width: 100vw; border-left: none; padding: 24px 20px; }
 
@@ -589,6 +675,70 @@ useEffect(() => {
           </div>
         </div>
       </div>
+
+      {/* SEO-innhold: produktbeskrivelser, kategorier og FAQ */}
+      <section className="content">
+        <div className="content-section">
+          <h2 className="content-h2">{lang === 'en' ? 'Everything for a happier pet' : 'Alt for et lykkeligere kjæledyr'}</h2>
+          <p className="content-lead">{lang === 'en'
+            ? 'At FjordFur you will find carefully selected pet supplies that combine quality, function and thoughtful design. We handpick products that genuinely make a difference in everyday life — whether it is healthier mealtimes, safer walks or simpler routines for you and your four-legged family members. Everything ships with tracking and full peace of mind, and you are covered by a 14-day right of return.'
+            : 'Hos FjordFur finner du nøye utvalgt kjæledyrutstyr som kombinerer kvalitet, funksjon og gjennomtenkt design. Vi håndplukker produkter som faktisk gjør en forskjell i hverdagen — enten det handler om sunnere måltider, tryggere turer eller enklere rutiner for deg og de firbeinte familiemedlemmene. Alt sendes med sporing og full trygghet, og du er dekket av 14 dagers angrerett.'}</p>
+          {products.map(p => (
+            <div key={p.id} className="prod-feature">
+              {p.cjId && cjProducts[p.cjId]
+                ? <img className="prod-feature-img" src={cjProducts[p.cjId].productImageSet?.[p.bildIndex ?? 0] || cjProducts[p.cjId].bigImage} alt={lang === 'en' ? p.nameEn : p.name} loading="lazy" decoding="async" />
+                : <div className="prod-feature-emoji">{p.emoji}</div>}
+              <div>
+                <h3 className="prod-feature-h3">{lang === 'en' ? p.nameEn : p.name}</h3>
+                <p className="prod-feature-text">{lang === 'en' ? p.beskrivelseEn : p.beskrivelse}</p>
+                {p.cjId && (
+                  <a className="prod-feature-link" href={`/produkt/${p.cjId}?pris=${p.price}&margin=${p.margin}`}>
+                    {lang === 'en' ? `See ${p.nameEn} →` : `Se ${p.name} →`}
+                  </a>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="content-section">
+          <h2 className="content-h2">{lang === 'en' ? 'Our categories' : 'Våre kategorier'}</h2>
+          <div className="cat-grid">
+            <div className="cat-box">
+              <h3>{lang === 'en' ? 'For dogs' : 'For hunden'}</h3>
+              <p>{lang === 'en'
+                ? 'From slow feeder bowls that calm down eager eaters to practical 2-in-1 water bottles for walks and smart poop bag holders for the leash — we have the gear that makes everyday life with your dog easier and every walk more worry-free. Our dog range focuses on health, safety and the little details that turn ordinary routines into good moments for both of you.'
+                : 'Fra sakte fôrer skåler som roer ned ivrige slukere til praktiske 2-i-1 vannflasker for tur og smarte bæsjeposeholdere til båndet — vi har utstyret som gjør hverdagen med hund enklere og hver tur mer bekymringsfri. Hundesortimentet vårt handler om helse, trygghet og de små detaljene som gjør vanlige rutiner til gode øyeblikk for dere begge.'}</p>
+            </div>
+            <div className="cat-box">
+              <h3>{lang === 'en' ? 'For cats' : 'For katten'}</h3>
+              <p>{lang === 'en'
+                ? 'Cats deserve the best too, and several of our products — such as the slow feeder bowl — suit picky cat stomachs just as well as dogs. We continuously expand our range with well-thought-out products for feeding, play and everyday well-being, always chosen with the same care and quality standard as everything else in the store.'
+                : 'Katter fortjener også det beste, og flere av produktene våre — som sakte fôrer skålen — passer like godt for kresne kattemager som for hunder. Vi utvider stadig sortimentet med gjennomtenkte produkter for mat, lek og trivsel i hverdagen, alltid valgt med samme omtanke og kvalitetskrav som alt annet i butikken.'}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="content-section">
+          <h2 className="content-h2">{lang === 'en' ? 'Frequently asked questions' : 'Ofte stilte spørsmål'}</h2>
+          {faq.map((f, i) => (
+            <div key={i} className="faq-item">
+              <h3>{lang === 'en' ? f.qEn : f.q}</h3>
+              <p>{lang === 'en' ? f.aEn : f.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faq.map(f => ({
+          "@type": "Question",
+          "name": lang === 'en' ? f.qEn : f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": lang === 'en' ? f.aEn : f.a },
+        })),
+      })}} />
 
       {/* Footer */}
       <footer style={{ borderTop: '1px solid #e8e8e4', padding: '40px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
