@@ -78,6 +78,21 @@ export const PRODUKTER: ProduktKonfig[] = [
     metaTittel: 'Bæsjeposeholder til Bånd – Diskret Holder til Hundeposer',
     metaBeskrivelse: 'Bæsjeposeholder til bånd, ryggsekk eller nøkkelknippe. Hold hundeposene alltid for hånden på tur. Kompakt design i flere farger. Fri frakt over 499 kr.',
   },
+  {
+    cjId: '2075846417604575234',
+    navn: 'Massasjebørste 3-i-1',
+    navnEn: '3-in-1 Massage Brush',
+    sub: 'Steam-spray, massasje og hårfjerning',
+    subEn: 'Steam spray, massage & hair removal',
+    pris: 159,
+    margin: 98,
+    emoji: '🚿',
+    cat: 'hund',
+    beskrivelse: 'Gjør stell og bad til en avslappende stund med denne smarte massasjebørsten som samler tre funksjoner i én — steam-spray, massasje og hårfjerning. Med ett enkelt knappetrykk fukter den innebygde spray-funksjonen pelsen jevnt, slik at du enkelt kan skylle inn shampo eller løsne opp floker uten stress. De myke silikontennene gir samtidig en behagelig massasje som løsner løs pels og stimulerer huden, mens den fangede pelsen samler seg i børsten for enkel fjerning etterpå. Det sammenleggbare og roterbare hodet gjør børsten praktisk å bruke i både badekar, dusj og på tørr pels, og den passer like godt til hund som til katt. Et lite, gjennomtenkt verktøy som gjør pelsstell enklere, mer hygienisk og mer behagelig for kjæledyret ditt.',
+    beskrivelseEn: 'Turn grooming and bath time into a relaxing moment with this clever massage brush that combines three functions in one — steam spray, massage and hair removal. With a single press of the button, the built-in spray function evenly moistens the coat, so you can easily work in shampoo or loosen tangles without any stress. The soft silicone bristles provide a soothing massage that releases loose fur and stimulates the skin, while the collected hair gathers in the brush for easy removal afterwards. The folding, rotatable head makes the brush practical to use in the bath, shower or on a dry coat, and it works just as well for dogs as for cats. A small, thoughtful tool that makes coat care easier, more hygienic and more comfortable for your pet.',
+    metaTittel: 'Massasjebørste 3-i-1 til Hund & Katt – Steam-spray & Hårfjerning',
+    metaBeskrivelse: 'Massasjebørste 3-i-1 til hund og katt med steam-spray, massasje og hårfjerning. Sammenleggbart og roterbart hode for bad, dusj og tørr pels. Fri frakt over 499 kr.',
+  },
 ];
 
 export function hentRelaterte(cjId: string) {
