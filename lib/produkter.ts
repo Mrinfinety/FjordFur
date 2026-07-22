@@ -78,6 +78,21 @@ export const PRODUKTER: ProduktKonfig[] = [
     metaTittel: 'Bæsjeposeholder til Bånd – Diskret Holder til Hundeposer',
     metaBeskrivelse: 'Bæsjeposeholder til bånd, ryggsekk eller nøkkelknippe. Hold hundeposene alltid for hånden på tur. Kompakt design i flere farger. Fri frakt over 499 kr.',
   },
+  {
+    cjId: '2607180827191632000',
+    navn: 'Rensesevietter Øre & Tenner',
+    navnEn: 'Cleaning Wipes Ears & Teeth',
+    sub: 'Engangs pleieservietter, hund/katt',
+    subEn: 'Disposable care wipes, dogs & cats',
+    pris: 199,
+    margin: 122,
+    emoji: '🧼',
+    cat: 'katt',
+    beskrivelse: 'Å holde ørene og tennene rene er en viktig del av kjæledyrets helse — og med disse engangs rensevettene blir stellet både enkelt og skånsomt. Hver serviett tres rett over fingertuppen, slik at du har full kontroll og lett kommer til i ørene, rundt tennene og på sensitive områder. De myke, fuktige klutene fjerner effektivt ørevoks, matrester, smuss og skitt, og bidrar til å motvirke øremidd, vond lukt og oppbygging av plakk. Rensevetter til katt og hund er perfekt for deg som vil ta vare på kjæledyret mellom besøk hos veterinær eller frisør, uten stress og uten vann. Servietten er praktisk å bruke hjemme, på reise eller på tur, og det milde innholdet er laget for å være trygt for daglig bruk. En liten rutine som gir friskere ører, renere tenner og et gladere kjæledyr.',
+    beskrivelseEn: 'Keeping the ears and teeth clean is an important part of your pet\'s health — and these disposable care wipes make grooming both easy and gentle. Each wipe slips right over your fingertip, giving you full control and easy access to the ears, around the teeth and on sensitive areas. The soft, moist cloths effectively remove ear wax, food residue, dirt and grime, and help prevent ear mites, bad odour and plaque build-up. These cleaning wipes for cats and dogs are perfect for caring for your pet between visits to the vet or groomer, without stress and without water. Each wipe is convenient to use at home, while travelling or on a walk, and the mild formula is made to be safe for daily use. A small routine that gives fresher ears, cleaner teeth and a happier pet.',
+    metaTittel: 'Rensesevietter til Katt & Hund – Øre- og Tannrens',
+    metaBeskrivelse: 'Engangs rensevetter til katt og hund for øre- og tannrens. Trekkes over fingertuppen, fjerner ørevoks og plakk og motvirker øremidd. Fri frakt over 499 kr.',
+  },
 ];
 
 export function hentRelaterte(cjId: string) {
