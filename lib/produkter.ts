@@ -108,6 +108,21 @@ export const PRODUKTER: ProduktKonfig[] = [
     metaTittel: 'Ultralyd Antibjeff til Hund – Håndholdt Treningsenhet',
     metaBeskrivelse: 'Håndholdt ultralyd antibjeff og treningsenhet til hund. Stopper overdreven bjeffing skånsomt og trygt, uten straff. Kompakt med lommelykt. Fri frakt over 499 kr.',
   },
+  {
+    cjId: '2609100132401615200',
+    navn: 'Katteklem Halskjede',
+    navnEn: 'Cat Hug Necklace',
+    sub: 'Kobberbelagt smykke for katteelskere',
+    subEn: 'Copper-plated jewelry for cat lovers',
+    pris: 199,
+    margin: 160,
+    emoji: '🐱',
+    cat: 'katt',
+    beskrivelse: 'Et halskjede til katteelskere er den perfekte lille gaven til deg som har en spesiell plass i hjertet for katten din. Dette vakre, kobberbelagte smykket viser en person som klemmer katten sin tett inntil seg — et rørende motiv som fanger det unike båndet mellom menneske og kjæledyr. Enten du kjøper det til deg selv eller som en tankefull gave til en venn, familiemedlem eller kattemamma, er dette et smykke som varmer hjertet hver gang det brukes. Halskjedet har en behagelig lengde som passer til de fleste, og den kobberbelagte overflaten gir en varm, tidløs glød som matcher både hverdagsantrekk og finere anledninger. Det lette designet er behagelig å ha på hele dagen, og motivet er en fin liten påminnelse om den lodne bestevennen din. Kom i en pen presentasjon — perfekt til bursdag, jul eller bare fordi. Et smykke som feirer kjærligheten til katter, hver eneste dag.',
+    beskrivelseEn: 'A necklace for cat lovers is the perfect little gift for anyone who holds a special place in their heart for their cat. This beautiful, copper-plated piece of jewelry shows a person hugging their cat close — a touching motif that captures the unique bond between human and pet. Whether you buy it for yourself or as a thoughtful gift for a friend, family member or cat mum, it is a piece that warms the heart every time it is worn. The necklace has a comfortable length that suits most, and the copper-plated finish gives a warm, timeless glow that matches both everyday outfits and more special occasions. The lightweight design is comfortable to wear all day, and the motif is a lovely little reminder of your furry best friend. It comes nicely presented — perfect for a birthday, Christmas or just because. A piece of jewelry that celebrates the love for cats, every single day.',
+    metaTittel: 'Halskjede til Katteelskere – Kobberbelagt Katteklem Smykke',
+    metaBeskrivelse: 'Kobberbelagt halskjede til katteelskere med motiv av person som klemmer katten sin. En rørende gave til kattemamma eller deg selv. Fri frakt over 499 kr.',
+  },
 ];
 
 export function hentRelaterte(cjId: string) {
